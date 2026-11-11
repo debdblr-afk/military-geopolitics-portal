@@ -1,0 +1,172 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const dispatches = await getCollection('dispatches');
+const sortedDispatches = dispatches.sort((a, b) => 
+  new Date(b.data.publishDate).getTime() - new Date(a.data.publishDate).getTime()
+);
+---
+
+<BaseLayout
+  title="STRATEGIC DISPATCHES // ISKANDER Tactical Intelligence Archive"
+  description="Declassified strategic dispatches, conflict analysis, and creator research dossiers filed by defense analysts and geopolitics creators."
+>
+  <div class="container page-container">
+    <div class="page-head font-mono">
+      <div class="badge-row">
+        <span class="badge badge-pantone-2023">INTEL DOSSIER ARCHIVE</span>
+        <span class="badge badge-pantone-2021">{dispatches.length} ACTIVE DISPATCHES</span>
+        <span class="badge badge-pantone-2024">NETLIFY CMS CONNECTED</span>
+      </div>
+      <h1 class="page-title">STRATEGIC DISPATCHES &amp; THEATER BRIEFS</h1>
+      <p class="page-sub text-muted font-sans">
+        In-depth geopolitical situation reports, order of battle audits, and kinetic risk evaluations published via Decap CMS.
+      </p>
+    </div>
+
+    <div class="dispatches-grid">
+      {sortedDispatches.map((item) => (
+        <article class="hud-panel hud-corner dispatch-card">
+          <div class="card-top font-mono">
+            <span class="defcon-pill">{item.data.defcon}</span>
+            <span class="theater-tag text-muted">{item.data.theater}</span>
+            <span class="date-tag text-dim">
+              {new Date(item.data.publishDate).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric'
+              })}
+            </span>
+          </div>
+
+          <h2 class="dispatch-heading">
+            <a href={`/dispatches/${item.slug}/`} class="dispatch-link">
+              {item.data.title}
+            </a>
+          </h2>
+
+          <p class="dispatch-summary font-sans text-muted">
+            {item.data.summary}
+          </p>
+
+          <div class="card-footer font-mono">
+            <span class="color-indicator">
+              <span class="color-dot"></span>
+              <span>PANTONE {item.data.pantoneColor}</span>
+            </span>
+            <a href={`/dispatches/${item.slug}/`} class="btn-tactical btn-outline read-btn">
+              Read Briefing →
+            </a>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .page-container {
+    padding: 3rem 1.25rem 5rem;
+  }
+  .page-head {
+    margin-bottom: 2.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+  }
+  .badge-row {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+  }
+  .page-title {
+    font-size: 2.2rem;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    color: var(--text-main);
+    margin-bottom: 0.5rem;
+  }
+  .page-sub {
+    max-width: 780px;
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+  .dispatches-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+    gap: 1.75rem;
+  }
+  .dispatch-card {
+    padding: 1.75rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: rgba(14, 19, 26, 0.95);
+  }
+  .card-top {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.72rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+  }
+  .defcon-pill {
+    background: rgba(187, 38, 73, 0.15);
+    border: 1px solid rgba(187, 38, 73, 0.5);
+    color: #FF6685;
+    padding: 0.15rem 0.5rem;
+    border-radius: 2px;
+    font-weight: 800;
+  }
+  .dispatch-heading {
+    font-size: 1.25rem;
+    font-weight: 800;
+    line-height: 1.35;
+    margin-bottom: 0.85rem;
+  }
+  .dispatch-link {
+    color: var(--text-main);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+  .dispatch-link:hover {
+    color: var(--primary);
+  }
+  .dispatch-summary {
+    font-size: 0.88rem;
+    line-height: 1.55;
+    margin-bottom: 1.5rem;
+    flex: 1;
+  }
+  .card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.74rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(147, 149, 151, 0.15);
+  }
+  .color-indicator {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--text-dim);
+  }
+  .color-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--primary);
+  }
+  .read-btn {
+    font-size: 0.75rem;
+    padding: 0.45rem 0.85rem;
+  }
+  @media (max-width: 600px) {
+    .dispatches-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

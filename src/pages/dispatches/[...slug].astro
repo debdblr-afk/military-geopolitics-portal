@@ -1,0 +1,174 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const dispatches = await getCollection('dispatches');
+  return dispatches.map((entry) => ({
+    params: { slug: entry.slug },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+---
+
+<BaseLayout
+  title={`${entry.data.title} // ISKANDER DISPATCH`}
+  description={entry.data.summary}
+>
+  <div class="container dispatch-container">
+    <div class="breadcrumb font-mono">
+      <a href="/dispatches" class="back-link">← Return to All Dispatches</a>
+      <span class="sep">/</span>
+      <span class="curr text-dim">{entry.slug}</span>
+    </div>
+
+    <article class="hud-panel hud-corner dispatch-article">
+      <div class="classified-header font-mono">
+        <div class="stamp-box">
+          <span class="stamp-watermark">CONFIDENTIAL // OSINT STRATEGIC BRIEF</span>
+        </div>
+        
+        <div class="meta-row">
+          <span class="badge badge-pantone-2023">{entry.data.defcon}</span>
+          <span class="meta-item">THEATER: <strong>{entry.data.theater}</strong></span>
+          <span class="meta-item">PUBLISHED: <strong>{new Date(entry.data.publishDate).toISOString().split('T')[0]}</strong></span>
+          <span class="meta-item">PANTONE: <strong>{entry.data.pantoneColor}</strong></span>
+        </div>
+      </div>
+
+      <h1 class="article-title">{entry.data.title}</h1>
+
+      <div class="executive-summary hud-panel font-mono">
+        <span class="summary-label text-dim">EXECUTIVE CREATOR BRIEF // SITREP:</span>
+        <p class="summary-content font-sans">{entry.data.summary}</p>
+      </div>
+
+      <div class="prose-body">
+        <Content />
+      </div>
+
+      <div class="article-actions font-mono">
+        <button onclick="window.print()" class="btn-tactical btn-outline">🖨️ Print Dossier</button>
+        <a href="/creator-studio" class="btn-tactical btn-primary">🎬 Open in Teleprompter Studio →</a>
+      </div>
+    </article>
+  </div>
+</BaseLayout>
+
+<style>
+  .dispatch-container {
+    max-width: 920px;
+    padding: 2.5rem 1.25rem 6rem;
+  }
+  .breadcrumb {
+    font-size: 0.78rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+  }
+  .back-link {
+    color: var(--primary);
+    text-decoration: none;
+  }
+  .back-link:hover {
+    text-decoration: underline;
+  }
+  .dispatch-article {
+    padding: 2.5rem;
+    background: rgba(14, 19, 26, 0.95);
+  }
+  .classified-header {
+    border-bottom: 2px dashed rgba(187, 38, 73, 0.4);
+    padding-bottom: 1.25rem;
+    margin-bottom: 2rem;
+  }
+  .stamp-box {
+    margin-bottom: 0.75rem;
+  }
+  .stamp-watermark {
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: #BB2649;
+    letter-spacing: 0.15em;
+    background: rgba(187, 38, 73, 0.1);
+    padding: 0.25rem 0.65rem;
+    border: 1px solid rgba(187, 38, 73, 0.35);
+    border-radius: 2px;
+  }
+  .meta-row {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    font-size: 0.74rem;
+    color: var(--text-muted);
+    flex-wrap: wrap;
+    margin-top: 0.85rem;
+  }
+  .article-title {
+    font-size: 2.2rem;
+    font-weight: 900;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+    color: var(--text-main);
+    margin-bottom: 1.75rem;
+  }
+  .executive-summary {
+    background: rgba(245, 223, 77, 0.04);
+    border-left: 3px solid var(--primary);
+    padding: 1.25rem;
+    margin-bottom: 2.5rem;
+  }
+  .summary-label {
+    font-size: 0.72rem;
+    font-weight: 800;
+    display: block;
+    margin-bottom: 0.4rem;
+  }
+  .summary-content {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--text-main);
+  }
+  .prose-body {
+    font-size: 1.05rem;
+    line-height: 1.75;
+    color: #D6D8DE;
+  }
+  .prose-body :global(h2),
+  .prose-body :global(h3) {
+    color: var(--text-main);
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+    font-family: "SF Mono", Monaco, monospace;
+  }
+  .prose-body :global(p) {
+    margin-bottom: 1.25rem;
+  }
+  .prose-body :global(ul) {
+    margin-left: 1.5rem;
+    margin-bottom: 1.25rem;
+  }
+  .prose-body :global(li) {
+    margin-bottom: 0.5rem;
+  }
+  .article-actions {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(147, 149, 151, 0.2);
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  @media (max-width: 600px) {
+    .dispatch-article {
+      padding: 1.5rem;
+    }
+    .article-title {
+      font-size: 1.6rem;
+    }
+  }
+</style>
