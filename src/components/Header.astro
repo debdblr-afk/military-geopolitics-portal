@@ -1,0 +1,225 @@
+---
+// Header.astro
+---
+<header class="site-header">
+  <div class="container">
+    <div class="header-inner">
+      <!-- Left: Logo & Strategic Domain -->
+      <div class="brand-group">
+        <a href="/" class="brand-title">
+          <span class="radar-pulse"></span>
+          <span class="brand-name">ISKANDER</span>
+          <span class="brand-badge font-mono">GEOPOLITICS // MILTECH</span>
+        </a>
+        <div class="domain-tag font-mono">
+          <span class="live-dot"></span>
+          <span>iskander.dbdd.in</span>
+        </div>
+      </div>
+
+      <!-- Center: Navigation -->
+      <nav class="nav-links">
+        <a href="/" class="nav-item">Dashboard</a>
+        <a href="/naval" class="nav-item">Naval ORBAT</a>
+        <a href="/weapons" class="nav-item">Precision Weapons</a>
+        <a href="/space-tech" class="nav-item">Space Warfare</a>
+        <a href="/geopolitics" class="nav-item">Chokepoints</a>
+        <a href="/creator-studio" class="nav-item highlight">Creator Studio</a>
+        <a href="/memo" class="nav-item">Intel Memo</a>
+        <a href="/admin/" target="_blank" class="nav-item cms-link">CMS Admin ↗</a>
+      </nav>
+
+      <!-- Right: Pantone Year Switcher & DEFCON Status -->
+      <div class="header-actions">
+        <!-- Live DEFCON Indicator -->
+        <div class="defcon-badge font-mono" id="defconIndicator" title="Theater Readiness Level">
+          <span class="defcon-dot"></span>
+          <span class="defcon-text">DEFCON 3</span>
+        </div>
+
+        <!-- Pantone 2021-2025 Theme Selector -->
+        <div class="pantone-switcher" aria-label="Pantone Color of the Year Switcher">
+          <button class="pantone-btn" data-pantone-btn="pentad" title="Pentad: All 5 Pantone Colors (2021-2025)">
+            <span class="swatch-cluster">
+              <span class="swatch" style="background: #F5DF4D;"></span>
+              <span class="swatch" style="background: #6667AB;"></span>
+              <span class="swatch" style="background: #BB2649;"></span>
+              <span class="swatch" style="background: #FFBE98;"></span>
+              <span class="swatch" style="background: #A47864;"></span>
+            </span>
+            <span>ALL 5</span>
+          </button>
+
+          <button class="pantone-btn" data-pantone-btn="2021" title="2021: Illuminating Yellow & Ultimate Gray">
+            <span class="swatch" style="background: #F5DF4D;"></span>
+            <span>'21</span>
+          </button>
+
+          <button class="pantone-btn" data-pantone-btn="2022" title="2022: Very Peri">
+            <span class="swatch" style="background: #6667AB;"></span>
+            <span>'22</span>
+          </button>
+
+          <button class="pantone-btn" data-pantone-btn="2023" title="2023: Viva Magenta">
+            <span class="swatch" style="background: #BB2649;"></span>
+            <span>'23</span>
+          </button>
+
+          <button class="pantone-btn" data-pantone-btn="2024" title="2024: Peach Fuzz">
+            <span class="swatch" style="background: #FFBE98;"></span>
+            <span>'24</span>
+          </button>
+
+          <button class="pantone-btn" data-pantone-btn="2025" title="2025: Mocha Mousse">
+            <span class="swatch" style="background: #A47864;"></span>
+            <span>'25</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<style>
+  .header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.85rem 0;
+    gap: 1.25rem;
+  }
+
+  .brand-group {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .brand-title {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    text-decoration: none;
+    color: var(--text-main);
+  }
+
+  .brand-name {
+    font-size: 1.35rem;
+    font-weight: 900;
+    letter-spacing: 0.12em;
+    color: var(--primary);
+    text-shadow: 0 0 10px var(--glow-color);
+  }
+
+  .brand-badge {
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    border-left: 1px solid var(--border-color);
+    padding-left: 0.65rem;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+
+  .domain-tag {
+    font-size: 0.72rem;
+    color: var(--c-pantone-2024-peach);
+    background: rgba(255, 190, 152, 0.08);
+    border: 1px solid rgba(255, 190, 152, 0.25);
+    padding: 0.2rem 0.6rem;
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .live-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #00FF88;
+    box-shadow: 0 0 6px #00FF88;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .nav-item {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.84rem;
+    font-weight: 600;
+    padding: 0.4rem 0.7rem;
+    border-radius: 3px;
+    transition: all 0.2s ease;
+  }
+
+  .nav-item:hover {
+    color: var(--text-main);
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  .nav-item.highlight {
+    color: var(--primary);
+    background: rgba(var(--primary-rgb), 0.1);
+    border: 1px solid rgba(var(--primary-rgb), 0.3);
+  }
+
+  .nav-item.cms-link {
+    color: var(--c-pantone-2022-peri);
+    border: 1px dashed rgba(102, 103, 171, 0.4);
+  }
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+  }
+
+  .defcon-badge {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-size: 0.75rem;
+    font-weight: 800;
+    padding: 0.3rem 0.65rem;
+    border-radius: 3px;
+    background: rgba(187, 38, 73, 0.15);
+    border: 1px solid rgba(187, 38, 73, 0.45);
+    color: #FF6685;
+    letter-spacing: 0.05em;
+  }
+
+  .defcon-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #BB2649;
+    box-shadow: 0 0 6px #BB2649;
+    animation: defcon-blink 1.4s ease infinite alternate;
+  }
+
+  @keyframes defcon-blink {
+    from { opacity: 0.4; }
+    to { opacity: 1; }
+  }
+
+  .swatch-cluster {
+    display: inline-flex;
+    gap: 2px;
+    align-items: center;
+  }
+
+  .swatch-cluster .swatch {
+    width: 5px;
+    height: 5px;
+  }
+
+  @media (max-width: 1100px) {
+    .nav-links {
+      display: none;
+    }
+  }
+</style>

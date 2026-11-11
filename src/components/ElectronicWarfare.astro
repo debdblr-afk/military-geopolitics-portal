@@ -1,0 +1,325 @@
+---
+// ElectronicWarfare.astro - Feature 6: EW & Radar Cross Section Spectrum Analyzer
+---
+<div class="hud-panel hud-corner ew-card">
+  <div class="ew-header">
+    <div>
+      <div class="ew-title-row">
+        <span class="badge badge-pantone-2022">SPECTRUM DOMINANCE</span>
+        <h3 class="font-mono ew-heading">ELECTRONIC WARFARE (EW) & RADAR CROSS SECTION (RCS) ANALYZER</h3>
+      </div>
+      <p class="font-mono text-muted" style="font-size: 0.76rem;">Comparative stealth signatures ($m^2$), radar frequency band propagation & burn-through physics.</p>
+    </div>
+
+    <div class="physics-rule font-mono">
+      <span class="rule-label">4TH ROOT RADAR EQUATION:</span>
+      <span class="rule-formula" style="color: var(--primary);">R_detect ∝ ⁴√(RCS × P_t × G²)</span>
+    </div>
+  </div>
+
+  <div class="ew-grid">
+    <!-- RCS Visual Comparison Scale -->
+    <div class="rcs-scale-box hud-panel">
+      <div class="scale-head font-mono">
+        <span class="badge badge-pantone-2021">RCS BENCHMARKS</span>
+        <span style="font-size: 0.72rem; color: var(--text-dim);">RADAR CROSS SECTION IN SQUARE METERS (m²)</span>
+      </div>
+
+      <div class="rcs-items-list font-mono" id="rcsList">
+        <!-- Item 1: B-21 / F-22 -->
+        <div class="rcs-row" data-rcs="0.0001">
+          <div class="rcs-target-info">
+            <span class="rcs-name">B-21 Raider / F-22 Raptor</span>
+            <span class="rcs-analogy font-sans text-muted">Bumblebee / Steel BB (0.0001 m²)</span>
+          </div>
+          <div class="rcs-bar-container">
+            <div class="rcs-bar" style="width: 2%; background: #6667AB;"></div>
+          </div>
+          <span class="rcs-val" style="color: #6667AB;">-40 dBsm</span>
+        </div>
+
+        <!-- Item 2: F-35 -->
+        <div class="rcs-row" data-rcs="0.001">
+          <div class="rcs-target-info">
+            <span class="rcs-name">F-35A Lightning II</span>
+            <span class="rcs-analogy font-sans text-muted">Golf Ball / Metal Marble (0.001 m²)</span>
+          </div>
+          <div class="rcs-bar-container">
+            <div class="rcs-bar" style="width: 6%; background: #8E8FC9;"></div>
+          </div>
+          <span class="rcs-val" style="color: #8E8FC9;">-30 dBsm</span>
+        </div>
+
+        <!-- Item 3: J-20A -->
+        <div class="rcs-row" data-rcs="0.02">
+          <div class="rcs-target-info">
+            <span class="rcs-name">Chengdu J-20A Mighty Dragon</span>
+            <span class="rcs-analogy font-sans text-muted">Small Bird / Sparrow (0.02 m²)</span>
+          </div>
+          <div class="rcs-bar-container">
+            <div class="rcs-bar" style="width: 14%; background: #BB2649;"></div>
+          </div>
+          <span class="rcs-val" style="color: #BB2649;">-17 dBsm</span>
+        </div>
+
+        <!-- Item 4: Su-57 -->
+        <div class="rcs-row" data-rcs="0.25">
+          <div class="rcs-target-info">
+            <span class="rcs-name">Sukhoi Su-57 Felon</span>
+            <span class="rcs-analogy font-sans text-muted">Large Eagle / Beachball (0.25 m²)</span>
+          </div>
+          <div class="rcs-bar-container">
+            <div class="rcs-bar" style="width: 28%; background: #FFBE98;"></div>
+          </div>
+          <span class="rcs-val" style="color: #FFBE98;">-6 dBsm</span>
+        </div>
+
+        <!-- Item 5: F-15 / Su-30 (Non-Stealth 4th Gen) -->
+        <div class="rcs-row" data-rcs="10.0">
+          <div class="rcs-target-info">
+            <span class="rcs-name">F-15C Eagle / Su-30MKI</span>
+            <span class="rcs-analogy font-sans text-muted">Standard 4th Gen (5.0 - 15.0 m²)</span>
+          </div>
+          <div class="rcs-bar-container">
+            <div class="rcs-bar" style="width: 75%; background: #F5DF4D;"></div>
+          </div>
+          <span class="rcs-val" style="color: #F5DF4D;">+10 dBsm</span>
+        </div>
+
+        <!-- Item 6: B-52 -->
+        <div class="rcs-row" data-rcs="100.0">
+          <div class="rcs-target-info">
+            <span class="rcs-name">B-52H Stratofortress</span>
+            <span class="rcs-analogy font-sans text-muted">Flying Barn Door (100.0 m²)</span>
+          </div>
+          <div class="rcs-bar-container">
+            <div class="rcs-bar" style="width: 100%; background: #A47864;"></div>
+          </div>
+          <span class="rcs-val" style="color: #A47864;">+20 dBsm</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Frequency Spectrum & Burn-through Calculator -->
+    <div class="frequency-box hud-panel">
+      <div class="freq-head font-mono">
+        <span class="badge badge-pantone-2023">RADAR FREQUENCY BANDS</span>
+        <span style="font-size: 0.72rem; color: var(--text-dim);">COUNTER-STEALTH VS FIRE-CONTROL PROPAGATION</span>
+      </div>
+
+      <div class="freq-bands-grid font-mono">
+        <div class="band-card">
+          <div class="band-top">
+            <span class="band-name" style="color: #BB2649;">VHF / UHF (Meter Waves)</span>
+            <span class="band-freq">100 MHz - 1 GHz</span>
+          </div>
+          <p class="band-desc">Resonates with aircraft physical dimensions (wings, vertical stabilizers). Detects stealth fighters at long range, but lacks resolution to guide a missile.</p>
+          <span class="band-role">ROLE: Nebo-M Early Warning Counter-Stealth</span>
+        </div>
+
+        <div class="band-card">
+          <div class="band-top">
+            <span class="band-name" style="color: #F5DF4D;">S-Band / L-Band</span>
+            <span class="band-freq">1 GHz - 4 GHz</span>
+          </div>
+          <p class="band-desc">Balanced atmospheric penetration & volumetric tracking. Standard for carrier and destroyer 3D volume search.</p>
+          <span class="band-role">ROLE: AN/SPY-6(V)1, Type 346B Dragon Eye</span>
+        </div>
+
+        <div class="band-card">
+          <div class="band-top">
+            <span class="band-name" style="color: #6667AB;">X-Band (Centimeter Waves)</span>
+            <span class="band-freq">8 GHz - 12 GHz</span>
+          </div>
+          <p class="band-desc">Centimeter precision necessary for weapons-quality track (missile cueing). Highly degraded by RAM coatings and faceted edges of true stealth airframes.</p>
+          <span class="band-role">ROLE: APG-81 (F-35 AESA), Patriot PAC-3 MPQ-65</span>
+        </div>
+      </div>
+
+      <!-- Creator Explainer Prompt -->
+      <div class="ew-creator-hook font-mono">
+        <span class="hook-label">SCRIPT INSIGHT (HOW TO EXPLAIN STEALTH TO AUDIENCES):</span>
+        <p class="hook-body">
+          "Stealth does NOT mean invisible to radar—it means delaying detection until the fighter is already within missile launch range. An S-400 radar that detects an F-15 at 350 km won't see an F-35 until 35 km, by which point an AMRAAM or JSM has already been fired."
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .ew-card {
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .ew-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(147, 149, 151, 0.15);
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .ew-title-row {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .ew-heading {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--text-main);
+  }
+
+  .physics-rule {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    font-size: 0.72rem;
+  }
+  .rule-label {
+    color: var(--text-dim);
+  }
+  .rule-formula {
+    font-weight: 800;
+  }
+
+  .ew-grid {
+    display: grid;
+    grid-template-columns: 1.25fr 1.25fr;
+    gap: 1.5rem;
+  }
+
+  .rcs-scale-box,
+  .frequency-box {
+    background: rgba(14, 19, 26, 0.9);
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .scale-head,
+  .freq-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid rgba(147, 149, 151, 0.15);
+  }
+
+  .rcs-items-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+
+  .rcs-row {
+    display: grid;
+    grid-template-columns: 1.5fr 1.2fr 0.6fr;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.74rem;
+  }
+
+  .rcs-name {
+    display: block;
+    font-weight: 700;
+    color: var(--text-main);
+  }
+  .rcs-analogy {
+    font-size: 0.68rem;
+  }
+
+  .rcs-bar-container {
+    height: 8px;
+    background: rgba(8, 11, 15, 0.8);
+    border-radius: 4px;
+    overflow: hidden;
+    border: 1px solid rgba(147, 149, 151, 0.2);
+  }
+
+  .rcs-bar {
+    height: 100%;
+    border-radius: 3px;
+    transition: width 0.3s ease;
+  }
+
+  .rcs-val {
+    font-weight: 800;
+    text-align: right;
+  }
+
+  .freq-bands-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .band-card {
+    background: var(--bg-card);
+    padding: 0.75rem;
+    border-radius: 3px;
+    border: 1px solid rgba(147, 149, 151, 0.12);
+  }
+
+  .band-top {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.25rem;
+    font-size: 0.75rem;
+    font-weight: 800;
+  }
+
+  .band-freq {
+    color: var(--text-dim);
+  }
+
+  .band-desc {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    line-height: 1.4;
+    font-family: sans-serif;
+    margin-bottom: 0.35rem;
+  }
+
+  .band-role {
+    font-size: 0.68rem;
+    color: var(--primary);
+    font-weight: 700;
+  }
+
+  .ew-creator-hook {
+    background: rgba(102, 103, 171, 0.08);
+    border-left: 2px solid var(--c-pantone-2022-peri);
+    padding: 0.75rem;
+    border-radius: 2px;
+  }
+
+  .hook-label {
+    font-size: 0.66rem;
+    color: #8E8FC9;
+    font-weight: 800;
+    display: block;
+    margin-bottom: 0.25rem;
+  }
+
+  .hook-body {
+    font-size: 0.76rem;
+    color: var(--text-main);
+    line-height: 1.4;
+    font-style: italic;
+  }
+
+  @media (max-width: 900px) {
+    .ew-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

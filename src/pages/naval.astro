@@ -1,0 +1,44 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import NavalFleetTracker from '../components/NavalFleetTracker.astro';
+import InfographicStudio from '../components/InfographicStudio.astro';
+---
+
+<BaseLayout 
+  title="Naval Fleet ORBAT & Warship Comparison // ISKANDER"
+  description="Order of Battle, VLS missile capacity, acoustic profiles, and head-to-head capital ship comparisons."
+>
+  <div class="container page-container">
+    <div class="page-head font-mono">
+      <span class="badge badge-pantone-2022">MARITIME COMBAT DOMAIN</span>
+      <h1 class="page-title">NAVAL WARFARE & FLEET ORDER OF BATTLE</h1>
+      <p class="page-sub text-muted font-sans">
+        Analyze carrier strike group survivability, submarine acoustic stealth, and guided-missile destroyer VLS densities across the US Navy, Chinese PLAN, Royal Navy, and Russian Navy.
+      </p>
+    </div>
+
+    <NavalFleetTracker />
+    <InfographicStudio />
+  </div>
+</BaseLayout>
+
+<style>
+  .page-container {
+    padding: 3rem 1.25rem 4rem;
+  }
+  .page-head {
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+  }
+  .page-title {
+    font-size: 2rem;
+    font-weight: 900;
+    margin: 0.5rem 0;
+    color: var(--primary);
+  }
+  .page-sub {
+    font-size: 0.95rem;
+    max-width: 800px;
+  }
+</style>

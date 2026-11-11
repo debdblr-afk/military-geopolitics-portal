@@ -1,0 +1,319 @@
+---
+// MediaBriefingHub.astro - Feature 18: Video & Podcast Player Hub with Tactical Chapters
+---
+<div class="hud-panel hud-corner media-hub-card">
+  <div class="hub-header">
+    <div>
+      <div class="hub-title-row">
+        <span class="badge badge-pantone-2022">BROADCAST SYNDICATION</span>
+        <h3 class="font-mono hub-heading">PODCAST & VIDEO ESSAY BRIEFING HUB</h3>
+      </div>
+      <p class="font-mono text-muted" style="font-size: 0.76rem;">Integrated media player with timestamped battle-map chapters, audio waveform & transcript sync.</p>
+    </div>
+
+    <div class="episode-tag font-mono">
+      <span class="pulse-audio"></span>
+      <span>EPISODE 42 // LIVE AUDIO ARCHIVE</span>
+    </div>
+  </div>
+
+  <div class="hub-grid">
+    <!-- Media Player Viewport -->
+    <div class="player-box hud-panel font-mono">
+      <div class="screen-preview">
+        <div class="scanline"></div>
+        <div class="screen-hud-overlay">
+          <span class="rec-badge font-mono">● STRATEGIC RECORDING</span>
+          <span class="stream-title font-mono" id="currentChapterTitle">01:45 // THE MALACCA DILEMMA & TAIWAN STRAIT</span>
+        </div>
+        <div class="screen-center-icon">
+          <button class="play-circle-btn" id="masterPlayBtn" title="Play Episode">▶</button>
+        </div>
+        <div class="screen-bottom-hud font-mono">
+          <span id="playerTimer">04:12 / 18:45</span>
+          <span>1080p60 TACTICAL HUD FEED</span>
+        </div>
+      </div>
+
+      <!-- Waveform Simulation Bar -->
+      <div class="waveform-box">
+        <div class="wave-bar" style="height: 40%;"></div>
+        <div class="wave-bar" style="height: 65%;"></div>
+        <div class="wave-bar" style="height: 80%;"></div>
+        <div class="wave-bar" style="height: 45%;"></div>
+        <div class="wave-bar" style="height: 90%;"></div>
+        <div class="wave-bar" style="height: 100%;"></div>
+        <div class="wave-bar" style="height: 60%;"></div>
+        <div class="wave-bar" style="height: 75%;"></div>
+        <div class="wave-bar" style="height: 85%;"></div>
+        <div class="wave-bar" style="height: 50%;"></div>
+        <div class="wave-bar" style="height: 70%;"></div>
+        <div class="wave-bar" style="height: 95%;"></div>
+        <div class="wave-bar" style="height: 40%;"></div>
+        <div class="wave-bar" style="height: 60%;"></div>
+      </div>
+    </div>
+
+    <!-- Interactive Chapters Playlist -->
+    <div class="chapters-box hud-panel font-mono">
+      <div class="chapters-head">
+        <span class="badge badge-pantone-2021">TACTICAL CHAPTERS</span>
+        <span style="font-size: 0.72rem; color: var(--text-dim);">CLICK TO JUMP</span>
+      </div>
+
+      <div class="chapters-list">
+        <div class="chapter-item active" data-time="00:00" data-title="00:00 // INTRODUCTION: 21% OF WORLD OIL AT RISK">
+          <span class="ch-time" style="color: #F5DF4D;">00:00</span>
+          <span class="ch-name">The 21-Million Barrel Chokepoint Problem</span>
+        </div>
+        <div class="chapter-item" data-time="03:15" data-title="03:15 // TYPE 055 VS ARLEIGH BURKE VLS COMPARISON">
+          <span class="ch-time" style="color: #BB2649;">03:15</span>
+          <span class="ch-name">Naval ORBAT: 112 Universal Cells vs Aegis Flight III</span>
+        </div>
+        <div class="chapter-item" data-time="07:40" data-title="07:40 // ISKANDER-M QUASI-BALLISTIC AEROBALLISTICS">
+          <span class="ch-time" style="color: #6667AB;">07:40</span>
+          <span class="ch-name">Iskander & Zircon Flight Profile Math</span>
+        </div>
+        <div class="chapter-item" data-time="11:20" data-title="11:20 // SPACE RECON & SATELLITE ASAT ENVELOPES">
+          <span class="ch-time" style="color: #FFBE98;">11:20</span>
+          <span class="ch-name">Why Modern Fleets Cannot Hide From SAR Orbits</span>
+        </div>
+        <div class="chapter-item" data-time="15:30" data-title="15:30 // WARGAME VERDICT & MACRO COMMODITY SPIKE">
+          <span class="ch-time" style="color: #A47864;">15:30</span>
+          <span class="ch-name">The $140 Oil Scenario & Strategic Conclusions</span>
+        </div>
+      </div>
+
+      <div class="hub-actions">
+        <a href="/memo" class="btn-tactical btn-outline" style="font-size: 0.72rem;">📄 View Classified Transcript</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script is:inline>
+  document.querySelectorAll('.chapter-item').forEach(item => {
+    item.addEventListener('click', () => {
+      document.querySelectorAll('.chapter-item').forEach(i => i.classList.remove('active'));
+      item.classList.add('active');
+      const title = item.getAttribute('data-title');
+      const time = item.getAttribute('data-time');
+      document.getElementById('currentChapterTitle').innerText = title;
+      document.getElementById('playerTimer').innerText = `${time} / 18:45`;
+    });
+  });
+
+  const playBtn = document.getElementById('masterPlayBtn');
+  let isPlaying = false;
+  if (playBtn) {
+    playBtn.addEventListener('click', () => {
+      isPlaying = !isPlaying;
+      playBtn.innerText = isPlaying ? '⏸' : '▶';
+    });
+  }
+</script>
+
+<style>
+  .media-hub-card {
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .hub-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(147, 149, 151, 0.15);
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .hub-title-row {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .hub-heading {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--text-main);
+  }
+
+  .episode-tag {
+    font-size: 0.74rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--primary);
+  }
+
+  .pulse-audio {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--primary);
+    animation: blip-anim 1.2s infinite alternate;
+  }
+
+  .hub-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1.1fr;
+    gap: 1.5rem;
+  }
+
+  .player-box {
+    background: #080B0F;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .screen-preview {
+    height: 240px;
+    background: linear-gradient(135deg, #101620 0%, #080B0F 100%);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .scanline {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 0, 0, 0.3) 2px, rgba(0, 0, 0, 0.3) 4px);
+    pointer-events: none;
+  }
+
+  .screen-hud-overlay {
+    position: absolute;
+    top: 0.75rem;
+    left: 0.75rem;
+    right: 0.75rem;
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.72rem;
+  }
+
+  .rec-badge {
+    color: #BB2649;
+    font-weight: 800;
+  }
+  .stream-title {
+    color: var(--text-main);
+  }
+
+  .screen-center-icon {
+    z-index: 5;
+  }
+
+  .play-circle-btn {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    background: var(--primary);
+    border: none;
+    color: #000000;
+    font-size: 1.4rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    box-shadow: 0 0 15px var(--glow-color);
+  }
+  .play-circle-btn:hover {
+    transform: scale(1.1);
+  }
+
+  .screen-bottom-hud {
+    position: absolute;
+    bottom: 0.65rem;
+    left: 0.75rem;
+    right: 0.75rem;
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.7rem;
+    color: var(--text-dim);
+  }
+
+  .waveform-box {
+    padding: 0.85rem;
+    display: flex;
+    align-items: flex-end;
+    gap: 4px;
+    height: 45px;
+    background: rgba(14, 19, 26, 0.9);
+  }
+
+  .wave-bar {
+    flex: 1;
+    background: rgba(var(--primary-rgb), 0.3);
+    border-radius: 2px;
+  }
+
+  .chapters-box {
+    background: rgba(14, 19, 26, 0.95);
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .chapters-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid rgba(147, 149, 151, 0.15);
+  }
+
+  .chapters-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .chapter-item {
+    background: var(--bg-card);
+    padding: 0.55rem 0.75rem;
+    border-radius: 3px;
+    border: 1px solid rgba(147, 149, 151, 0.12);
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+    cursor: pointer;
+    font-size: 0.74rem;
+    transition: all 0.2s ease;
+  }
+  .chapter-item:hover {
+    border-color: var(--primary);
+  }
+  .chapter-item.active {
+    background: rgba(var(--primary-rgb), 0.1);
+    border-color: var(--primary);
+  }
+
+  .ch-time {
+    font-weight: 800;
+  }
+
+  .ch-name {
+    color: var(--text-main);
+  }
+
+  @media (max-width: 900px) {
+    .hub-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

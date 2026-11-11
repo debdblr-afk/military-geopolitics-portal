@@ -1,0 +1,107 @@
+/* ==========================================================================
+   PANTONE COLOR OF THE YEAR ENGINE (2021 - 2025)
+   - 2021: Ultimate Gray (#939597) & Illuminating (#F5DF4D)
+   - 2022: Very Peri (#6667AB)
+   - 2023: Viva Magenta (#BB2649)
+   - 2024: Peach Fuzz (#FFBE98)
+   - 2025: Mocha Mousse (#A47864)
+   ========================================================================== */
+
+:root {
+  /* Exact Pantone Color of the Year Specifications */
+  --c-pantone-2021-yellow: #F5DF4D; /* Illuminating - Warning / Active Target */
+  --c-pantone-2021-gray: #939597;   /* Ultimate Gray - Armor Steel / Structural Neutral */
+  --c-pantone-2022-peri: #6667AB;   /* Very Peri - Space / EW Spectrum / Deep Sea */
+  --c-pantone-2023-magenta: #BB2649;/* Viva Magenta - Kinetic Strike / Red Force / Range Rings */
+  --c-pantone-2024-peach: #FFBE98;  /* Peach Fuzz - Geopolitical Diplomacy / Chokepoints */
+  --c-pantone-2025-mocha: #A47864;  /* Mocha Mousse - Land Theater / Ground Armor / Logistics */
+
+  /* Dark Tactical Background Baseline (Subdued military carbon) */
+  --bg-deep: #080B0F;
+  --bg-surface: #0E131A;
+  --bg-card: #131923;
+  --bg-card-hover: #19212E;
+  --bg-subtle: #1F2837;
+
+  /* Typography Colors */
+  --text-main: #F2F5F8;
+  --text-muted: #8F9AA7;
+  --text-dim: #5C6775;
+
+  /* Default Master Theme: Pentad Tactical (All 5 Colors Working Synchronously) */
+  --theme-name: "Pentad Tactical (2021-2025 Master)";
+  --primary: var(--c-pantone-2021-yellow);
+  --primary-rgb: 245, 223, 77;
+  --secondary: var(--c-pantone-2022-peri);
+  --accent-strike: var(--c-pantone-2023-magenta);
+  --accent-diplo: var(--c-pantone-2024-peach);
+  --accent-terrain: var(--c-pantone-2025-mocha);
+  --accent-armor: var(--c-pantone-2021-gray);
+  --border-color: rgba(147, 149, 151, 0.25);
+  --glow-color: rgba(245, 223, 77, 0.4);
+}
+
+/* 2021 Dominant Theme: Ultimate Gray & Illuminating */
+[data-pantone-theme="2021"] {
+  --theme-name: "2021: Illuminating & Ultimate Gray";
+  --primary: #F5DF4D;
+  --primary-rgb: 245, 223, 77;
+  --secondary: #939597;
+  --accent-strike: #E6D035;
+  --accent-diplo: #FFFFFF;
+  --accent-terrain: #7A7D80;
+  --border-color: rgba(245, 223, 77, 0.3);
+  --glow-color: rgba(245, 223, 77, 0.5);
+}
+
+/* 2022 Dominant Theme: Very Peri */
+[data-pantone-theme="2022"] {
+  --theme-name: "2022: Very Peri";
+  --primary: #6667AB;
+  --primary-rgb: 102, 103, 171;
+  --secondary: #8E8FC9;
+  --accent-strike: #BB2649;
+  --accent-diplo: #D3D4F5;
+  --accent-terrain: #4A4B82;
+  --border-color: rgba(102, 103, 171, 0.35);
+  --glow-color: rgba(102, 103, 171, 0.5);
+}
+
+/* 2023 Dominant Theme: Viva Magenta */
+[data-pantone-theme="2023"] {
+  --theme-name: "2023: Viva Magenta";
+  --primary: #BB2649;
+  --primary-rgb: 187, 38, 73;
+  --secondary: #E35275;
+  --accent-strike: #F5DF4D;
+  --accent-diplo: #FFB3C2;
+  --accent-terrain: #85132D;
+  --border-color: rgba(187, 38, 73, 0.35);
+  --glow-color: rgba(187, 38, 73, 0.5);
+}
+
+/* 2024 Dominant Theme: Peach Fuzz */
+[data-pantone-theme="2024"] {
+  --theme-name: "2024: Peach Fuzz";
+  --primary: #FFBE98;
+  --primary-rgb: 255, 190, 152;
+  --secondary: #E09C75;
+  --accent-strike: #BB2649;
+  --accent-diplo: #FFE7DB;
+  --accent-terrain: #A47864;
+  --border-color: rgba(255, 190, 152, 0.35);
+  --glow-color: rgba(255, 190, 152, 0.5);
+}
+
+/* 2025 Dominant Theme: Mocha Mousse */
+[data-pantone-theme="2025"] {
+  --theme-name: "2025: Mocha Mousse";
+  --primary: #A47864;
+  --primary-rgb: 164, 120, 100;
+  --secondary: #C89C88;
+  --accent-strike: #F5DF4D;
+  --accent-diplo: #FFBE98;
+  --accent-terrain: #735141;
+  --border-color: rgba(164, 120, 100, 0.35);
+  --glow-color: rgba(164, 120, 100, 0.5);
+}

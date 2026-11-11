@@ -1,0 +1,293 @@
+/* ==========================================================================
+   TACTICAL MILITARY & GEOPOLITICS STYLING SYSTEM
+   ========================================================================== */
+
+@import './pantone.css';
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  background-color: var(--bg-deep);
+  color: var(--text-main);
+  line-height: 1.5;
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: 
+    radial-gradient(circle at 10% 10%, rgba(var(--primary-rgb), 0.04) 0%, transparent 40%),
+    radial-gradient(circle at 90% 90%, rgba(187, 38, 73, 0.03) 0%, transparent 40%),
+    linear-gradient(rgba(8, 11, 15, 0.98), rgba(8, 11, 15, 0.98)),
+    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(147, 149, 151, 0.015) 2px, rgba(147, 149, 151, 0.015) 4px);
+  position: relative;
+}
+
+/* Monospace Tactical Font for Data & Indicators */
+.font-mono,
+code,
+pre,
+.tactical-data,
+.hud-label {
+  font-family: "SF Mono", Monaco, "Cascadia Code", "Roboto Mono", Consolas, "Courier New", monospace;
+  letter-spacing: -0.02em;
+}
+
+/* Grid & Chassis Elements */
+.hud-grid {
+  background-image: 
+    linear-gradient(to right, rgba(147, 149, 151, 0.07) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(147, 149, 151, 0.07) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+.hud-panel {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  position: relative;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hud-panel:hover {
+  border-color: rgba(var(--primary-rgb), 0.45);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+}
+
+/* Tactical Corner Notches */
+.hud-corner {
+  position: relative;
+}
+.hud-corner::before,
+.hud-corner::after {
+  content: '';
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-color: var(--primary);
+  pointer-events: none;
+}
+.hud-corner::before {
+  top: -1px;
+  left: -1px;
+  border-top: 2px solid var(--primary);
+  border-left: 2px solid var(--primary);
+}
+.hud-corner::after {
+  bottom: -1px;
+  right: -1px;
+  border-bottom: 2px solid var(--primary);
+  border-right: 2px solid var(--primary);
+}
+
+/* Tactical Badges & Tags */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.72rem;
+  font-family: "SF Mono", Monaco, monospace;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 0.2rem 0.55rem;
+  border-radius: 2px;
+  letter-spacing: 0.04em;
+}
+
+.badge-pantone-2021 {
+  background: rgba(245, 223, 77, 0.15);
+  color: #F5DF4D;
+  border: 1px solid rgba(245, 223, 77, 0.4);
+}
+.badge-pantone-2022 {
+  background: rgba(102, 103, 171, 0.15);
+  color: #8E8FC9;
+  border: 1px solid rgba(102, 103, 171, 0.4);
+}
+.badge-pantone-2023 {
+  background: rgba(187, 38, 73, 0.15);
+  color: #FF6685;
+  border: 1px solid rgba(187, 38, 73, 0.4);
+}
+.badge-pantone-2024 {
+  background: rgba(255, 190, 152, 0.15);
+  color: #FFBE98;
+  border: 1px solid rgba(255, 190, 152, 0.4);
+}
+.badge-pantone-2025 {
+  background: rgba(164, 120, 100, 0.15);
+  color: #C89C88;
+  border: 1px solid rgba(164, 120, 100, 0.4);
+}
+
+/* Tactical Buttons */
+.btn-tactical {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-family: "SF Mono", Monaco, monospace;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 0.65rem 1.25rem;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  border: none;
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: #080B0F;
+  border: 1px solid var(--primary);
+  box-shadow: 0 0 12px var(--glow-color);
+}
+.btn-primary:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.1);
+  box-shadow: 0 0 18px var(--glow-color);
+}
+
+.btn-outline {
+  background: rgba(19, 25, 35, 0.6);
+  color: var(--text-main);
+  border: 1px solid var(--border-color);
+}
+.btn-outline:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.btn-strike {
+  background: rgba(187, 38, 73, 0.2);
+  color: #FF6685;
+  border: 1px solid rgba(187, 38, 73, 0.6);
+}
+.btn-strike:hover {
+  background: var(--c-pantone-2023-magenta);
+  color: #FFFFFF;
+}
+
+/* Radar Pulse / Live Status Indicator */
+.radar-pulse {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--primary);
+  position: relative;
+}
+.radar-pulse::after {
+  content: '';
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 1px solid var(--primary);
+  animation: pulse-ring 1.8s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+}
+
+@keyframes pulse-ring {
+  0% { transform: scale(0.6); opacity: 1; }
+  100% { transform: scale(2.2); opacity: 0; }
+}
+
+/* Container */
+.container {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 1.25rem;
+}
+
+/* Header & Navigation */
+header.site-header {
+  border-bottom: 1px solid var(--border-color);
+  background: rgba(8, 11, 15, 0.88);
+  backdrop-filter: blur(12px);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+/* Main Content Area */
+main {
+  flex: 1;
+}
+
+/* Section styling */
+section.feature-section {
+  padding: 3rem 0;
+  border-bottom: 1px solid rgba(147, 149, 151, 0.1);
+}
+
+.section-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 1.75rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.section-title {
+  font-size: 1.45rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  color: var(--text-main);
+}
+
+.section-subtitle {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  margin-top: 0.25rem;
+}
+
+/* Quick Tool Card */
+.tool-card {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
+/* Responsive grid */
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.5rem;
+}
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.25rem;
+}
+.grid-4 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1rem;
+}
+
+@media (max-width: 768px) {
+  .section-head {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

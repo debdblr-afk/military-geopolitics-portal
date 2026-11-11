@@ -1,0 +1,46 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CreatorStudioComponent from '../components/CreatorStudio.astro';
+import ContentRepurposer from '../components/ContentRepurposer.astro';
+import CitationDossier from '../components/CitationDossier.astro';
+---
+
+<BaseLayout 
+  title="Creator Scriptwriter & Teleprompter Workspace // ISKANDER"
+  description="Full-screen mirror-mode teleprompter, B-roll marker insertion, words-per-minute pacing estimator, and YouTube SEO repurposer."
+>
+  <div class="container page-container">
+    <div class="page-head font-mono">
+      <span class="badge badge-pantone-2021">VIDEO PRODUCTION SUITE</span>
+      <h1 class="page-title">CREATOR SCRIPTWRITER & TELEPROMPTER</h1>
+      <p class="page-sub text-muted font-sans">
+        Draft your defense analysis, insert tactical B-roll cues (`[ROLL SATELLITE PASS]`, `[MAP ZOOM]`), monitor your estimated video runtime, and present smoothly using the hardware-accelerated teleprompter.
+      </p>
+    </div>
+
+    <CreatorStudioComponent />
+    <ContentRepurposer />
+    <CitationDossier />
+  </div>
+</BaseLayout>
+
+<style>
+  .page-container {
+    padding: 3rem 1.25rem 4rem;
+  }
+  .page-head {
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+  }
+  .page-title {
+    font-size: 2rem;
+    font-weight: 900;
+    margin: 0.5rem 0;
+    color: var(--primary);
+  }
+  .page-sub {
+    font-size: 0.95rem;
+    max-width: 800px;
+  }
+</style>

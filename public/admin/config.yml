@@ -1,0 +1,52 @@
+backend:
+  name: github
+  repo: debdblr-afk/military-geopolitics-portal
+  branch: main
+  base_url: https://iskander.dbdd.in
+
+media_folder: "public/uploads"
+public_folder: "/uploads"
+
+collections:
+  - name: "dispatches"
+    label: "Strategic Dispatches"
+    folder: "src/content/dispatches"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Publish Date", name: "publishDate", widget: "datetime" }
+      - { label: "DEFCON Level", name: "defcon", widget: "select", options: ["DEFCON 1", "DEFCON 2", "DEFCON 3", "DEFCON 4", "DEFCON 5"], default: "DEFCON 3" }
+      - { label: "Theater / Chokepoint", name: "theater", widget: "string" }
+      - { label: "Pantone Accent Color", name: "pantoneColor", widget: "select", options: ["2021 (Illuminating)", "2022 (Very Peri)", "2023 (Viva Magenta)", "2024 (Peach Fuzz)", "2025 (Mocha Mousse)"] }
+      - { label: "Summary Hook", name: "summary", widget: "text" }
+      - { label: "Body", name: "body", widget: "markdown" }
+
+  - name: "weapons"
+    label: "Precision Weapon Systems"
+    folder: "src/content/weapons"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "System Name", name: "name", widget: "string" }
+      - { label: "Country of Origin", name: "origin", widget: "string" }
+      - { label: "Max Operational Range (km)", name: "rangeKm", widget: "number" }
+      - { label: "Top Speed (Mach)", name: "machSpeed", widget: "number" }
+      - { label: "Flight Profile", name: "profile", widget: "string" }
+      - { label: "Guidance & Seekers", name: "guidance", widget: "string" }
+      - { label: "Creator Script Hook", name: "hook", widget: "text" }
+
+  - name: "naval"
+    label: "Naval Warships & Fleet ORBAT"
+    folder: "src/content/naval"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Vessel / Class Name", name: "name", widget: "string" }
+      - { label: "Navy", name: "navy", widget: "string" }
+      - { label: "Category", name: "category", widget: "select", options: ["Aircraft Carrier", "Destroyer", "Cruiser", "Frigate", "Attack Submarine (SSN)", "Ballistic Submarine (SSBN)"] }
+      - { label: "Full Load Displacement", name: "disp", widget: "string" }
+      - { label: "VLS Cell Count", name: "vls", widget: "string" }
+      - { label: "Radar & Sonar", name: "sensors", widget: "string" }
+      - { label: "Propulsion", name: "propulsion", widget: "string" }
+      - { label: "Description & Threat Role", name: "body", widget: "markdown" }

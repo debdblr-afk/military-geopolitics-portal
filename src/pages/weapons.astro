@@ -1,0 +1,44 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import MissileCalculator from '../components/MissileCalculator.astro';
+import ElectronicWarfare from '../components/ElectronicWarfare.astro';
+---
+
+<BaseLayout 
+  title="Precision Weapons & Hypersonic Calculator // ISKANDER"
+  description="Iskander-M trajectory physics, scramjet hypersonics, reaction time windows, and air defense saturation curves."
+>
+  <div class="container page-container">
+    <div class="page-head font-mono">
+      <span class="badge badge-pantone-2023">PRECISION FIRES & KINETICS</span>
+      <h1 class="page-title">HYPERSONIC WEAPONS & STANDOFF MISSILE SYSTEMS</h1>
+      <p class="page-sub text-muted font-sans">
+        Calculate flight times, defender reaction windows, terminal kinetic energy ($E_k$), and single-shot kill probabilities for Iskander-M, Zircon, Kinzhal, DF-21D, and Tomahawk systems.
+      </p>
+    </div>
+
+    <MissileCalculator />
+    <ElectronicWarfare />
+  </div>
+</BaseLayout>
+
+<style>
+  .page-container {
+    padding: 3rem 1.25rem 4rem;
+  }
+  .page-head {
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+  }
+  .page-title {
+    font-size: 2rem;
+    font-weight: 900;
+    margin: 0.5rem 0;
+    color: var(--primary);
+  }
+  .page-sub {
+    font-size: 0.95rem;
+    max-width: 800px;
+  }
+</style>

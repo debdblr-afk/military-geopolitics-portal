@@ -1,0 +1,236 @@
+---
+// MilitaryJargon.astro - Feature 8: Military Jargon & Acronym Vault
+---
+<div class="hud-panel hud-corner jargon-card">
+  <div class="jargon-header">
+    <div>
+      <div class="jargon-title-row">
+        <span class="badge badge-pantone-2025">STRATEGIC LEXICON</span>
+        <h3 class="font-mono jargon-heading">MILITARY JARGON, DOCTRINE & ACRONYM VAULT</h3>
+      </div>
+      <p class="font-mono text-muted" style="font-size: 0.76rem;">Instant search dictionary with 10-second creator-friendly audience analogies.</p>
+    </div>
+
+    <!-- Live Search -->
+    <div class="jargon-search-box font-mono">
+      <input type="text" id="jargonSearchInput" placeholder="Search acronym (e.g., C4ISR, BVR, A2/AD)..." class="jargon-input" />
+    </div>
+  </div>
+
+  <div class="jargon-grid" id="jargonGrid">
+    <!-- Rendered dynamically -->
+  </div>
+</div>
+
+<script is:inline>
+  const terms = [
+    {
+      acronym: "A2/AD",
+      fullName: "Anti-Access / Area Denial",
+      definition: "A defensive doctrine utilizing long-range missiles, radar networks, air defense, and naval mines to prevent an adversary from entering a theater (Anti-Access) or operating freely within it (Area Denial).",
+      hook: "Think of Anti-Access as locking the front door 1,000 miles away with hypersonic missiles, and Area Denial as filling the hallway with naval mines and drone swarms so no one can move.",
+      badge: "#BB2649"
+    },
+    {
+      acronym: "BVR",
+      fullName: "Beyond Visual Range Combat",
+      definition: "Air-to-air engagements fought at distances exceeding 37 km (20 nautical miles), guided by active radar homing missiles (e.g. AIM-120D AMRAAM, Meteor, PL-15).",
+      hook: "Gone are the Top Gun dogfights of the 1980s. In 5th-gen warfare, planes fire missiles at targets 100 miles away that look like single pixels on a radar screen before the enemy pilot even knows he's been locked.",
+      badge: "#F5DF4D"
+    },
+    {
+      acronym: "C4ISR",
+      fullName: "Command, Control, Communications, Computers, Intelligence, Surveillance, Reconnaissance",
+      definition: "The overarching technological network architecture that links satellite imagery, AWACS planes, radar nodes, commanders, and frontline shooters into a unified real-time battle network.",
+      hook: "A missile without C4ISR is just a blind firework. C4ISR is the central nervous system that feeds the coordinates from orbit down to the launch tube in milliseconds.",
+      badge: "#6667AB"
+    },
+    {
+      acronym: "SEAD / DEAD",
+      fullName: "Suppression & Destruction of Enemy Air Defenses",
+      definition: "Tactical air missions aimed at disabling or physically neutralizing adversary radar and surface-to-air missile (SAM) batteries using anti-radiation missiles (AGM-88 HARM) and electronic jamming.",
+      hook: "Before bomber or strike aircraft can do their job, the 'Wild Weasels' fly directly into enemy SAM envelopes, baiting radars to turn on so they can destroy them with HARM missiles.",
+      badge: "#BB2649"
+    },
+    {
+      acronym: "SSBN vs SSN",
+      fullName: "Ballistic Missile Sub vs Fast Attack Submarine",
+      definition: "SSBNs carry nuclear SLBMs and hide in deep ocean bastions to guarantee nuclear second-strike retaliation. SSNs are fast hunter-killer subs designed to stalk enemy ships and hunt SSBNs.",
+      hook: "An SSN is an underwater assassin hunting enemy ships. An SSBN is a submerged city of armageddon carrying enough nuclear warheads to destroy 100 metropolises if deterrence fails.",
+      badge: "#FFBE98"
+    },
+    {
+      acronym: "HGV",
+      fullName: "Hypersonic Glide Vehicle",
+      definition: "A re-entry vehicle launched into the upper atmosphere via a rocket booster that separates and glides at speeds exceeding Mach 5 along unpredictable skipping trajectories.",
+      hook: "Traditional ballistic missiles follow predictable parabolic arcs like a thrown football. An HGV skips across the upper atmosphere like a flat stone across water, making it nearly impossible for interceptor computers to predict its impact point.",
+      badge: "#BB2649"
+    },
+    {
+      acronym: "OODA Loop",
+      fullName: "Observe, Orient, Decide, Act",
+      definition: "A decision-making cycle formulated by military strategist John Boyd. The combatant who can cycle through the loop fastest disorients and defeats the enemy.",
+      hook: "Victory in modern peer conflict isn't decided by who has the biggest gun—it's decided by who can cycle through the OODA loop faster: observing the threat, orienting their forces, deciding, and striking before the enemy finishes reacting.",
+      badge: "#A47864"
+    },
+    {
+      acronym: "VLS",
+      fullName: "Vertical Launching System",
+      definition: "Modular cell banks embedded flush with warship decks that launch anti-air, anti-ship, and land-attack missiles directly upward (e.g. US Mk 41, Chinese Universal CCL).",
+      hook: "Instead of old rotating arm missile launchers that fire one missile at a time, VLS packs dozens of missiles into individual silos, allowing a destroyer to ripple-fire 8 interceptors in 4 seconds.",
+      badge: "#F5DF4D"
+    },
+    {
+      acronym: "CEP",
+      fullName: "Circular Error Probable",
+      definition: "The radius of a circle centered on the target, within which 50% of fired munitions will land. A benchmark of munition precision.",
+      hook: "In WWII, hitting a bridge took 1,000 unguided bombs with a CEP of 1,000 meters. Today, a GPS-guided JDAM or Iskander has a CEP under 5 meters—meaning it can fly through a designated second-story window.",
+      badge: "#6667AB"
+    },
+    {
+      acronym: "CIWS",
+      fullName: "Close-In Weapon System",
+      definition: "A point-defense rapid-fire rotary autocannon or short-range missile launcher providing the final layer of ship defense against incoming anti-ship missiles (e.g. Phalanx, Goalkeeper, Type 1130).",
+      hook: "CIWS is a warship's terrifying last-ditch shield. Firing 10,000 rounds per minute of depleted uranium slugs, it creates a literal wall of lead to shred a supersonic missile 500 meters from the hull.",
+      badge: "#FFBE98"
+    }
+  ];
+
+  function renderJargon(list) {
+    const grid = document.getElementById('jargonGrid');
+    if (!grid) return;
+
+    grid.innerHTML = list.map(item => `
+      <div class="jargon-box hud-panel">
+        <div class="jargon-top font-mono">
+          <span class="jargon-acronym" style="color: ${item.badge};">${item.acronym}</span>
+          <span class="jargon-fullname">${item.fullName}</span>
+        </div>
+        <p class="jargon-def">${item.definition}</p>
+        <div class="jargon-hook-box font-mono">
+          <span class="hook-tag">CREATOR 10-SEC AUDIENCE ANALOGY:</span>
+          <p class="hook-text">"${item.hook}"</p>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  document.getElementById('jargonSearchInput')?.addEventListener('input', (e) => {
+    const q = e.target.value.toLowerCase();
+    const filtered = terms.filter(t => 
+      t.acronym.toLowerCase().includes(q) ||
+      t.fullName.toLowerCase().includes(q) ||
+      t.definition.toLowerCase().includes(q)
+    );
+    renderJargon(filtered);
+  });
+
+  renderJargon(terms);
+</script>
+
+<style>
+  .jargon-card {
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .jargon-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(147, 149, 151, 0.15);
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .jargon-title-row {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .jargon-heading {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--text-main);
+  }
+
+  .jargon-input {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
+    padding: 0.45rem 0.85rem;
+    font-size: 0.78rem;
+    border-radius: 3px;
+    width: 280px;
+    font-family: monospace;
+  }
+  .jargon-input:focus {
+    outline: none;
+    border-color: var(--primary);
+  }
+
+  .jargon-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.25rem;
+  }
+
+  .jargon-box {
+    background: rgba(14, 19, 26, 0.9);
+    padding: 1.15rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 0.75rem;
+  }
+
+  .jargon-top {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .jargon-acronym {
+    font-size: 1.25rem;
+    font-weight: 900;
+    letter-spacing: 0.05em;
+  }
+
+  .jargon-fullname {
+    font-size: 0.8rem;
+    color: var(--text-main);
+    font-weight: 700;
+  }
+
+  .jargon-def {
+    font-size: 0.76rem;
+    color: var(--text-muted);
+    line-height: 1.45;
+  }
+
+  .jargon-hook-box {
+    background: rgba(8, 11, 15, 0.8);
+    border-left: 2px solid var(--primary);
+    padding: 0.6rem 0.75rem;
+    border-radius: 2px;
+  }
+
+  .hook-tag {
+    font-size: 0.64rem;
+    color: var(--primary);
+    font-weight: 800;
+    display: block;
+    margin-bottom: 0.2rem;
+  }
+
+  .hook-text {
+    font-size: 0.74rem;
+    color: var(--text-main);
+    font-style: italic;
+    line-height: 1.35;
+  }
+</style>

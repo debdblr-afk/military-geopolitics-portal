@@ -1,0 +1,352 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import IntelTicker from '../components/IntelTicker.astro';
+import StrategicMap from '../components/StrategicMap.astro';
+import NavalFleetTracker from '../components/NavalFleetTracker.astro';
+import MissileCalculator from '../components/MissileCalculator.astro';
+import SpaceTechTracker from '../components/SpaceTechTracker.astro';
+import ChokepointMonitor from '../components/ChokepointMonitor.astro';
+import ElectronicWarfare from '../components/ElectronicWarfare.astro';
+import CreatorStudio from '../components/CreatorStudio.astro';
+import MilitaryJargon from '../components/MilitaryJargon.astro';
+import InfographicStudio from '../components/InfographicStudio.astro';
+import EscalationMatrix from '../components/EscalationMatrix.astro';
+import ArmsTradeVisualizer from '../components/ArmsTradeVisualizer.astro';
+import CitationDossier from '../components/CitationDossier.astro';
+import CrisisTimeline from '../components/CrisisTimeline.astro';
+import ContentRepurposer from '../components/ContentRepurposer.astro';
+import AudienceDebrief from '../components/AudienceDebrief.astro';
+import PrintableMemo from '../components/PrintableMemo.astro';
+import MediaBriefingHub from '../components/MediaBriefingHub.astro';
+---
+
+<BaseLayout 
+  title="ISKANDER // Strategic Geopolitics & Military Creator Portal"
+  description="The complete tactical intelligence cockpit for creators covering naval warfare, precision weapons, space tech and global geopolitics. Deployed on Cloudflare Pages."
+>
+  <!-- OSINT Breaking Wire Ticker -->
+  <IntelTicker />
+
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="container">
+      <div class="hero-content">
+        <div class="hero-badge-row font-mono">
+          <span class="badge badge-pantone-2021">PANTONE 2021-2025 PALETTE MATRIX</span>
+          <span class="badge badge-pantone-2024">DEPLOYED ON CLOUDFLARE PAGES</span>
+          <span class="badge badge-pantone-2022">DOMAIN: iskander.dbdd.in</span>
+        </div>
+
+        <h1 class="hero-title">
+          THE STRATEGIC COCKPIT FOR <br />
+          <span class="highlight-text">MILITARY & GEOPOLITICS</span> CREATORS
+        </h1>
+
+        <p class="hero-subtitle font-sans">
+          Everything defense analysts, video essayists, and geopolitical creators need: interactive conflict theater maps, Iskander-M trajectory physics, naval ORBAT benchmarks, space satellite trackers, and teleprompter scriptwriting—all styled with the 2021–2025 Pantone Colors of the Year and hosted 100% free on Cloudflare Pages.
+        </p>
+
+        <!-- Quick Jump Links -->
+        <div class="hero-actions font-mono">
+          <a href="#strategic-map" class="btn-tactical btn-primary">🗺️ Theater Map</a>
+          <a href="#missile-engine" class="btn-tactical btn-strike">🚀 Iskander-M Calculator</a>
+          <a href="#naval-orbat" class="btn-tactical btn-outline">⚓ Naval Fleet ORBAT</a>
+          <a href="#creator-studio" class="btn-tactical btn-outline">🎬 Creator Studio</a>
+          <a href="/admin/" target="_blank" class="btn-tactical btn-outline" style="border-color: var(--c-pantone-2022-peri);">📝 Netlify CMS ↗</a>
+        </div>
+
+        <!-- 4 Key Stat Badges -->
+        <div class="hero-kpi-grid font-mono">
+          <div class="kpi-box">
+            <span class="kpi-v" style="color: #F5DF4D;">20 TOOLS</span>
+            <span class="kpi-k">CREATOR FEATURES</span>
+          </div>
+          <div class="kpi-box">
+            <span class="kpi-v" style="color: #BB2649;">5 COLORS</span>
+            <span class="kpi-k">PANTONE (2021-2025)</span>
+          </div>
+          <div class="kpi-box">
+            <span class="kpi-v" style="color: #6667AB;">&lt; 100ms</span>
+            <span class="kpi-k">CLOUDFLARE EDGE LATENCY</span>
+          </div>
+          <div class="kpi-box">
+            <span class="kpi-v" style="color: #FFBE98;">$0.00</span>
+            <span class="kpi-k">TOTAL HOSTING COST</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Tools Dashboard -->
+  <div class="container dashboard-container">
+    
+    <!-- Feature 1: Strategic Map -->
+    <section id="strategic-map" class="feature-section">
+      <div class="section-head">
+        <div>
+          <h2 class="section-title"><span style="color: #FFBE98;">01 //</span> GLOBAL CONFLICT THEATER & CHOKEPOINTS MAP</h2>
+          <p class="section-subtitle">Real-time situational intelligence, naval passage metrics & creator video hooks.</p>
+        </div>
+      </div>
+      <StrategicMap />
+    </section>
+
+    <!-- Feature 3: Iskander-M Missile Calculator -->
+    <section id="missile-engine" class="feature-section">
+      <div class="section-head">
+        <div>
+          <h2 class="section-title"><span style="color: #BB2649;">02 //</span> ISKANDER-M & HYPERSONIC RANGE ENGINE</h2>
+          <p class="section-subtitle">Terminal Mach velocities, defender reaction horizons & air defense interception probability.</p>
+        </div>
+      </div>
+      <MissileCalculator />
+    </section>
+
+    <!-- Feature 2: Naval Fleet & ORBAT Tracker -->
+    <section id="naval-orbat" class="feature-section">
+      <div class="section-head">
+        <div>
+          <h2 class="section-title"><span style="color: #6667AB;">03 //</span> NAVAL WARFARE & FLEET ORBAT TRACKER</h2>
+          <p class="section-subtitle">VLS cell densities, carrier air wings, submarine acoustics & head-to-head ship matchups.</p>
+        </div>
+      </div>
+      <NavalFleetTracker />
+    </section>
+
+    <!-- Feature 4: Space Tech Tracker -->
+    <section id="space-tech" class="feature-section">
+      <div class="section-head">
+        <div>
+          <h2 class="section-title"><span style="color: #8E8FC9;">04 //</span> SPACE WARFARE & ORBITAL RECON TRACKER</h2>
+          <p class="section-subtitle">LEO optical mirrors, SAR radar imaging constellations, SBIRS missile warning & ASAT envelopes.</p>
+        </div>
+      </div>
+      <SpaceTechTracker />
+    </section>
+
+    <!-- Feature 5: Maritime Chokepoints Monitor -->
+    <section id="chokepoints" class="feature-section">
+      <div class="section-head">
+        <div>
+          <h2 class="section-title"><span style="color: #FFBE98;">05 //</span> MARITIME CHOKEPOINTS & BLOCKADE SIMULATOR</h2>
+          <p class="section-subtitle">Daily crude throughput, alternative shipping detour costs & war risk insurance surcharges.</p>
+        </div>
+      </div>
+      <ChokepointMonitor />
+    </section>
+
+    <!-- Feature 6: Electronic Warfare & Radar Cross Section -->
+    <section id="electronic-warfare" class="feature-section">
+      <div class="section-head">
+        <div>
+          <h2 class="section-title"><span style="color: #F5DF4D;">06 //</span> ELECTRONIC WARFARE (EW) & RADAR CROSS SECTION</h2>
+          <p class="section-subtitle">Stealth radar signatures ($m^2$), radar band propagation physics & burn-through ranges.</p>
+        </div>
+      </div>
+      <ElectronicWarfare />
+    </section>
+
+    <!-- Feature 7: Creator Scriptwriter & Teleprompter -->
+    <section id="creator-studio" class="feature-section">
+      <div class="section-head">
+        <div>
+          <h2 class="section-title"><span style="color: var(--primary);">07 //</span> CREATOR SCRIPTWRITER & TELEPROMPTER</h2>
+          <p class="section-subtitle">B-roll cue injection, words-per-minute pacing estimator & mirror-mode teleprompter.</p>
+        </div>
+      </div>
+      <CreatorStudio />
+    </section>
+
+    <!-- Feature 9: Infographic Card Studio -->
+    <section id="infographic-studio" class="feature-section">
+      <div class="section-head">
+        <div>
+          <h2 class="section-title"><span style="color: #BB2649;">08 //</span> THUMBNAIL & STAT COMPARISON CARD STUDIO</h2>
+          <p class="section-subtitle">Exportable side-by-side platform comparison cards with radar polygon graphs.</p>
+        </div>
+      </div>
+      <InfographicStudio />
+    </section>
+
+    <!-- Feature 10: Herman Kahn Escalation Matrix -->
+    <section id="escalation-matrix" class="feature-section">
+      <div class="section-head">
+        <div>
+          <h2 class="section-title"><span style="color: #FFBE98;">09 //</span> HERMAN KAHN 44-RUNG ESCALATION LADDER</h2>
+          <p class="section-subtitle">Crisis escalation modeling from grey-zone coercion up to conventional kinetic war.</p>
+        </div>
+      </div>
+      <EscalationMatrix />
+    </section>
+
+    <!-- Feature 8: Military Jargon Vault -->
+    <section id="jargon-vault" class="feature-section">
+      <div class="section-head">
+        <div>
+          <h2 class="section-title"><span style="color: #A47864;">10 //</span> MILITARY JARGON & ACRONYM VAULT</h2>
+          <p class="section-subtitle">Instant search glossary with 10-second creator analogies for video scripts.</p>
+        </div>
+      </div>
+      <MilitaryJargon />
+    </section>
+
+    <!-- Feature 12 & 13: Arms Trade & Citations -->
+    <div class="grid-2">
+      <section id="arms-trade" class="feature-section" style="border: none; padding-top: 1rem;">
+        <div class="section-head">
+          <h2 class="section-title"><span style="color: #F5DF4D;">11 //</span> SIPRI DEFENSE BUDGETS</h2>
+        </div>
+        <ArmsTradeVisualizer />
+      </section>
+
+      <section id="citations" class="feature-section" style="border: none; padding-top: 1rem;">
+        <div class="section-head">
+          <h2 class="section-title"><span style="color: #6667AB;">12 //</span> THINK-TANK CITATIONS</h2>
+        </div>
+        <CitationDossier />
+      </section>
+    </div>
+
+    <!-- Feature 14 & 15: Crisis Timeline & Content Repurposing -->
+    <div class="grid-2">
+      <section id="crisis-timeline" class="feature-section" style="border: none;">
+        <div class="section-head">
+          <h2 class="section-title"><span style="color: #BB2649;">13 //</span> CRISIS CHRONOLOGY</h2>
+        </div>
+        <CrisisTimeline />
+      </section>
+
+      <section id="repurpose" class="feature-section" style="border: none;">
+        <div class="section-head">
+          <h2 class="section-title"><span style="color: #FFBE98;">14 //</span> YOUTUBE & X REPURPOSER</h2>
+        </div>
+        <ContentRepurposer />
+      </section>
+    </div>
+
+    <!-- Feature 16 & 18: Audience Debrief & Media Hub -->
+    <div class="grid-2">
+      <section id="audience-debrief" class="feature-section" style="border: none;">
+        <div class="section-head">
+          <h2 class="section-title"><span style="color: #00FF88;">15 //</span> AUDIENCE PREDICTIONS</h2>
+        </div>
+        <AudienceDebrief />
+      </section>
+
+      <section id="media-hub" class="feature-section" style="border: none;">
+        <div class="section-head">
+          <h2 class="section-title"><span style="color: #6667AB;">16 //</span> PODCAST & MEDIA HUB</h2>
+        </div>
+        <MediaBriefingHub />
+      </section>
+    </div>
+
+    <!-- Feature 17: Printable Classified Memo -->
+    <section id="intel-memo" class="feature-section">
+      <div class="section-head">
+        <div>
+          <h2 class="section-title"><span style="color: #F5DF4D;">17 //</span> CLASSIFIED INTELLIGENCE MEMORANDUM FORMAT</h2>
+          <p class="section-subtitle">Printable formal executive dispatch view ready for download or Patreon distribution.</p>
+        </div>
+      </div>
+      <PrintableMemo />
+    </section>
+
+  </div>
+</BaseLayout>
+
+<style>
+  .hero-section {
+    padding: 4rem 0 3rem;
+    border-bottom: 1px solid var(--border-color);
+    background: radial-gradient(ellipse at 50% 0%, rgba(var(--primary-rgb), 0.08) 0%, transparent 60%);
+  }
+
+  .hero-content {
+    max-width: 980px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .hero-badge-row {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-title {
+    font-size: 2.8rem;
+    font-weight: 900;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: var(--text-main);
+    margin-bottom: 1.25rem;
+  }
+
+  .highlight-text {
+    color: var(--primary);
+    text-shadow: 0 0 20px var(--glow-color);
+  }
+
+  .hero-subtitle {
+    font-size: 1.05rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin-bottom: 2rem;
+    max-width: 820px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .hero-actions {
+    display: flex;
+    justify-content: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin-bottom: 2.5rem;
+  }
+
+  .hero-kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    max-width: 820px;
+    margin: 0 auto;
+  }
+
+  .kpi-box {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    padding: 0.85rem 0.5rem;
+    border-radius: 3px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .kpi-v {
+    font-size: 1.25rem;
+    font-weight: 900;
+  }
+
+  .kpi-k {
+    font-size: 0.68rem;
+    color: var(--text-dim);
+  }
+
+  .dashboard-container {
+    padding-top: 2rem;
+  }
+
+  @media (max-width: 768px) {
+    .hero-title {
+      font-size: 1.9rem;
+    }
+    .hero-kpi-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+</style>

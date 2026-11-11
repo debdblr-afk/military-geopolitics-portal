@@ -1,0 +1,522 @@
+---
+// NavalFleetTracker.astro - Feature 2: Naval Warfare & Fleet ORBAT Tracker
+---
+<div class="hud-panel hud-corner naval-tracker-card">
+  <div class="tracker-head">
+    <div>
+      <div class="tracker-title-row">
+        <span class="badge badge-pantone-2022">NAVAL ORBAT TRACKER</span>
+        <h3 class="font-mono tracker-heading">GLOBAL WARSHIP & SUBMARINE DOSSIER</h3>
+      </div>
+      <p class="font-mono text-muted" style="font-size: 0.76rem;">Comparative specifications, VLS cell capacities, acoustic profiles & combat sensor suites.</p>
+    </div>
+
+    <!-- Quick Filters -->
+    <div class="filter-row font-mono">
+      <input type="text" id="navalSearch" placeholder="Search class, hull or radar (e.g., Type 055, SPY-6)..." class="naval-search-input" />
+      <select id="navalFilterNavy" class="naval-select">
+        <option value="ALL">All Navies</option>
+        <option value="USN">US Navy (USN)</option>
+        <option value="PLAN">China (PLAN)</option>
+        <option value="VMF">Russian Navy (VMF)</option>
+        <option value="RN">Royal Navy (UK)</option>
+        <option value="IN">Indian Navy</option>
+      </select>
+      <select id="navalFilterType" class="naval-select">
+        <option value="ALL">All Ship Types</option>
+        <option value="Carrier">Aircraft Carrier</option>
+        <option value="Destroyer">Destroyer / Cruiser</option>
+        <option value="SSN">Nuclear Attack Sub (SSN)</option>
+        <option value="SSBN">Ballistic Submarine (SSBN)</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Warship Grid -->
+  <div class="naval-grid" id="navalGrid">
+    <!-- Rendered dynamically or via template -->
+  </div>
+
+  <!-- Comparison Modal/Drawer -->
+  <div class="compare-dock hud-panel" id="compareDock" style="display: none;">
+    <div class="compare-inner font-mono">
+      <div class="compare-titles">
+        <span class="badge badge-pantone-2021">TACTICAL MATCHUP</span>
+        <span id="compareHeadline" style="font-weight: 800; color: var(--primary);">Comparing Ship A vs Ship B</span>
+      </div>
+      <div class="compare-table-wrapper" id="compareContent">
+        <!-- Injected table -->
+      </div>
+      <button class="btn-tactical btn-outline" id="closeCompareBtn" style="font-size: 0.72rem; padding: 0.3rem 0.6rem;">Close Matchup</button>
+    </div>
+  </div>
+</div>
+
+<script is:inline>
+  const vessels = [
+    {
+      id: "type055",
+      name: "Type 055 Renhai-class",
+      navy: "PLAN",
+      type: "Destroyer",
+      disp: "12,000 - 13,000 tonnes",
+      vls: "112 Universal VLS Cells (9m deep)",
+      radar: "Type 346B 'Dragon Eye' Dual-Band AESA (S/X band)",
+      propulsion: "COGAG (4 × QC-280 gas turbines, 150,000 shp)",
+      armament: "YJ-21 Hypersonic Anti-Ship Missiles, HHQ-9B SAM, Yu-8 ASW",
+      notes: "Largest surface combatant built in Asia since WWII. Acts as air defense commander for PLAN carrier strike groups.",
+      color: "#BB2649"
+    },
+    {
+      id: "burkeflight3",
+      name: "Arleigh Burke Flight III (DDG-125)",
+      navy: "USN",
+      type: "Destroyer",
+      disp: "9,700 tonnes",
+      vls: "96 Mk 41 VLS Cells",
+      radar: "AN/SPY-6(V)1 Air & Missile Defense Radar (AMDR S-band) + SPQ-9B",
+      propulsion: "COGAG (4 × General Electric LM2500, 100,000 shp)",
+      armament: "SM-6 Dual I/II, SM-3 Ballistic Interceptor, Tomahawk Block V, ESSM Block 2",
+      notes: "The backbone of US Carrier Strike Group integrated air & missile defense. SPY-6 delivers 30x greater radar sensitivity than Flight IIA.",
+      color: "#F5DF4D"
+    },
+    {
+      id: "fujian",
+      name: "Type 003 Fujian (CV-18)",
+      navy: "PLAN",
+      type: "Carrier",
+      disp: "80,000+ tonnes (Full load)",
+      vls: "Point-defense HQ-10 (4 × 24-cell launchers)",
+      radar: "Type 346B 4-array AESA",
+      propulsion: "Conventional Steam Turbine / Integrated Electric Power (IEPS)",
+      armament: "Air Wing: 40-50 aircraft (J-35 5th-gen stealth fighters, J-15T, KJ-600 AEW&C)",
+      notes: "First non-American carrier equipped with Electromagnetic Aircraft Launch System (EMALS) catapults, enabling heavy fixed-wing airborne early warning sorties.",
+      color: "#BB2649"
+    },
+    {
+      id: "ford",
+      name: "Gerald R. Ford (CVN-78)",
+      navy: "USN",
+      type: "Carrier",
+      disp: "100,000 tonnes (Full load)",
+      vls: "RAM launchers + Evolved SeaSparrow (ESSM)",
+      radar: "AN/SPY-3 Dual Band Radar / Enterprise Air Surveillance Radar (EASR)",
+      propulsion: "2 × Bechtel A1B Nuclear Reactors (unlimited range, 25-yr core)",
+      armament: "Air Wing: 75+ aircraft (F-35C Lightning II, F/A-18E/F Super Hornet, EA-18G Growler, E-2D Hawkeye, MQ-25 Stingray drones)",
+      notes: "Peak global power projection asset. Generates 160-220 sorties/day with EMALS electromagnetic catapults and Advanced Arresting Gear (AAG).",
+      color: "#F5DF4D"
+    },
+    {
+      id: "virginia_v",
+      name: "Virginia-class Block V (SSN)",
+      navy: "USN",
+      type: "SSN",
+      disp: "10,200 tonnes submerged",
+      vls: "40 VLS tubes (Virginia Payload Module adds 28 Tomahawks)",
+      radar: "AN/BQQ-10 Sonar Suite + Submerged ESM arrays",
+      propulsion: "S9G Nuclear Reactor driving pump-jet propulsor",
+      armament: "Tomahawk V, Mk 48 Mod 7 CBASS Torpedoes, CPS Hypersonic Glide Bodies",
+      notes: "Quadruples the strike missile payload of previous attack subs. The Virginia Payload Module effectively replaces the retiring Ohio SSGN cruise missile capacity.",
+      color: "#6667AB"
+    },
+    {
+      id: "yasen_m",
+      name: "Project 885M Yasen-M (Kazan)",
+      navy: "VMF",
+      type: "SSN",
+      disp: "13,800 tonnes submerged",
+      vls: "32 VLS Cells (8 × 4 quad launchers)",
+      radar: "MGK-600 Irtysh-Amfora spherical bow sonar array",
+      propulsion: "KTP-6 Monobloc Nuclear Reactor, low-noise steam turbine",
+      armament: "3M22 Zircon Hypersonic ASCM, Kalibr-PL cruise missiles, Onyx, 533mm torpedoes",
+      notes: "Russia's quietest and most lethal multi-purpose submarine. Capable of striking land targets from standoff range in the North Atlantic with Mach 9 Zircon missiles.",
+      color: "#FFBE98"
+    },
+    {
+      id: "borei_a",
+      name: "Project 955A Borei-A (Knyaz Vladimir)",
+      navy: "VMF",
+      type: "SSBN",
+      disp: "24,000 tonnes submerged",
+      vls: "16 SLBM Silos",
+      radar: "Irtysh-Amfora-Borei bow spherical acoustic sonar",
+      propulsion: "OK-650V nuclear reactor (190 MW) + pump-jet",
+      armament: "16 × RSM-56 Bulava SLBMs (each carrying 6-10 nuclear MIRVs)",
+      notes: "The sea-based leg of Russia's nuclear triad. Equipped with hydrodynamic pump-jet propulsors for extreme acoustic quietness in Arctic bastion patrols.",
+      color: "#FFBE98"
+    },
+    {
+      id: "columbia",
+      name: "Columbia-class (SSBN-826)",
+      navy: "USN",
+      type: "SSBN",
+      disp: "20,810 tonnes submerged",
+      vls: "16 SLBM Silos (Common Missile Compartment)",
+      radar: "Large Aperture Bow (LAB) array + High Frequency sonar",
+      propulsion: "Nuclear reactor with electric-drive propulsion (life-of-ship core)",
+      armament: "16 × Trident II D5LE Nuclear SLBMs",
+      notes: "Next-generation US sea-based strategic deterrent. Electric drive eliminates reduction gears, making it acoustically near-undetectable.",
+      color: "#F5DF4D"
+    },
+    {
+      id: "daring_type45",
+      name: "Type 45 Daring-class",
+      navy: "RN",
+      type: "Destroyer",
+      disp: "8,500 tonnes",
+      vls: "48 Sylver A50 VLS Cells",
+      radar: "SAMPSON Multi-Function Dual-Face Active Phased Array Radar (E/F band)",
+      propulsion: "Integrated Electric Propulsion (WR-21 gas turbines + diesel generators)",
+      armament: "Aster 15 / Aster 30 (Sea Viper system), Harpoon, 4.5 inch Mk 8 naval gun",
+      notes: "Dedicated fleet air defense destroyer. SAMPSON radar tracks 1,000+ air contacts simultaneously at ranges exceeding 400km.",
+      color: "#A47864"
+    },
+    {
+      id: "project15b",
+      name: "Project 15B Visakhapatnam-class",
+      navy: "IN",
+      type: "Destroyer",
+      disp: "7,400 tonnes",
+      vls: "32 Barak-8 / LR-SAM + 16 BrahMos Supersonic Cruise Missiles",
+      radar: "EL/M-2248 MF-STAR Multi-Function AESA S-band radar",
+      propulsion: "COGAG (2 × M36E gas turbine plants)",
+      armament: "BrahMos Mach 3 supersonic cruise missiles (standoff anti-ship/land-attack)",
+      notes: "Indian Navy frontline stealth guided missile destroyer operating in the Indian Ocean Region, heavily optimized for high-speed anti-ship warfare with BrahMos.",
+      color: "#F5DF4D"
+    }
+  ];
+
+  let selectedForCompare = [];
+
+  function renderNavalGrid(list) {
+    const grid = document.getElementById('navalGrid');
+    if (!grid) return;
+    
+    grid.innerHTML = list.map(v => `
+      <div class="vessel-card hud-panel" data-id="${v.id}">
+        <div class="vessel-top">
+          <div class="vessel-tags font-mono">
+            <span class="badge" style="background: rgba(147, 149, 151, 0.15); color: ${v.color}; border: 1px solid ${v.color};">${v.navy}</span>
+            <span class="badge badge-pantone-2021">${v.type}</span>
+          </div>
+          <button class="compare-toggle-btn font-mono" data-id="${v.id}">+ Matchup</button>
+        </div>
+
+        <h4 class="vessel-name">${v.name}</h4>
+
+        <div class="vessel-specs font-mono">
+          <div class="spec-row">
+            <span class="spec-key">DISPLACEMENT:</span>
+            <span class="spec-val">${v.disp}</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-key">MISSILE CELLS:</span>
+            <span class="spec-val" style="color: #F5DF4D;">${v.vls}</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-key">RADAR / SENSORS:</span>
+            <span class="spec-val">${v.radar}</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-key">PROPULSION:</span>
+            <span class="spec-val">${v.propulsion}</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-key">MAIN ARMAMENT:</span>
+            <span class="spec-val" style="color: #FFBE98;">${v.armament}</span>
+          </div>
+        </div>
+
+        <p class="vessel-notes">${v.notes}</p>
+      </div>
+    `).join('');
+
+    // Attach compare buttons
+    document.querySelectorAll('.compare-toggle-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const id = btn.getAttribute('data-id');
+        toggleCompare(id);
+      });
+    });
+  }
+
+  function toggleCompare(id) {
+    const idx = selectedForCompare.indexOf(id);
+    if (idx > -1) {
+      selectedForCompare.splice(idx, 1);
+    } else {
+      if (selectedForCompare.length >= 2) selectedForCompare.shift();
+      selectedForCompare.push(id);
+    }
+
+    updateCompareDock();
+  }
+
+  function updateCompareDock() {
+    const dock = document.getElementById('compareDock');
+    if (selectedForCompare.length === 2) {
+      const v1 = vessels.find(v => v.id === selectedForCompare[0]);
+      const v2 = vessels.find(v => v.id === selectedForCompare[1]);
+      document.getElementById('compareHeadline').innerText = `${v1.name} VS ${v2.name}`;
+      
+      document.getElementById('compareContent').innerHTML = `
+        <table class="compare-table">
+          <thead>
+            <tr>
+              <th>TACTICAL METRIC</th>
+              <th style="color: #F5DF4D;">${v1.name} (${v1.navy})</th>
+              <th style="color: #BB2649;">${v2.name} (${v2.navy})</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Full Displacement</td>
+              <td>${v1.disp}</td>
+              <td>${v2.disp}</td>
+            </tr>
+            <tr>
+              <td>VLS Missile Capacity</td>
+              <td style="color: #F5DF4D; font-weight: bold;">${v1.vls}</td>
+              <td style="color: #BB2649; font-weight: bold;">${v2.vls}</td>
+            </tr>
+            <tr>
+              <td>Primary Radar Suite</td>
+              <td>${v1.radar}</td>
+              <td>${v2.radar}</td>
+            </tr>
+            <tr>
+              <td>Propulsion Architecture</td>
+              <td>${v1.propulsion}</td>
+              <td>${v2.propulsion}</td>
+            </tr>
+            <tr>
+              <td>Primary Weaponry</td>
+              <td>${v1.armament}</td>
+              <td>${v2.armament}</td>
+            </tr>
+          </tbody>
+        </table>
+      `;
+      dock.style.display = 'block';
+    } else {
+      dock.style.display = 'none';
+    }
+  }
+
+  const closeCompare = document.getElementById('closeCompareBtn');
+  if (closeCompare) {
+    closeCompare.addEventListener('click', () => {
+      selectedForCompare = [];
+      updateCompareDock();
+    });
+  }
+
+  // Filter and search
+  function applyNavalFilters() {
+    const query = (document.getElementById('navalSearch')?.value || '').toLowerCase();
+    const navy = document.getElementById('navalFilterNavy')?.value || 'ALL';
+    const type = document.getElementById('navalFilterType')?.value || 'ALL';
+
+    const filtered = vessels.filter(v => {
+      const matchesQuery = v.name.toLowerCase().includes(query) ||
+                           v.radar.toLowerCase().includes(query) ||
+                           v.armament.toLowerCase().includes(query) ||
+                           v.navy.toLowerCase().includes(query);
+      const matchesNavy = navy === 'ALL' || v.navy === navy;
+      const matchesType = type === 'ALL' || v.type === type;
+      return matchesQuery && matchesNavy && matchesType;
+    });
+
+    renderNavalGrid(filtered);
+  }
+
+  document.getElementById('navalSearch')?.addEventListener('input', applyNavalFilters);
+  document.getElementById('navalFilterNavy')?.addEventListener('change', applyNavalFilters);
+  document.getElementById('navalFilterType')?.addEventListener('change', applyNavalFilters);
+
+  renderNavalGrid(vessels);
+</script>
+
+<style>
+  .naval-tracker-card {
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .tracker-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(147, 149, 151, 0.15);
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .tracker-title-row {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .tracker-heading {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--text-main);
+  }
+
+  .filter-row {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .naval-search-input {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
+    padding: 0.45rem 0.85rem;
+    font-size: 0.78rem;
+    border-radius: 3px;
+    width: 250px;
+    font-family: monospace;
+  }
+  .naval-search-input:focus {
+    outline: none;
+    border-color: var(--primary);
+  }
+
+  .naval-select {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
+    padding: 0.45rem 0.75rem;
+    font-size: 0.78rem;
+    border-radius: 3px;
+    font-family: monospace;
+    cursor: pointer;
+  }
+
+  .naval-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.25rem;
+  }
+
+  .vessel-card {
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: rgba(14, 19, 26, 0.9);
+  }
+
+  .vessel-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.65rem;
+  }
+
+  .vessel-tags {
+    display: flex;
+    gap: 0.4rem;
+  }
+
+  .compare-toggle-btn {
+    background: rgba(245, 223, 77, 0.1);
+    border: 1px solid rgba(245, 223, 77, 0.35);
+    color: var(--primary);
+    font-size: 0.68rem;
+    padding: 0.2rem 0.45rem;
+    border-radius: 2px;
+    cursor: pointer;
+  }
+  .compare-toggle-btn:hover {
+    background: var(--primary);
+    color: #080B0F;
+  }
+
+  .vessel-name {
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: var(--text-main);
+    margin-bottom: 0.75rem;
+  }
+
+  .vessel-specs {
+    font-size: 0.72rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    margin-bottom: 0.85rem;
+    background: rgba(8, 11, 15, 0.6);
+    padding: 0.65rem;
+    border-radius: 3px;
+    border: 1px solid rgba(147, 149, 151, 0.1);
+  }
+
+  .spec-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+
+  .spec-key {
+    color: var(--text-dim);
+    flex-shrink: 0;
+  }
+
+  .spec-val {
+    color: var(--text-main);
+    text-align: right;
+  }
+
+  .vessel-notes {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    line-height: 1.4;
+  }
+
+  /* Compare Dock */
+  .compare-dock {
+    margin-top: 1.5rem;
+    padding: 1.25rem;
+    background: #080B0F;
+    border: 1px solid var(--primary);
+    box-shadow: 0 0 15px rgba(var(--primary-rgb), 0.2);
+  }
+
+  .compare-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+
+  .compare-titles {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .compare-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.78rem;
+  }
+
+  .compare-table th,
+  .compare-table td {
+    padding: 0.6rem 0.85rem;
+    border: 1px solid rgba(147, 149, 151, 0.2);
+    text-align: left;
+  }
+
+  .compare-table th {
+    background: rgba(147, 149, 151, 0.1);
+    font-weight: 800;
+  }
+</style>

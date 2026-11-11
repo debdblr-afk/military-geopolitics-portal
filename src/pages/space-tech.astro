@@ -1,0 +1,42 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SpaceTechTracker from '../components/SpaceTechTracker.astro';
+---
+
+<BaseLayout 
+  title="Space Warfare & Orbital Reconnaissance Tracker // ISKANDER"
+  description="LEO optical spy satellites, Synthetic Aperture Radar (SAR), MEO navigation, SBIRS early warning, and ASAT engagement envelopes."
+>
+  <div class="container page-container">
+    <div class="page-head font-mono">
+      <span class="badge badge-pantone-2022">ORBITAL DEFENSE DOMAIN</span>
+      <h1 class="page-title">SPACE WARFARE & RECONNAISSANCE SATELLITES</h1>
+      <p class="page-sub text-muted font-sans">
+        Analyze how Low Earth Orbit optical mirrors and Synthetic Aperture Radar (SAR) constellations provide real-time targeting telemetry to surface and land-based missile batteries.
+      </p>
+    </div>
+
+    <SpaceTechTracker />
+  </div>
+</BaseLayout>
+
+<style>
+  .page-container {
+    padding: 3rem 1.25rem 4rem;
+  }
+  .page-head {
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+  }
+  .page-title {
+    font-size: 2rem;
+    font-weight: 900;
+    margin: 0.5rem 0;
+    color: var(--primary);
+  }
+  .page-sub {
+    font-size: 0.95rem;
+    max-width: 800px;
+  }
+</style>

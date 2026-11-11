@@ -1,0 +1,197 @@
+---
+// PrintableMemo.astro - Feature 17: Printable Classified Intelligence Briefing Memo
+---
+<div class="hud-panel hud-corner memo-card">
+  <div class="memo-header no-print">
+    <div>
+      <div class="memo-title-row">
+        <span class="badge badge-pantone-2021">EXECUTIVE BRIEFING FORMAT</span>
+        <h3 class="font-mono memo-heading">CLASSIFIED INTELLIGENCE MEMO GENERATOR</h3>
+      </div>
+      <p class="font-mono text-muted" style="font-size: 0.76rem;">One-click formatted intelligence brief ready for Print to PDF or subscriber distribution.</p>
+    </div>
+
+    <button class="btn-tactical btn-primary font-mono" id="printMemoBtn">
+      <span>🖨 PRINT TO PDF / EXPORT</span>
+    </button>
+  </div>
+
+  <!-- The Document to Print -->
+  <div class="classified-memo-paper font-mono" id="memoDoc">
+    <div class="memo-watermark">CREATOR EYES ONLY</div>
+
+    <div class="memo-doc-head">
+      <div class="memo-banner-tag">STRATEGIC INTELLIGENCE MEMORANDUM</div>
+      <div class="memo-meta-grid">
+        <div class="m-row"><strong>DATE:</strong> 11 NOVEMBER 2026</div>
+        <div class="m-row"><strong>THEATER:</strong> WESTERN PACIFIC & PERSIAN GULF MARITIME CHOKEPOINTS</div>
+        <div class="m-row"><strong>CLASSIFICATION:</strong> TACTICAL UNCLASSIFIED / CREATOR DOSSIER</div>
+        <div class="m-row"><strong>DISPATCH CODE:</strong> ISKANDER-2026-ALPHA</div>
+      </div>
+    </div>
+
+    <div class="memo-doc-body">
+      <h3 class="doc-sec-title">1. OPERATIONAL SITUATION ASSESSMENT</h3>
+      <p class="doc-para font-sans">
+        Over-the-horizon reconnaissance indicates that surface combatants entering the contested littoral envelope face multi-axis saturation threats. Commercial shipping vulnerability in the Southern Red Sea and Strait of Hormuz has demonstrated that weaponized commercial drones ($20,000) create extreme cost-asymmetry against frontline navies expending $2.2M interceptor munitions per engagement.
+      </p>
+
+      <h3 class="doc-sec-title">2. KINETIC SYSTEMS ENVELOPE (ISKANDER-M & A2/AD)</h3>
+      <p class="doc-para font-sans">
+        Flight telemetry confirms Iskander-M (9M723) quasi-ballistic systems maintain an apogee inside the stratosphere (50 km) while conducting 30G terminal evasive maneuvers. Reaction time for point-defense Aegis SPY-6 or Patriot PAC-3 batteries at 350 km engagement ranges is compressed to less than 45 seconds.
+      </p>
+
+      <h3 class="doc-sec-title">3. STRATEGIC LOGISTICS & ECONOMIC IMPACT</h3>
+      <p class="doc-para font-sans">
+        A sustained 75% naval interdiction at the Strait of Hormuz removes approximately 15.75 million barrels/day of petroleum liquids from spot markets, triggering an instantaneous +$38.50/bbl crude spike and rerouting commercial maritime trade around the Cape of Good Hope (+14 days sailing time, +$1.1M fuel surcharges per vessel).
+      </p>
+
+      <div class="doc-signature-block">
+        <div class="sig-line">
+          <span>AUTHORIZED INTELLIGENCE DISPATCH</span>
+          <span style="color: var(--primary);">PORTAL HOST: ISKANDER.DBDD.IN // CLOUDFLARE PAGES</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script is:inline>
+  document.getElementById('printMemoBtn')?.addEventListener('click', () => {
+    window.print();
+  });
+</script>
+
+<style>
+  .memo-card {
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .memo-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(147, 149, 151, 0.15);
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .memo-title-row {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .memo-heading {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--text-main);
+  }
+
+  .classified-memo-paper {
+    background: #090C10;
+    border: 1px solid var(--border-color);
+    padding: 2.5rem 3rem;
+    border-radius: 4px;
+    position: relative;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+  }
+
+  .memo-watermark {
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-30deg);
+    font-size: 4rem;
+    font-weight: 900;
+    color: rgba(187, 38, 73, 0.05);
+    pointer-events: none;
+    white-space: nowrap;
+    border: 6px dashed rgba(187, 38, 73, 0.08);
+    padding: 1rem 2rem;
+  }
+
+  .memo-doc-head {
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .memo-banner-tag {
+    font-size: 1.1rem;
+    font-weight: 900;
+    letter-spacing: 0.1em;
+    color: var(--primary);
+    margin-bottom: 1rem;
+  }
+
+  .memo-meta-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    font-size: 0.76rem;
+  }
+
+  .doc-sec-title {
+    font-size: 0.88rem;
+    font-weight: 800;
+    color: var(--primary);
+    margin: 1.5rem 0 0.5rem;
+    letter-spacing: 0.05em;
+  }
+
+  .doc-para {
+    font-size: 0.82rem;
+    color: var(--text-main);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+  }
+
+  .doc-signature-block {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(147, 149, 151, 0.2);
+    font-size: 0.72rem;
+  }
+
+  .sig-line {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  @media print {
+    body * {
+      visibility: hidden;
+    }
+    .classified-memo-paper,
+    .classified-memo-paper * {
+      visibility: visible;
+    }
+    .classified-memo-paper {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      background: white !important;
+      color: black !important;
+      border: none;
+      box-shadow: none;
+      padding: 0;
+    }
+    .no-print {
+      display: none !important;
+    }
+    .memo-banner-tag,
+    .doc-sec-title,
+    .sig-line span {
+      color: black !important;
+    }
+    .doc-para {
+      color: #222 !important;
+    }
+  }
+</style>

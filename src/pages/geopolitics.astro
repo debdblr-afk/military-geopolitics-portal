@@ -1,0 +1,46 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import StrategicMap from '../components/StrategicMap.astro';
+import ChokepointMonitor from '../components/ChokepointMonitor.astro';
+import EscalationMatrix from '../components/EscalationMatrix.astro';
+---
+
+<BaseLayout 
+  title="Geopolitics, Chokepoints & Escalation Matrix // ISKANDER"
+  description="Strategic maritime passages, crude diversion costs, Herman Kahn 44-rung crisis ladder, and interactive conflict projections."
+>
+  <div class="container page-container">
+    <div class="page-head font-mono">
+      <span class="badge badge-pantone-2024">GEOPOLITICAL THEATER</span>
+      <h1 class="page-title">MARITIME CHOKEPOINTS & CRISIS ESCALATION</h1>
+      <p class="page-sub text-muted font-sans">
+        Explore the 8 critical global maritime chokepoints, model naval blockade economic shocks, and track where global tensions sit along the Herman Kahn escalation ladder.
+      </p>
+    </div>
+
+    <StrategicMap />
+    <ChokepointMonitor />
+    <EscalationMatrix />
+  </div>
+</BaseLayout>
+
+<style>
+  .page-container {
+    padding: 3rem 1.25rem 4rem;
+  }
+  .page-head {
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+  }
+  .page-title {
+    font-size: 2rem;
+    font-weight: 900;
+    margin: 0.5rem 0;
+    color: var(--primary);
+  }
+  .page-sub {
+    font-size: 0.95rem;
+    max-width: 800px;
+  }
+</style>

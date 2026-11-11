@@ -1,0 +1,239 @@
+---
+// CrisisTimeline.astro - Feature 14: Incident & Crisis Timeline Builder
+---
+<div class="hud-panel hud-corner timeline-card">
+  <div class="tl-header">
+    <div>
+      <div class="tl-title-row">
+        <span class="badge badge-pantone-2021">CHRONOLOGY ENGINE</span>
+        <h3 class="font-mono tl-heading">CRISIS ESCALATION TIMELINE BUILDER</h3>
+      </div>
+      <p class="font-mono text-muted" style="font-size: 0.76rem;">Hour-by-hour operational sequence builder for video essays, skirmishes & diplomatic crises.</p>
+    </div>
+
+    <!-- Timeline Preset Selector -->
+    <div class="tl-preset-group font-mono">
+      <span class="hud-label">SELECT CRISIS CASE:</span>
+      <select id="timelineSelect" class="tactical-select">
+        <option value="redsea_72h">72-Hour Red Sea Chokepoint Crisis (2024)</option>
+        <option value="cuban_crisis">Cuban Missile Crisis Naval Quarantine (1962)</option>
+        <option value="falklands">Falklands Black Buck Long-Range Vulcan Raids (1982)</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="timeline-body font-mono" id="timelineEntries">
+    <!-- Entries injected via script -->
+  </div>
+</div>
+
+<script is:inline>
+  const timelineData = {
+    redsea_72h: [
+      {
+        time: "T+00:00 (04:12 UTC)",
+        badge: "RADAR DETECTION",
+        badgeColor: "#BB2649",
+        title: "Coastal Radar Lock Detected in Southern Red Sea",
+        desc: "US Fifth Fleet Aegis destroyer detects active X-band search radar illumination targeting commercial container ship MSC Palatium III. Destroyer shifts into Integrated Air & Missile Defense (IAMD) condition 1."
+      },
+      {
+        time: "T+00:18 (04:30 UTC)",
+        badge: "KINETIC LAUNCH",
+        badgeColor: "#BB2649",
+        title: "Salvo of 3 Anti-Ship Ballistic Missiles (ASBMs) Fired",
+        desc: "Thermal bloom confirmed by SBIRS GEO satellite. Three solid-propellant ballistic missiles ascend along high-angle trajectories out of mountainous coastal terrain."
+      },
+      {
+        time: "T+00:23 (04:35 UTC)",
+        badge: "INTERCEPTION",
+        badgeColor: "#F5DF4D",
+        title: "SM-2 Block IIIC & SM-6 Engagement",
+        desc: "Arleigh Burke destroyer fires two Standard Missile interceptors. Terminal hit-to-kill interception occurs at 22km altitude. Debris falls harmlessly into international waters."
+      },
+      {
+        time: "T+14:00 (18:00 UTC)",
+        badge: "MARKET REACTION",
+        badgeColor: "#FFBE98",
+        title: "Major Shipping Liners Announce Cape Divert",
+        desc: "Maersk, Hapag-Lloyd, and CMA CGM issue global fleet notices redirecting all Asia-Europe voyages around the Cape of Good Hope, adding 14 sailing days and $1.2M fuel surcharges."
+      },
+      {
+        time: "T+72:00 (04:00 UTC)",
+        badge: "RETALIATION",
+        badgeColor: "#6667AB",
+        title: "Operation Prosperity Guardian Precision Strike Package",
+        desc: "Tomahawk cruise missiles launched from US Navy cruiser and RAF Typhoon strike aircraft destroy 16 coastal drone assembly hubs and underground munitions caverns."
+      }
+    ],
+    cuban_crisis: [
+      {
+        time: "DAY 1 (OCT 14, 1962)",
+        badge: "IMINT CONFIRMATION",
+        badgeColor: "#6667AB",
+        title: "U-2 Spy Plane Photographs R-12 MRBM Silos",
+        desc: "Major Richard Heyser flies high-altitude reconnaissance mission over San Cristóbal, Cuba, exposing Soviet medium-range nuclear ballistic missile launch pads."
+      },
+      {
+        time: "DAY 8 (OCT 22, 1962)",
+        badge: "SPEECH & DEFCON 3",
+        badgeColor: "#F5DF4D",
+        title: "President Kennedy Announces Naval Quarantine",
+        desc: "US Navy establishes a 500-nautical-mile naval blockade line around Cuba. Strategic Air Command shifts to DEFCON 2 (only time in history)."
+      },
+      {
+        time: "DAY 13 (OCT 27, 1962)",
+        badge: "CRITICAL PEAK",
+        badgeColor: "#BB2649",
+        title: "Black Saturday & Depth-Charging Submarine B-59",
+        desc: "US destroyer depth charges Soviet submarine B-59. Captain Valentin Savitsky orders nuclear torpedo armed, but Flotilla Chief of Staff Vasili Arkhipov refuses authorization, preventing global nuclear exchange."
+      }
+    ],
+    falklands: [
+      {
+        time: "APRIL 30, 1982",
+        badge: "AIR DISPERSAL",
+        badgeColor: "#A47864",
+        title: "Operation Black Buck 1 Staging from Ascension Island",
+        desc: "RAF Vulcan bomber takes off on the longest combat bombing mission in aviation history: a 6,600 nautical mile roundtrip requiring 11 Victor aerial refuelling tankers."
+      },
+      {
+        time: "MAY 1, 1982 (04:46 AM)",
+        badge: "RUNWAY STRIKE",
+        badgeColor: "#F5DF4D",
+        title: "Port Stanley Runway Cratered with 21 × 1,000lb Bombs",
+        desc: "Single 1,000lb bomb directly craters the runway center, preventing Argentine Mirage III fighters from basing on the islands and forcing them to fly from mainland Argentina at extreme range limits."
+      }
+    ]
+  };
+
+  function renderTimeline(key) {
+    const list = timelineData[key] || timelineData.redsea_72h;
+    const container = document.getElementById('timelineEntries');
+    if (!container) return;
+
+    container.innerHTML = list.map((item, idx) => `
+      <div class="tl-item">
+        <div class="tl-marker-col">
+          <div class="tl-node-dot" style="border-color: ${item.badgeColor}; background: ${item.badgeColor};"></div>
+          ${idx < list.length - 1 ? '<div class="tl-stem"></div>' : ''}
+        </div>
+        <div class="tl-content hud-panel">
+          <div class="tl-meta-row">
+            <span class="tl-time">${item.time}</span>
+            <span class="badge" style="background: rgba(147, 149, 151, 0.15); color: ${item.badgeColor}; border: 1px solid ${item.badgeColor};">${item.badge}</span>
+          </div>
+          <h4 class="tl-item-title">${item.title}</h4>
+          <p class="tl-item-desc font-sans">${item.desc}</p>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  document.getElementById('timelineSelect')?.addEventListener('change', (e) => {
+    renderTimeline(e.target.value);
+  });
+
+  renderTimeline('redsea_72h');
+</script>
+
+<style>
+  .timeline-card {
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .tl-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(147, 149, 151, 0.15);
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .tl-title-row {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .tl-heading {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--text-main);
+  }
+
+  .timeline-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    padding-left: 0.5rem;
+  }
+
+  .tl-item {
+    display: flex;
+    gap: 1.25rem;
+  }
+
+  .tl-marker-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 20px;
+    flex-shrink: 0;
+  }
+
+  .tl-node-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-top: 0.85rem;
+    box-shadow: 0 0 8px currentColor;
+    flex-shrink: 0;
+  }
+
+  .tl-stem {
+    width: 2px;
+    flex: 1;
+    background: rgba(147, 149, 151, 0.2);
+    margin: 0.35rem 0;
+  }
+
+  .tl-content {
+    background: rgba(14, 19, 26, 0.95);
+    padding: 1rem 1.25rem;
+    border-radius: 3px;
+    margin-bottom: 1.25rem;
+    flex: 1;
+  }
+
+  .tl-meta-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.35rem;
+  }
+
+  .tl-time {
+    font-size: 0.72rem;
+    color: var(--primary);
+    font-weight: 700;
+  }
+
+  .tl-item-title {
+    font-size: 0.92rem;
+    font-weight: 800;
+    color: var(--text-main);
+    margin-bottom: 0.35rem;
+  }
+
+  .tl-item-desc {
+    font-size: 0.76rem;
+    color: var(--text-muted);
+    line-height: 1.45;
+  }
+</style>

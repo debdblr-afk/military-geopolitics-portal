@@ -1,0 +1,250 @@
+---
+// ContentRepurposer.astro - Feature 15: Cross-Platform Repurposing & YouTube SEO Studio
+---
+<div class="hud-panel hud-corner repurpose-card">
+  <div class="rp-header">
+    <div>
+      <div class="rp-title-row">
+        <span class="badge badge-pantone-2024">MULTI-PLATFORM SYNDICATION</span>
+        <h3 class="font-mono rp-heading">CROSS-PLATFORM CONTENT REPURPOSING & YOUTUBE SEO</h3>
+      </div>
+      <p class="font-mono text-muted" style="font-size: 0.76rem;">Transform a single intelligence dispatch into YouTube SEO titles, clickable chapter markers & viral X/Twitter threads.</p>
+    </div>
+
+    <!-- Platform Tabs -->
+    <div class="platform-tabs font-mono">
+      <button class="plat-tab active" data-tab="yt_seo">YouTube SEO & Chapters</button>
+      <button class="plat-tab" data-tab="x_thread">5-Post X / Twitter Thread</button>
+      <button class="plat-tab" data-tab="substack">Substack Executive Brief</button>
+    </div>
+  </div>
+
+  <div class="rp-grid">
+    <!-- Repurposed Output Panels -->
+    <!-- Tab 1: YouTube SEO -->
+    <div class="tab-panel font-mono" id="panel_yt_seo">
+      <div class="seo-titles-box">
+        <span class="box-title">VIRAL YOUTUBE VIDEO TITLES (CTR OPTIMIZED):</span>
+        <div class="title-options">
+          <div class="title-row">
+            <span class="num">A</span>
+            <span class="text">Why The US Navy Can't Protect This 20-Mile Chokepoint</span>
+          </div>
+          <div class="title-row">
+            <span class="num">B</span>
+            <span class="text">How Mach 6 Iskander Missiles Broken Modern Air Defense</span>
+          </div>
+          <div class="title-row">
+            <span class="num">C</span>
+            <span class="text">The Secret Wargame That Shocked The Pentagon</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="seo-desc-box">
+        <div class="box-head">
+          <span class="box-title">YOUTUBE DESCRIPTION & CHAPTER MARKERS:</span>
+          <button class="btn-tactical btn-outline copy-btn" data-target="ytDescText">📋 Copy Chapters</button>
+        </div>
+        <pre class="pre-block" id="ytDescText">
+Why modern naval warfare and precision standoff missiles have rewritten global geopolitics. 
+
+In this episode, we break down:
+00:00 The 21-Million Barrel Dilemma
+01:45 Interactive Map: The 8 Global Chokepoints
+04:12 Hypersonic Flight Profiles: Iskander-M vs Patriot PAC-3
+07:30 Herman Kahn Escalation Ladder: Are We At Rung 18?
+10:15 The Economic Aftermath: Oil Spikes & Rerouting Costs
+13:20 Final Strategic Verdict
+
+🔗 Interactive Map & Missile Calculator: https://iskander.dbdd.in/
+📚 Full Sources & Citations: CSIS Missile Defense, IISS Military Balance 2024.
+#Military #Geopolitics #NavalWarfare #Defense #Iskander
+        </pre>
+      </div>
+    </div>
+
+    <!-- Tab 2: X / Twitter Thread -->
+    <div class="tab-panel font-mono" id="panel_x_thread" style="display: none;">
+      <div class="x-thread-box">
+        <div class="box-head">
+          <span class="box-title">5-TWEET STRATEGIC THREAD FORMAT:</span>
+          <button class="btn-tactical btn-outline copy-btn" data-target="xThreadText">📋 Copy Thread</button>
+        </div>
+        <pre class="pre-block" id="xThreadText">
+1/5 🧵 21% of the world's petroleum liquids flow through a single 21-nautical-mile strait. Here is why modern anti-ship ballistic missiles make defending it almost impossible for Western navies: 👇
+
+2/5 Traditional naval warfare assumed carriers could operate with impunity. But at Mach 10, an ASBM launched from coastal mountains reaches target altitude in under 11 minutes. Aegis SPY-6 radars get less than 45 seconds of terminal cueing window.
+
+3/5 Even worse? Rerouting around the Cape of Good Hope adds +14 days of transit and over $1,200,000 in bunker fuel per container ship roundtrip. Global inflation responds within 48 hours.
+
+4/5 According to Herman Kahn's classic crisis escalation matrix, localized strikes against commercial shipping represent Rung 18: Limited Kinetic Engagement. The next step? Direct inland strikes against hardened C4ISR command bunkers.
+
+5/5 We built an interactive simulator to test missile flight times, radar cross-sections, and chokepoint diversion costs yourself:
+👉 Explore the portal: https://iskander.dbdd.in/
+        </pre>
+      </div>
+    </div>
+
+    <!-- Tab 3: Substack Executive Brief -->
+    <div class="tab-panel font-mono" id="panel_substack" style="display: none;">
+      <div class="substack-box">
+        <div class="box-head">
+          <span class="box-title">SUBSTACK EXECUTIVE INTELLIGENCE MEMO:</span>
+          <button class="btn-tactical btn-outline copy-btn" data-target="substackText">📋 Copy Newsletter</button>
+        </div>
+        <pre class="pre-block" id="substackText">
+# Strategic Intelligence Dispatch: The Precision Fires Era
+
+**EXECUTIVE SUMMARY:**
+Recent engagements in contested maritime straits confirm the dawn of a new naval doctrine: uncrewed surface vessels (USVs) and quasi-ballistic anti-ship missiles have achieved cost-asymmetry against multi-billion dollar capital ships.
+
+### Key Operational Metrics:
+- **Chokepoint Vulnerability**: Commercial traffic diversion rate currently at 71.4%.
+- **Interceptor Economics**: $2.2M Standard Missile (SM-2) expendables deployed against $20,000 loitering munitions.
+- **Strategic Recommendation**: Forward-deploy directed-energy (laser/HEL) and microwave counter-swarm CIWS systems to theater surface groups.
+
+*Published via ISKANDER Portal on Cloudflare Pages: https://iskander.dbdd.in/*
+        </pre>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script is:inline>
+  document.querySelectorAll('.plat-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.plat-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      const targetId = 'panel_' + tab.getAttribute('data-tab');
+      
+      document.querySelectorAll('.tab-panel').forEach(p => {
+        p.style.display = p.id === targetId ? 'block' : 'none';
+      });
+    });
+  });
+
+  document.querySelectorAll('.copy-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const targetId = btn.getAttribute('data-target');
+      const text = document.getElementById(targetId)?.innerText;
+      if (text) {
+        navigator.clipboard.writeText(text);
+        const original = btn.innerText;
+        btn.innerText = '✓ Copied!';
+        setTimeout(() => btn.innerText = original, 2000);
+      }
+    });
+  });
+</script>
+
+<style>
+  .repurpose-card {
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .rp-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(147, 149, 151, 0.15);
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .rp-title-row {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .rp-heading {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--text-main);
+  }
+
+  .platform-tabs {
+    display: flex;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+  }
+
+  .plat-tab {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    color: var(--text-muted);
+    font-size: 0.72rem;
+    padding: 0.35rem 0.75rem;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+  .plat-tab.active {
+    background: var(--bg-card-hover);
+    border-color: var(--primary);
+    color: var(--primary);
+  }
+
+  .tab-panel {
+    background: rgba(14, 19, 26, 0.95);
+    padding: 1.25rem;
+    border-radius: 3px;
+    border: 1px solid rgba(147, 149, 151, 0.15);
+  }
+
+  .seo-titles-box {
+    margin-bottom: 1.25rem;
+  }
+
+  .box-title {
+    font-size: 0.72rem;
+    color: var(--primary);
+    font-weight: 800;
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  .title-options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .title-row {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    background: var(--bg-card);
+    padding: 0.5rem 0.75rem;
+    border-radius: 3px;
+    border: 1px solid rgba(147, 149, 151, 0.12);
+    font-size: 0.78rem;
+  }
+
+  .title-row .num {
+    color: var(--primary);
+    font-weight: 800;
+  }
+
+  .box-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+  }
+
+  .pre-block {
+    background: #080B0F;
+    border: 1px solid rgba(147, 149, 151, 0.15);
+    padding: 1rem;
+    font-size: 0.74rem;
+    line-height: 1.5;
+    color: var(--text-main);
+    white-space: pre-wrap;
+    border-radius: 3px;
+  }
+</style>

@@ -1,0 +1,493 @@
+---
+// CreatorStudio.astro - Feature 7: Creator Scriptwriter & Fullscreen Teleprompter
+---
+<div class="hud-panel hud-corner creator-studio-card">
+  <div class="studio-header">
+    <div>
+      <div class="studio-title-row">
+        <span class="badge badge-pantone-2021">CREATOR PRODUCTION SUITE</span>
+        <h3 class="font-mono studio-heading">SCRIPTWRITER & TACTICAL TELEPROMPTER</h3>
+      </div>
+      <p class="font-mono text-muted" style="font-size: 0.76rem;">B-roll cue insertion, automated words-per-minute pacing estimator & mirror-mode teleprompter.</p>
+    </div>
+
+    <!-- Live Teleprompter Trigger Button -->
+    <button class="btn-tactical btn-primary font-mono" id="launchTeleprompterBtn">
+      <span>▶ LAUNCH TELEPROMPTER</span>
+    </button>
+  </div>
+
+  <div class="studio-grid">
+    <!-- Script Editor Column -->
+    <div class="editor-column hud-panel">
+      <!-- Toolbar & B-Roll Insert Buttons -->
+      <div class="editor-toolbar font-mono">
+        <span class="toolbar-label">INSERT B-ROLL CUES:</span>
+        <button class="cue-btn" data-cue="[MAP ZOOM: HORMUZ]">+ Map Chokepoint</button>
+        <button class="cue-btn" data-cue="[ROLL SATELLITE PASS]">+ Satellite Pass</button>
+        <button class="cue-btn" data-cue="[SPEC OVERLAY: ISKANDER-M]">+ Missile Spec</button>
+        <button class="cue-btn" data-cue="[GRAPH: OIL SPIKE]">+ Oil Graph</button>
+        <button class="cue-btn" data-cue="[SFX: SONAR PING]">+ Sonar SFX</button>
+      </div>
+
+      <!-- Editor Textarea -->
+      <textarea id="scriptTextarea" class="script-textarea font-mono" placeholder="Write your geopolitical or military video essay script here...
+
+[MAP ZOOM: TAIWAN STRAIT]
+Today, we are analyzing the exact operational timeline of a naval blockade in the First Island Chain..."></textarea>
+
+      <!-- Bottom Pacing Bar -->
+      <div class="editor-footer font-mono">
+        <div class="stat-pills">
+          <span class="pill"><strong id="wordCount">0</strong> WORDS</span>
+          <span class="pill"><strong id="charCount">0</strong> CHARS</span>
+          <span class="pill" style="color: var(--primary);"><strong id="runtimeEst">0m 00s</strong> EST. RUNTIME</span>
+        </div>
+        <div class="wpm-control">
+          <span>PACING:</span>
+          <select id="wpmSelect" class="wpm-select">
+            <option value="130">130 WPM (Documentary)</option>
+            <option value="150" selected>150 WPM (Standard Essay)</option>
+            <option value="175">175 WPM (Fast Paced)</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Creator Quick Reference & Template Drawer -->
+    <div class="reference-column hud-panel">
+      <div class="ref-head font-mono">
+        <span class="badge badge-pantone-2023">ESSAY STRUCTURE</span>
+        <span style="font-size: 0.72rem; color: var(--text-dim);">PROVEN 4-PART GEOPOLITICS RETENTION FORMULA</span>
+      </div>
+
+      <div class="formula-steps font-mono">
+        <div class="step-card">
+          <span class="step-num" style="color: #BB2649;">01. THE HOOK (0:00 - 1:15)</span>
+          <p class="step-desc">Establish immediate strategic stakes. Cite the specific chokepoint or missile flight time that threatens global equilibrium.</p>
+        </div>
+        <div class="step-card">
+          <span class="step-num" style="color: #FFBE98;">02. THE DOCTRINE & SPECS (1:15 - 5:30)</span>
+          <p class="step-desc">Break down the hardware (VLS cell counts, radar cross section, hypersonic kinetics). Show the numbers nobody else noticed.</p>
+        </div>
+        <div class="step-card">
+          <span class="step-num" style="color: #6667AB;">03. THE WARGAME SCENARIO (5:30 - 10:00)</span>
+          <p class="step-desc">Walk through the Herman Kahn escalation ladder. If Country A blockades Chokepoint B, what is the exact kinetic response?</p>
+        </div>
+        <div class="step-card">
+          <span class="step-num" style="color: #F5DF4D;">04. THE VERDICT & MACRO IMPACT (10:00 - 13:00)</span>
+          <p class="step-desc">Connect the military clash to commodity prices, semiconductor supply chains, or the reshaped world order.</p>
+        </div>
+      </div>
+
+      <button class="btn-tactical btn-outline font-mono full-w" id="loadTemplateBtn" style="font-size: 0.76rem;">
+        Load 'Iskander Hypersonic Escalation' Starter Script
+      </button>
+    </div>
+  </div>
+
+  <!-- FULLSCREEN TELEPROMPTER OVERLAY -->
+  <div class="teleprompter-overlay" id="teleprompterOverlay" style="display: none;">
+    <div class="teleprompter-hud font-mono">
+      <div class="tp-controls">
+        <button id="tpPlayPauseBtn" class="tp-btn">▶ PLAY (SPACE)</button>
+        <button id="tpResetBtn" class="tp-btn">⏮ TOP</button>
+        <div class="tp-speed">
+          <span>SPEED:</span>
+          <input type="range" id="tpSpeedSlider" min="1" max="10" value="3" />
+          <span id="tpSpeedVal">3x</span>
+        </div>
+        <button id="tpMirrorBtn" class="tp-btn">🪞 MIRROR MODE</button>
+        <button id="tpCloseBtn" class="tp-btn tp-close">✕ EXIT</button>
+      </div>
+      <div class="tp-marker-line"></div>
+    </div>
+
+    <div class="teleprompter-scroll-container" id="tpScrollContainer">
+      <div class="teleprompter-text font-mono" id="tpText">
+        <!-- Script text injected here -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<script is:inline>
+  const sampleScript = `[MAP ZOOM: TAIWAN STRAIT]
+[SFX: SONAR PING]
+For forty years, naval strategists believed that an aircraft carrier strike group was invulnerable to anything short of a nuclear attack.
+
+[ROLL SATELLITE PASS: YAOGAN-33 SAR]
+Today, that certainty has evaporated. 
+Floating 600 kilometers in Low Earth Orbit, Synthetic Aperture Radar satellites are tracking carrier surface wakes in real-time, feeding high-precision fire-control coordinates down to mobile rocket batteries on the mainland.
+
+[SPEC OVERLAY: ISKANDER-M / DF-21D]
+At Mach 10, a maneuverable re-entry vehicle covers 1,500 kilometers in under eleven minutes. When it enters terminal dive mode, the defending warship's Aegis SPY-6 radar has fewer than 45 seconds to cue an SM-6 interceptor.
+
+[GRAPH: CHOKEPOINT OIL SPIKE]
+And if just one commercial vessel is hit in the strait, maritime container insurance rates skyrocket by 300 percent overnight. 
+
+In this video, we're dissecting the exact mechanics of modern precision-strike doctrine...`;
+
+  const textarea = document.getElementById('scriptTextarea');
+
+  // Load from local storage or set sample
+  const savedScript = localStorage.getItem('iskander_creator_script');
+  if (savedScript) {
+    textarea.value = savedScript;
+  } else {
+    textarea.value = sampleScript;
+  }
+
+  function updateScriptStats() {
+    const text = textarea.value;
+    localStorage.setItem('iskander_creator_script', text);
+
+    const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+    const chars = text.length;
+    document.getElementById('wordCount').innerText = words;
+    document.getElementById('charCount').innerText = chars;
+
+    const wpm = parseInt(document.getElementById('wpmSelect').value, 10);
+    const totalSeconds = Math.round((words / wpm) * 60);
+    const mins = Math.floor(totalSeconds / 60);
+    const secs = totalSeconds % 60;
+    document.getElementById('runtimeEst').innerText = `${mins}m ${secs < 10 ? '0' : ''}${secs}s`;
+  }
+
+  textarea.addEventListener('input', updateScriptStats);
+  document.getElementById('wpmSelect')?.addEventListener('change', updateScriptStats);
+  updateScriptStats();
+
+  // B-Roll insert buttons
+  document.querySelectorAll('.cue-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const cue = '\n' + btn.getAttribute('data-cue') + '\n';
+      const pos = textarea.selectionStart;
+      textarea.value = textarea.value.substring(0, pos) + cue + textarea.value.substring(pos);
+      updateScriptStats();
+      textarea.focus();
+    });
+  });
+
+  // Load template
+  document.getElementById('loadTemplateBtn')?.addEventListener('click', () => {
+    textarea.value = sampleScript;
+    updateScriptStats();
+  });
+
+  // Teleprompter Logic
+  const overlay = document.getElementById('teleprompterOverlay');
+  const scrollContainer = document.getElementById('tpScrollContainer');
+  const tpText = document.getElementById('tpText');
+  let isScrolling = false;
+  let scrollSpeed = 3;
+  let scrollAnimId = null;
+
+  document.getElementById('launchTeleprompterBtn')?.addEventListener('click', () => {
+    tpText.innerText = textarea.value || "Please write a script first!";
+    overlay.style.display = 'block';
+    isScrolling = false;
+    document.getElementById('tpPlayPauseBtn').innerText = '▶ PLAY (SPACE)';
+  });
+
+  document.getElementById('tpCloseBtn')?.addEventListener('click', () => {
+    overlay.style.display = 'none';
+    isScrolling = false;
+    cancelAnimationFrame(scrollAnimId);
+  });
+
+  document.getElementById('tpResetBtn')?.addEventListener('click', () => {
+    scrollContainer.scrollTop = 0;
+  });
+
+  function togglePlay() {
+    isScrolling = !isScrolling;
+    document.getElementById('tpPlayPauseBtn').innerText = isScrolling ? '⏸ PAUSE (SPACE)' : '▶ PLAY (SPACE)';
+    if (isScrolling) {
+      stepScroll();
+    } else {
+      cancelAnimationFrame(scrollAnimId);
+    }
+  }
+
+  document.getElementById('tpPlayPauseBtn')?.addEventListener('click', togglePlay);
+
+  function stepScroll() {
+    if (!isScrolling) return;
+    scrollContainer.scrollTop += scrollSpeed * 0.7;
+    scrollAnimId = requestAnimationFrame(stepScroll);
+  }
+
+  document.getElementById('tpSpeedSlider')?.addEventListener('input', (e) => {
+    scrollSpeed = parseInt(e.target.value, 10);
+    document.getElementById('tpSpeedVal').innerText = `${scrollSpeed}x`;
+  });
+
+  document.getElementById('tpMirrorBtn')?.addEventListener('click', () => {
+    tpText.classList.toggle('mirrored');
+  });
+
+  // Spacebar hotkey
+  window.addEventListener('keydown', (e) => {
+    if (overlay.style.display === 'block' && e.code === 'Space') {
+      e.preventDefault();
+      togglePlay();
+    }
+  });
+</script>
+
+<style>
+  .creator-studio-card {
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .studio-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(147, 149, 151, 0.15);
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .studio-title-row {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .studio-heading {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--text-main);
+  }
+
+  .studio-grid {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr;
+    gap: 1.5rem;
+  }
+
+  .editor-column {
+    background: rgba(14, 19, 26, 0.95);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .editor-toolbar {
+    padding: 0.65rem 0.85rem;
+    background: rgba(8, 11, 15, 0.8);
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+    font-size: 0.72rem;
+  }
+
+  .toolbar-label {
+    color: var(--text-dim);
+    font-weight: 700;
+  }
+
+  .cue-btn {
+    background: rgba(147, 149, 151, 0.1);
+    border: 1px solid rgba(147, 149, 151, 0.2);
+    color: var(--primary);
+    font-size: 0.68rem;
+    padding: 0.2rem 0.45rem;
+    border-radius: 2px;
+    cursor: pointer;
+  }
+  .cue-btn:hover {
+    background: rgba(var(--primary-rgb), 0.15);
+    border-color: var(--primary);
+  }
+
+  .script-textarea {
+    width: 100%;
+    height: 340px;
+    background: transparent;
+    border: none;
+    padding: 1rem;
+    color: var(--text-main);
+    font-size: 0.85rem;
+    line-height: 1.6;
+    resize: vertical;
+    outline: none;
+  }
+
+  .editor-footer {
+    padding: 0.65rem 0.85rem;
+    background: rgba(8, 11, 15, 0.8);
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.72rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .stat-pills {
+    display: flex;
+    gap: 0.65rem;
+  }
+
+  .pill {
+    color: var(--text-muted);
+  }
+
+  .wpm-control {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--text-dim);
+  }
+
+  .wpm-select {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
+    padding: 0.2rem 0.4rem;
+    font-size: 0.72rem;
+    font-family: monospace;
+    border-radius: 2px;
+  }
+
+  .reference-column {
+    background: rgba(14, 19, 26, 0.95);
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .ref-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid rgba(147, 149, 151, 0.15);
+  }
+
+  .formula-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+  }
+
+  .step-card {
+    background: var(--bg-card);
+    padding: 0.65rem;
+    border-radius: 2px;
+    border: 1px solid rgba(147, 149, 151, 0.12);
+  }
+
+  .step-num {
+    font-size: 0.7rem;
+    font-weight: 800;
+    display: block;
+    margin-bottom: 0.2rem;
+  }
+
+  .step-desc {
+    font-size: 0.74rem;
+    color: var(--text-muted);
+    line-height: 1.35;
+    font-family: sans-serif;
+  }
+
+  .full-w {
+    width: 100%;
+  }
+
+  /* TELEPROMPTER OVERLAY */
+  .teleprompter-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: #000000;
+    z-index: 99999;
+  }
+
+  .teleprompter-hud {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(14, 19, 26, 0.95);
+    border-bottom: 1px solid var(--primary);
+    padding: 0.85rem 1.5rem;
+    display: flex;
+    justify-content: center;
+    z-index: 10;
+  }
+
+  .tp-controls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .tp-btn {
+    background: var(--bg-card);
+    border: 1px solid var(--primary);
+    color: var(--primary);
+    padding: 0.45rem 0.85rem;
+    font-size: 0.8rem;
+    font-family: monospace;
+    font-weight: 800;
+    cursor: pointer;
+    border-radius: 3px;
+  }
+  .tp-btn:hover {
+    background: var(--primary);
+    color: #000000;
+  }
+  .tp-close {
+    border-color: #BB2649;
+    color: #FF6685;
+  }
+
+  .tp-speed {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+  }
+
+  .teleprompter-scroll-container {
+    height: 100vh;
+    overflow-y: scroll;
+    padding: 140px 15% 300px;
+  }
+
+  .teleprompter-text {
+    font-size: 2.2rem;
+    color: #FFFFFF;
+    line-height: 1.8;
+    white-space: pre-wrap;
+    font-weight: 600;
+  }
+
+  .teleprompter-text.mirrored {
+    transform: scaleX(-1);
+  }
+
+  @media (max-width: 900px) {
+    .studio-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

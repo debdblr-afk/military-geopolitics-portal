@@ -1,0 +1,249 @@
+---
+// AudienceDebrief.astro - Feature 16: Audience Strategic Predictions & Wargame Polling
+---
+<div class="hud-panel hud-corner audience-card">
+  <div class="aud-header">
+    <div>
+      <div class="aud-title-row">
+        <span class="badge badge-pantone-2023">AUDIENCE INTELLIGENCE</span>
+        <h3 class="font-mono aud-heading">STRATEGIC WARGAME PREDICTION & AUDIENCE DEBRIEF</h3>
+      </div>
+      <p class="font-mono text-muted" style="font-size: 0.76rem;">Crowdsourced crisis outcome forecasts & community wargame consensus polling.</p>
+    </div>
+
+    <div class="total-voters font-mono">
+      <span style="color: var(--text-dim);">COMMUNITY CONSENSUS:</span>
+      <span style="color: #00FF88; font-weight: 800;">14,290 Ballots Cast</span>
+    </div>
+  </div>
+
+  <div class="aud-grid">
+    <!-- Poll Card 1 -->
+    <div class="poll-card hud-panel font-mono" data-poll="poll1">
+      <div class="poll-meta">
+        <span class="badge badge-pantone-2021">ACTIVE PREDICTION</span>
+        <span class="poll-ends">CLOSES: 2026.Q4</span>
+      </div>
+      <h4 class="poll-question">Will the Strait of Hormuz experience a naval interdiction exceeding 72 hours?</h4>
+
+      <div class="poll-options">
+        <button class="poll-opt-btn" data-opt="yes">
+          <div class="opt-label-row">
+            <span>YES (Over 72h Closure)</span>
+            <span class="pct" id="poll1_yes_pct">64%</span>
+          </div>
+          <div class="opt-bar-shell">
+            <div class="opt-bar" id="poll1_yes_bar" style="width: 64%; background: #BB2649;"></div>
+          </div>
+        </button>
+
+        <button class="poll-opt-btn" data-opt="no">
+          <div class="opt-label-row">
+            <span>NO (Freedom of Navigation Maintained)</span>
+            <span class="pct" id="poll1_no_pct">36%</span>
+          </div>
+          <div class="opt-bar-shell">
+            <div class="opt-bar" id="poll1_no_bar" style="width: 36%; background: #6667AB;"></div>
+          </div>
+        </button>
+      </div>
+
+      <div class="poll-footer">
+        <span id="poll1_status" class="poll-status text-dim">CLICK AN OPTION TO CAST YOUR BALLOT</span>
+      </div>
+    </div>
+
+    <!-- Poll Card 2 -->
+    <div class="poll-card hud-panel font-mono" data-poll="poll2">
+      <div class="poll-meta">
+        <span class="badge badge-pantone-2022">DOCTRINE FORECAST</span>
+        <span class="poll-ends">PEER CONFLICT 2030</span>
+      </div>
+      <h4 class="poll-question">Which air warfare asset will achieve decisive superiority in the Western Pacific?</h4>
+
+      <div class="poll-options">
+        <button class="poll-opt-btn" data-opt="stealth">
+          <div class="opt-label-row">
+            <span>5th/6th Gen Stealth Fighters (F-35 / NGAD)</span>
+            <span class="pct" id="poll2_opt1_pct">48%</span>
+          </div>
+          <div class="opt-bar-shell">
+            <div class="opt-bar" id="poll2_opt1_bar" style="width: 48%; background: #F5DF4D;"></div>
+          </div>
+        </button>
+
+        <button class="poll-opt-btn" data-opt="cca">
+          <div class="opt-label-row">
+            <span>Collaborative Combat Drones (CCA Autonomous Swarms)</span>
+            <span class="pct" id="poll2_opt2_pct">38%</span>
+          </div>
+          <div class="opt-bar-shell">
+            <div class="opt-bar" id="poll2_opt2_bar" style="width: 38%; background: #FFBE98;"></div>
+          </div>
+        </button>
+
+        <button class="poll-opt-btn" data-opt="sam">
+          <div class="opt-label-row">
+            <span>Integrated Ground Air Defense (S-400 / HQ-9B)</span>
+            <span class="pct" id="poll2_opt3_pct">14%</span>
+          </div>
+          <div class="opt-bar-shell">
+            <div class="opt-bar" id="poll2_opt3_bar" style="width: 14%; background: #A47864;"></div>
+          </div>
+        </button>
+      </div>
+
+      <div class="poll-footer">
+        <span id="poll2_status" class="poll-status text-dim">CLICK AN OPTION TO CAST YOUR BALLOT</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script is:inline>
+  document.querySelectorAll('.poll-card').forEach(card => {
+    const pollId = card.getAttribute('data-poll');
+    const voted = localStorage.getItem('voted_' + pollId);
+    if (voted) {
+      card.querySelector('.poll-status').innerText = `✓ YOUR BALLOT IS RECORDED: [${voted.toUpperCase()}]`;
+      card.querySelector('.poll-status').style.color = '#00FF88';
+    }
+
+    card.querySelectorAll('.poll-opt-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const opt = btn.getAttribute('data-opt');
+        localStorage.setItem('voted_' + pollId, opt);
+        card.querySelector('.poll-status').innerText = `✓ YOUR BALLOT IS RECORDED: [${opt.toUpperCase()}]`;
+        card.querySelector('.poll-status').style.color = '#00FF88';
+      });
+    });
+  });
+</script>
+
+<style>
+  .audience-card {
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .aud-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(147, 149, 151, 0.15);
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .aud-title-row {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .aud-heading {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--text-main);
+  }
+
+  .total-voters {
+    font-size: 0.74rem;
+    background: rgba(8, 11, 15, 0.7);
+    padding: 0.35rem 0.75rem;
+    border-radius: 3px;
+    border: 1px solid var(--border-color);
+  }
+
+  .aud-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+
+  .poll-card {
+    background: rgba(14, 19, 26, 0.95);
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .poll-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.7rem;
+  }
+
+  .poll-ends {
+    color: var(--text-dim);
+  }
+
+  .poll-question {
+    font-size: 0.92rem;
+    font-weight: 800;
+    color: var(--text-main);
+    line-height: 1.4;
+  }
+
+  .poll-options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+  }
+
+  .poll-opt-btn {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    padding: 0.65rem 0.85rem;
+    border-radius: 3px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    transition: all 0.2s ease;
+    text-align: left;
+    color: var(--text-main);
+    font-family: monospace;
+  }
+  .poll-opt-btn:hover {
+    border-color: var(--primary);
+    background: var(--bg-card-hover);
+  }
+
+  .opt-label-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    font-weight: 700;
+  }
+
+  .opt-bar-shell {
+    height: 6px;
+    background: rgba(8, 11, 15, 0.8);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .opt-bar {
+    height: 100%;
+    border-radius: 2px;
+  }
+
+  .poll-footer {
+    border-top: 1px solid rgba(147, 149, 151, 0.12);
+    padding-top: 0.65rem;
+    font-size: 0.68rem;
+  }
+
+  @media (max-width: 900px) {
+    .aud-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

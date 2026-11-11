@@ -1,0 +1,85 @@
+---
+// PantoneThemeScript.astro
+---
+<script is:inline>
+  (function() {
+    const saved = localStorage.getItem('iskander_pantone_theme') || 'pentad';
+    if (saved && saved !== 'pentad') {
+      document.documentElement.setAttribute('data-pantone-theme', saved);
+    } else {
+      document.documentElement.removeAttribute('data-pantone-theme');
+    }
+  })();
+
+  function setPantoneTheme(year) {
+    if (year === 'pentad') {
+      document.documentElement.removeAttribute('data-pantone-theme');
+      localStorage.setItem('iskander_pantone_theme', 'pentad');
+    } else {
+      document.documentElement.setAttribute('data-pantone-theme', year);
+      localStorage.setItem('iskander_pantone_theme', year);
+    }
+    
+    // Update active state on any theme buttons in DOM
+    document.querySelectorAll('[data-pantone-btn]').forEach(btn => {
+      const match = btn.getAttribute('data-pantone-btn') === year;
+      btn.classList.toggle('active', match);
+    });
+
+    window.dispatchEvent(new CustomEvent('pantone-theme-changed', { detail: { year } }));
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const current = localStorage.getItem('iskander_pantone_theme') || 'pentad';
+    document.querySelectorAll('[data-pantone-btn]').forEach(btn => {
+      btn.classList.toggle('active', btn.getAttribute('data-pantone-btn') === current);
+      btn.addEventListener('click', () => {
+        const val = btn.getAttribute('data-pantone-btn');
+        setPantoneTheme(val);
+      });
+    });
+  });
+</script>
+
+<style is:global>
+  .pantone-switcher {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    background: rgba(14, 19, 26, 0.9);
+    padding: 0.25rem 0.4rem;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+  }
+  .pantone-btn {
+    background: transparent;
+    border: 1px solid transparent;
+    color: var(--text-muted);
+    font-size: 0.72rem;
+    font-family: "SF Mono", Monaco, monospace;
+    font-weight: 700;
+    padding: 0.25rem 0.55rem;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+  .pantone-btn:hover {
+    color: var(--text-main);
+    background: rgba(255, 255, 255, 0.05);
+  }
+  .pantone-btn.active {
+    background: var(--bg-card-hover);
+    border-color: var(--primary);
+    color: var(--primary);
+    box-shadow: 0 0 8px rgba(var(--primary-rgb), 0.35);
+  }
+  .swatch {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+</style>

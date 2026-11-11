@@ -1,0 +1,329 @@
+---
+// EscalationMatrix.astro - Feature 10: Herman Kahn Escalation Ladder & Wargame Matrix
+---
+<div class="hud-panel hud-corner escalation-card">
+  <div class="esc-header">
+    <div>
+      <div class="esc-title-row">
+        <span class="badge badge-pantone-2023">STRATEGIC DOCTRINE SIMULATOR</span>
+        <h3 class="font-mono esc-heading">HERMAN KAHN 44-RUNG ESCALATION MATRIX</h3>
+      </div>
+      <p class="font-mono text-muted" style="font-size: 0.76rem;">Crisis dynamic modeling: from diplomatic coercive posturing up through conventional kinetic warfare to the nuclear threshold.</p>
+    </div>
+
+    <!-- Active Theater Selector -->
+    <div class="theater-esc-select font-mono">
+      <span class="hud-label">EVALUATE THEATER:</span>
+      <select id="escTheaterSelect" class="tactical-select">
+        <option value="redsea">Red Sea / Bab el-Mandeb (Rung 18: Limited Kinetic)</option>
+        <option value="taiwan">Taiwan Strait (Rung 12: Large-Scale Harassment / Blockade Prep)</option>
+        <option value="baltic">Suwalki Gap / Baltics (Rung 9: Political Confrontation / EFP)</option>
+        <option value="korea">Korean Peninsula (Rung 14: Declaration of Limited Emergency)</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="esc-grid">
+    <!-- Visual Escalation Ladder -->
+    <div class="ladder-column hud-panel font-mono">
+      <div class="ladder-head">
+        <span class="ladder-tag" style="color: #BB2649;">CRISIS RUNG PROGRESSION</span>
+        <span id="currentRungDisplay" style="color: var(--primary); font-weight: 800;">RUNG 18: LIMITED COMBAT</span>
+      </div>
+
+      <div class="ladder-steps" id="ladderSteps">
+        <!-- Rungs injected dynamically -->
+      </div>
+    </div>
+
+    <!-- Wargame Analysis & Creator Talking Points -->
+    <div class="wargame-column hud-panel font-mono">
+      <div class="wg-head">
+        <span class="badge badge-pantone-2021" id="phaseBadge">PHASE 3: INTENSE CRISIS</span>
+        <span class="wg-title" id="theaterNameTitle">Red Sea Maritime Campaign</span>
+      </div>
+
+      <div class="wg-body">
+        <div class="wg-stat-box">
+          <span class="wg-label">CURRENT OPERATIONAL STATUS</span>
+          <p class="wg-val" id="wgStatusText" style="color: #FFBE98;">
+            Active kinetic engagement. ASBM intercepts, USV maritime drone interdictions, and localized strike packages on coastal radar sites.
+          </p>
+        </div>
+
+        <div class="wg-stat-box">
+          <span class="wg-label">NEXT LADDER THRESHOLD (RUNG +1)</span>
+          <p class="wg-val" id="wgNextStepText" style="color: #BB2649;">
+            Rung 19: 'Counter-Force Facility Strike' — Expanded inland airstrikes against hardened command tunnels and C4ISR assembly depots.
+          </p>
+        </div>
+
+        <div class="wg-stat-box">
+          <span class="wg-label">DE-ESCALATION OFF-RAMP</span>
+          <p class="wg-val" id="wgOffRampText" style="color: #6667AB;">
+            Coordinated diplomatic maritime convoy escorts, bilateral backchannel assurances, and naval presence normalization.
+          </p>
+        </div>
+
+        <div class="creator-hook-esc">
+          <span class="hook-esc-tag">CREATOR VIDEO NARRATIVE BREAKDOWN:</span>
+          <p class="hook-esc-quote" id="wgNarrativeText">
+            "Most news coverage calls this conflict chaotic, but according to Herman Kahn's classic crisis escalation matrix, both sides are operating strictly within Rung 18. The real question is: what red line pushes this into Rung 22, where carrier groups strike sovereignty-level command bunkers?"
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script is:inline>
+  const rungs = [
+    { rung: 22, title: "Declaration of Limited War", phase: "Conventional War", color: "#BB2649" },
+    { rung: 20, title: "Peaceful World-Wide Embargo / Blockade", phase: "Intense Crisis", color: "#BB2649" },
+    { rung: 18, title: "Spectacular Show of Force / Limited Kinetic Hits", phase: "Intense Crisis", color: "#F5DF4D" },
+    { rung: 16, title: "Destruction of High-Value Military Hardware", phase: "Traditional Crisis", color: "#F5DF4D" },
+    { rung: 14, title: "Declaration of Limited Emergency / Dispersal", phase: "Traditional Crisis", color: "#FFBE98" },
+    { rung: 12, title: "Large-Scale Harassment / Standoff Interception", phase: "Traditional Crisis", color: "#FFBE98" },
+    { rung: 9, title: "Dramatic Political Confrontation / Troop Pre-positioning", phase: "Sub-Crisis", color: "#6667AB" },
+    { rung: 4, title: "Hardening of National Positions / Diplomatic Rupture", phase: "Sub-Crisis", color: "#A47864" }
+  ];
+
+  const theaterData = {
+    redsea: {
+      activeRung: 18,
+      phase: "PHASE 3: INTENSE CRISIS",
+      title: "Red Sea & Bab el-Mandeb Maritime Campaign",
+      status: "Active kinetic engagement. Continuous ASBM intercepts, USV maritime drone strikes, and Tomahawk counter-battery fires on coastal radar installations.",
+      nextStep: "Rung 19: 'Counter-Force Facility Strike' — Expanded airstrikes against inland underground command bunkers and missile assembly facilities.",
+      offRamp: "UN-brokered maritime truce, diplomatic security guarantees, and commercial shipping risk normalization.",
+      narrative: "Most media calls this conflict chaotic, but according to Herman Kahn's classic escalation framework, both sides are operating strictly within Rung 18. The real flashpoint is whether counter-battery strikes accidentally hit Iranian command assets, skipping two rungs directly into open naval conflict."
+    },
+    taiwan: {
+      activeRung: 12,
+      phase: "PHASE 2: TRADITIONAL CRISIS",
+      title: "Taiwan Strait & First Island Chain Maneuvers",
+      status: "Large-scale grey-zone intimidation. Daily median-line incursions, joint combat patrols, and simulated quarantine encirclement exercises.",
+      nextStep: "Rung 15: 'Uninhabited Outpost Interdiction' — Kinetic seizure of outlying islands (e.g. Kinmen, Matsu, or Pratas).",
+      offRamp: "Resumption of high-level bilateral military hotlines, reduction of CAP sortie frequencies, and diplomatic communiqués.",
+      narrative: "China isn't launching D-Day style amphibious landing ships tomorrow—they are methodically climbing Rungs 10 through 14, normalizing naval blockades so gradually that by the time Western intelligence confirms a full quarantine, the first shot has already been won without firing."
+    },
+    baltic: {
+      activeRung: 9,
+      phase: "PHASE 1: SUB-CRISIS DISAGREEMENT",
+      title: "Suwalki Gap & Baltic Sea Frontier",
+      status: "Forward pre-positioning. NATO Enhanced Forward Presence battlegroups reinforced with heavy armor, while Kaliningrad deploys dual-capable Iskander-M batteries.",
+      nextStep: "Rung 11: 'Super-Ready Status' — Snap mobilization of rapid reaction corps and closure of territorial airspace.",
+      offRamp: "Transparency protocols under Vienna Document inspectorships and reciprocal exercise observer programs.",
+      narrative: "In the Suwalki Corridor, deterrence is a game of millimeters. NATO's goal isn't fighting a war in Lithuania; it's making Rung 10 so catastrophically expensive that Russian military planners never dare take the step."
+    },
+    korea: {
+      activeRung: 14,
+      phase: "PHASE 2: TRADITIONAL CRISIS",
+      title: "Korean Demilitarized Zone & Sea of Japan",
+      status: "Reciprocal tactical drills. Hwasong-18 solid-fuel ICBM tests answered by US B-52 and B-21 bomber flights over the Peninsula.",
+      nextStep: "Rung 17: 'Limited Evacuation of Non-Combatants' — Diplomatic staff families ordered out of Seoul.",
+      offRamp: "Suspension of reciprocal leaflet/drone launches and restoration of the 2018 Comprehensive Military Agreement buffers.",
+      narrative: "On the Korean peninsula, the escalation ladder is compressed. Because Seoul is within artillery tube range of the DMZ, moving from Rung 14 to Rung 18 could take less than 15 minutes."
+    }
+  };
+
+  function renderLadder(activeRung) {
+    const container = document.getElementById('ladderSteps');
+    if (!container) return;
+
+    container.innerHTML = rungs.map(r => {
+      const isActive = r.rung === activeRung;
+      return `
+        <div class="rung-row ${isActive ? 'active-rung' : ''}">
+          <span class="rung-num" style="color: ${r.color};">RUNG ${r.rung}</span>
+          <span class="rung-name">${r.title}</span>
+          <span class="rung-phase">${r.phase}</span>
+        </div>
+      `;
+    }).join('');
+  }
+
+  document.getElementById('escTheaterSelect')?.addEventListener('change', (e) => {
+    const key = e.target.value;
+    const data = theaterData[key] || theaterData.redsea;
+
+    document.getElementById('currentRungDisplay').innerText = `RUNG ${data.activeRung}: ${data.title.split(' ')[0].toUpperCase()}`;
+    document.getElementById('phaseBadge').innerText = data.phase;
+    document.getElementById('theaterNameTitle').innerText = data.title;
+    document.getElementById('wgStatusText').innerText = data.status;
+    document.getElementById('wgNextStepText').innerText = data.nextStep;
+    document.getElementById('wgOffRampText').innerText = data.offRamp;
+    document.getElementById('wgNarrativeText').innerText = `"${data.narrative}"`;
+
+    renderLadder(data.activeRung);
+  });
+
+  renderLadder(18);
+</script>
+
+<style>
+  .escalation-card {
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .esc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(147, 149, 151, 0.15);
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .esc-title-row {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .esc-heading {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--text-main);
+  }
+
+  .esc-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 1.3fr;
+    gap: 1.5rem;
+  }
+
+  .ladder-column {
+    background: rgba(14, 19, 26, 0.95);
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .ladder-head {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.76rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid rgba(147, 149, 151, 0.15);
+  }
+
+  .ladder-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .rung-row {
+    display: grid;
+    grid-template-columns: 80px 1fr 100px;
+    align-items: center;
+    padding: 0.5rem 0.65rem;
+    border-radius: 2px;
+    font-size: 0.72rem;
+    background: rgba(8, 11, 15, 0.6);
+    border: 1px solid transparent;
+    transition: all 0.2s ease;
+  }
+
+  .rung-row.active-rung {
+    background: rgba(245, 223, 77, 0.12);
+    border-color: var(--primary);
+    box-shadow: 0 0 10px rgba(var(--primary-rgb), 0.25);
+  }
+
+  .rung-num {
+    font-weight: 800;
+  }
+
+  .rung-name {
+    color: var(--text-main);
+    font-weight: 600;
+  }
+
+  .rung-phase {
+    color: var(--text-dim);
+    text-align: right;
+    font-size: 0.68rem;
+  }
+
+  .wargame-column {
+    background: rgba(14, 19, 26, 0.95);
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .wg-head {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid rgba(147, 149, 151, 0.15);
+  }
+
+  .wg-title {
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: var(--text-main);
+  }
+
+  .wg-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+
+  .wg-stat-box {
+    background: var(--bg-card);
+    padding: 0.75rem;
+    border-radius: 3px;
+    border: 1px solid rgba(147, 149, 151, 0.12);
+  }
+
+  .wg-label {
+    font-size: 0.65rem;
+    color: var(--text-dim);
+    display: block;
+    margin-bottom: 0.25rem;
+  }
+
+  .wg-val {
+    font-size: 0.76rem;
+    line-height: 1.4;
+  }
+
+  .creator-hook-esc {
+    background: rgba(187, 38, 73, 0.08);
+    border-left: 2px solid #BB2649;
+    padding: 0.75rem;
+    border-radius: 2px;
+  }
+
+  .hook-esc-tag {
+    font-size: 0.65rem;
+    color: #FF6685;
+    font-weight: 800;
+    display: block;
+    margin-bottom: 0.25rem;
+  }
+
+  .hook-esc-quote {
+    font-size: 0.76rem;
+    color: var(--text-main);
+    line-height: 1.4;
+    font-style: italic;
+  }
+
+  @media (max-width: 900px) {
+    .esc-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

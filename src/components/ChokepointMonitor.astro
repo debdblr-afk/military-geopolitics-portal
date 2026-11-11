@@ -1,0 +1,396 @@
+---
+// ChokepointMonitor.astro - Feature 5: Geostrategic Chokepoints & Maritime Trade Vulnerability
+---
+<div class="hud-panel hud-corner chokepoint-card">
+  <div class="cp-header">
+    <div>
+      <div class="cp-title-row">
+        <span class="badge badge-pantone-2024">MARITIME ECONOMIC INTELLIGENCE</span>
+        <h3 class="font-mono cp-heading">GEOSTRATEGIC CHOKEPOINTS & BLOCKADE SIMULATOR</h3>
+      </div>
+      <p class="font-mono text-muted" style="font-size: 0.76rem;">Daily oil throughput volumes, alternative transit diversion penalties & war risk insurance surcharges.</p>
+    </div>
+
+    <div class="global-metric font-mono">
+      <span class="metric-label">GLOBAL MARITIME OIL EXPOSURE:</span>
+      <span class="metric-val" style="color: var(--c-pantone-2024-peach);">61.4% Seaborne</span>
+    </div>
+  </div>
+
+  <div class="cp-grid">
+    <!-- Chokepoint Table / List -->
+    <div class="cp-table-box hud-panel">
+      <table class="cp-table font-mono">
+        <thead>
+          <tr>
+            <th>MARITIME CHOKEPOINT</th>
+            <th>CRUDE FLOW (BPD)</th>
+            <th>GLOBAL SHARE</th>
+            <th>STATUS</th>
+            <th>BYPASS ROUTE</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="cp-row" data-id="hormuz">
+            <td><strong style="color: #FFBE98;">Strait of Hormuz</strong></td>
+            <td>21.0 Million</td>
+            <td>21% Global Liquids</td>
+            <td><span class="status-pill status-warn">ELEVATED</span></td>
+            <td>East-West Petroline (5M bpd)</td>
+          </tr>
+          <tr class="cp-row" data-id="malacca">
+            <td><strong style="color: #F5DF4D;">Strait of Malacca</strong></td>
+            <td>16.0 Million</td>
+            <td>16% Global Supply</td>
+            <td><span class="status-pill status-ok">NORMAL</span></td>
+            <td>Lombok / Sunda Straits (+4 days)</td>
+          </tr>
+          <tr class="cp-row" data-id="mandeb">
+            <td><strong style="color: #BB2649;">Bab el-Mandeb (Red Sea)</strong></td>
+            <td>8.8 Million</td>
+            <td>12% Global Trade</td>
+            <td><span class="status-pill status-danger">HIGH RISK</span></td>
+            <td>Cape of Good Hope (+14 days)</td>
+          </tr>
+          <tr class="cp-row" data-id="suez">
+            <td><strong>Suez Canal</strong></td>
+            <td>5.5 Million</td>
+            <td>30% Container Trade</td>
+            <td><span class="status-pill status-warn">DISRUPTED</span></td>
+            <td>Cape of Good Hope (+4,000 nm)</td>
+          </tr>
+          <tr class="cp-row" data-id="bosphorus">
+            <td><strong>Turkish Straits (Bosphorus)</strong></td>
+            <td>3.2 Million</td>
+            <td>20% Global Wheat</td>
+            <td><span class="status-pill status-warn">RESTRICTED</span></td>
+            <td>None (Landlocked Black Sea)</td>
+          </tr>
+          <tr class="cp-row" data-id="panama">
+            <td><strong>Panama Canal</strong></td>
+            <td>0.9 Million</td>
+            <td>46% US East Coast Cargo</td>
+            <td><span class="status-pill status-ok">NORMAL</span></td>
+            <td>Cape Horn / US Intermodal Rail</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Interactive Blockade Simulator Box -->
+    <div class="simulator-box hud-panel">
+      <div class="sim-header font-mono">
+        <span class="badge badge-pantone-2023">WARGAME SIMULATOR</span>
+        <span class="sim-title">MARITIME BLOCKADE IMPACT CALCULATOR</span>
+      </div>
+
+      <div class="sim-controls font-mono">
+        <div class="sim-group">
+          <label class="sim-label">SELECT TARGET CHOKEPOINT FOR BLOCKADE:</label>
+          <select id="simChokepoint" class="sim-select">
+            <option value="hormuz">Strait of Hormuz (21M bpd)</option>
+            <option value="mandeb">Bab el-Mandeb (8.8M bpd / 12% global trade)</option>
+            <option value="malacca">Strait of Malacca (16M bpd / China lifeline)</option>
+            <option value="suez">Suez Canal (30% container traffic)</option>
+          </select>
+        </div>
+
+        <div class="sim-group">
+          <div class="slider-head">
+            <label class="sim-label">BLOCKADE CLOSURE INTENSITY:</label>
+            <span id="simIntensityVal" style="color: #BB2649; font-weight: 800;">75% Closure</span>
+          </div>
+          <input type="range" id="simIntensity" min="10" max="100" value="75" step="5" class="tactical-slider" />
+        </div>
+      </div>
+
+      <!-- Live Sim Impact Indicators -->
+      <div class="sim-results font-mono">
+        <div class="res-box">
+          <span class="res-label">PROJECTED BRENT OIL SPIKE</span>
+          <span class="res-val" id="resOilSpike" style="color: #BB2649;">+$38.50 / barrel</span>
+        </div>
+        <div class="res-box">
+          <span class="res-label">CONTAINER TRANSIT DELAY</span>
+          <span class="res-val" id="resDelay" style="color: #FFBE98;">+12 to 15 Days</span>
+        </div>
+        <div class="res-box">
+          <span class="res-label">EXTRA FUEL COST PER SHIP</span>
+          <span class="res-val" id="resFuel" style="color: #F5DF4D;">+$1,120,000 / voyage</span>
+        </div>
+        <div class="res-box">
+          <span class="res-label">WAR RISK INSURANCE PREMIUM</span>
+          <span class="res-val" id="resInsurance" style="color: #6667AB;">+0.95% of Hull Value</span>
+        </div>
+      </div>
+
+      <div class="sim-summary font-mono">
+        <span class="summary-tag">CREATOR CITATION BULLET:</span>
+        <p id="simCitationText" class="summary-text">
+          "According to global maritime freight logistics models, a 75% naval interdiction at the Strait of Hormuz immediately removes 15.75M bpd from commercial spot markets, triggering an instantaneous +$38.50/bbl price surge and adding $1.1M in detour bunker fuel costs per roundtrip."
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script is:inline>
+  function calculateSimImpact() {
+    const cp = document.getElementById('simChokepoint')?.value || 'hormuz';
+    const intensity = parseFloat(document.getElementById('simIntensity')?.value || '75');
+    document.getElementById('simIntensityVal').innerText = `${intensity}% Closure`;
+
+    let baseOil = 45;
+    let baseDelay = 14;
+    let baseFuelK = 1200;
+    let baseIns = 1.1;
+    let name = "Strait of Hormuz";
+
+    if (cp === 'hormuz') {
+      baseOil = 52;
+      baseDelay = 10;
+      baseFuelK = 850;
+      baseIns = 1.35;
+      name = "Strait of Hormuz";
+    } else if (cp === 'mandeb') {
+      baseOil = 18;
+      baseDelay = 14;
+      baseFuelK = 1250;
+      baseIns = 1.0;
+      name = "Bab el-Mandeb";
+    } else if (cp === 'malacca') {
+      baseOil = 40;
+      baseDelay = 6;
+      baseFuelK = 650;
+      baseIns = 0.8;
+      name = "Strait of Malacca";
+    } else if (cp === 'suez') {
+      baseOil = 15;
+      baseDelay = 12;
+      baseFuelK = 1100;
+      baseIns = 0.9;
+      name = "Suez Canal";
+    }
+
+    const calcOil = ((baseOil * intensity) / 100).toFixed(2);
+    const calcDelay = Math.round((baseDelay * intensity) / 100);
+    const calcFuel = Math.round((baseFuelK * intensity) / 100);
+    const calcIns = ((baseIns * intensity) / 100).toFixed(2);
+
+    document.getElementById('resOilSpike').innerText = `+$${calcOil} / barrel`;
+    document.getElementById('resDelay').innerText = `+${calcDelay} to ${calcDelay + 3} Days`;
+    document.getElementById('resFuel').innerText = `+$${calcFuel},000 / voyage`;
+    document.getElementById('resInsurance').innerText = `+${calcIns}% of Hull Value`;
+
+    document.getElementById('simCitationText').innerText = 
+      `"According to maritime freight models, a ${intensity}% naval interdiction at the ${name} immediately removes significant seaborne volume, triggering an estimated +$${calcOil}/bbl crude spike and adding +$${calcFuel},000 in detour bunker fuel costs per voyage."`;
+  }
+
+  document.getElementById('simChokepoint')?.addEventListener('change', calculateSimImpact);
+  document.getElementById('simIntensity')?.addEventListener('input', calculateSimImpact);
+  calculateSimImpact();
+</script>
+
+<style>
+  .chokepoint-card {
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .cp-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(147, 149, 151, 0.15);
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .cp-title-row {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .cp-heading {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--text-main);
+  }
+
+  .global-metric {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.78rem;
+  }
+  .metric-label {
+    color: var(--text-dim);
+  }
+  .metric-val {
+    font-weight: 800;
+  }
+
+  .cp-grid {
+    display: grid;
+    grid-template-columns: 1.35fr 1.15fr;
+    gap: 1.5rem;
+  }
+
+  .cp-table-box {
+    background: rgba(14, 19, 26, 0.9);
+    padding: 0.5rem;
+    overflow-x: auto;
+  }
+
+  .cp-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.74rem;
+  }
+
+  .cp-table th,
+  .cp-table td {
+    padding: 0.65rem 0.75rem;
+    border-bottom: 1px solid rgba(147, 149, 151, 0.1);
+    text-align: left;
+  }
+
+  .cp-table th {
+    color: var(--text-dim);
+    font-weight: 800;
+    background: rgba(8, 11, 15, 0.5);
+  }
+
+  .status-pill {
+    font-size: 0.65rem;
+    font-weight: 800;
+    padding: 0.15rem 0.45rem;
+    border-radius: 2px;
+  }
+  .status-danger {
+    background: rgba(187, 38, 73, 0.2);
+    color: #FF6685;
+    border: 1px solid rgba(187, 38, 73, 0.5);
+  }
+  .status-warn {
+    background: rgba(245, 223, 77, 0.15);
+    color: #F5DF4D;
+    border: 1px solid rgba(245, 223, 77, 0.4);
+  }
+  .status-ok {
+    background: rgba(102, 103, 171, 0.15);
+    color: #8E8FC9;
+    border: 1px solid rgba(102, 103, 171, 0.4);
+  }
+
+  /* Simulator */
+  .simulator-box {
+    background: #080B0F;
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    border: 1px solid rgba(187, 38, 73, 0.35);
+  }
+
+  .sim-header {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+  }
+
+  .sim-title {
+    font-size: 0.88rem;
+    font-weight: 800;
+    color: var(--text-main);
+  }
+
+  .sim-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+
+  .sim-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .sim-label {
+    font-size: 0.7rem;
+    color: var(--text-dim);
+  }
+
+  .sim-select {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
+    padding: 0.4rem 0.65rem;
+    font-size: 0.78rem;
+    border-radius: 3px;
+    font-family: monospace;
+  }
+
+  .slider-head {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .sim-results {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.65rem;
+  }
+
+  .res-box {
+    background: var(--bg-card);
+    padding: 0.65rem;
+    border-radius: 3px;
+    border: 1px solid rgba(147, 149, 151, 0.15);
+  }
+
+  .res-label {
+    display: block;
+    font-size: 0.64rem;
+    color: var(--text-dim);
+    margin-bottom: 0.2rem;
+  }
+
+  .res-val {
+    font-size: 0.88rem;
+    font-weight: 800;
+  }
+
+  .sim-summary {
+    background: rgba(255, 190, 152, 0.06);
+    border-left: 2px solid #FFBE98;
+    padding: 0.75rem;
+    border-radius: 2px;
+  }
+
+  .summary-tag {
+    font-size: 0.65rem;
+    color: #FFBE98;
+    font-weight: 800;
+    display: block;
+    margin-bottom: 0.25rem;
+  }
+
+  .summary-text {
+    font-size: 0.76rem;
+    color: var(--text-main);
+    line-height: 1.4;
+    font-style: italic;
+  }
+
+  @media (max-width: 900px) {
+    .cp-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

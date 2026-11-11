@@ -1,0 +1,489 @@
+---
+// MissileCalculator.astro - Feature 3: Iskander & Precision Fires Range Calculator
+---
+<div class="hud-panel hud-corner missile-card">
+  <div class="missile-header">
+    <div>
+      <div class="missile-title-row">
+        <span class="badge badge-pantone-2023">PRECISION FIRES ENGINE</span>
+        <h3 class="font-mono missile-heading">ISKANDER-M & HYPERSONIC STRIKE ENVELOPE CALCULATOR</h3>
+      </div>
+      <p class="font-mono text-muted" style="font-size: 0.76rem;">Trajectory kinetics, reaction time windows, terminal velocities & air defense saturation matrices.</p>
+    </div>
+
+    <!-- Quick Theater Selector -->
+    <div class="theater-select-group font-mono">
+      <span class="hud-label">DEPLOYMENT THEATER:</span>
+      <select id="theaterSelect" class="tactical-select">
+        <option value="kaliningrad">Kaliningrad Exclave (Baltic Sea)</option>
+        <option value="crimea">Crimean Peninsula (Black Sea)</option>
+        <option value="taiwan_strait">Fujian Coast (Taiwan Strait / 1st Island Chain)</option>
+        <option value="hormuz">Bandar Abbas (Strait of Hormuz)</option>
+        <option value="barents">Kola Peninsula (Arctic Bastion)</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="calculator-grid">
+    <!-- Controls & Inputs -->
+    <div class="controls-panel">
+      <!-- Missile System Selector -->
+      <div class="form-group font-mono">
+        <label class="form-label">SELECT WEAPON SYSTEM:</label>
+        <select id="missileSystemSelect" class="tactical-select full-w">
+          <option value="iskander">9M723 Iskander-M (Quasi-Ballistic • 500 km • Mach 5.9)</option>
+          <option value="zircon">3M22 Zircon (Hypersonic Scramjet • 1,000 km • Mach 9.0)</option>
+          <option value="kinzhal">Kh-47M2 Kinzhal (Aero-Ballistic • 2,000 km • Mach 10.0)</option>
+          <option value="df21d">DF-21D ASBM 'Carrier Killer' (Ballistic MaRV • 1,500 km • Mach 10+)</option>
+          <option value="tomahawk">BGM-109 Tomahawk Block V (Subsonic Cruise • 1,600 km • Mach 0.75)</option>
+          <option value="kalibr">3M14 Kalibr-NK (Sea-Launched Cruise • 2,000 km • Mach 0.8 / 2.9 terminal)</option>
+          <option value="prsm">PrSM Precision Strike Missile (Ballistic • 500+ km • Mach 5+)</option>
+          <option value="brahmos">BrahMos Block III (Ramjet Supersonic • 450 km • Mach 3.0)</option>
+        </select>
+      </div>
+
+      <!-- Distance Slider -->
+      <div class="form-group font-mono">
+        <div class="slider-header">
+          <label class="form-label">ENGAGEMENT DISTANCE:</label>
+          <span class="slider-val" id="distanceVal" style="color: var(--primary);">350 km</span>
+        </div>
+        <input type="range" id="distanceRange" min="20" max="2000" value="350" step="10" class="tactical-slider" />
+        <div class="slider-limits">
+          <span>20 km</span>
+          <span id="maxRangeDisplay">Max: 500 km</span>
+        </div>
+      </div>
+
+      <!-- Air Defense Countermeasure Toggle -->
+      <div class="form-group font-mono">
+        <label class="form-label">INTERCEPTOR BATTERY IN DEFENSE ZONE:</label>
+        <select id="airDefenseSelect" class="tactical-select full-w">
+          <option value="patriot_pac3">Patriot PAC-3 MSE (Hit-to-Kill Kinetic Interceptor)</option>
+          <option value="aegis_sm6">Aegis SM-6 Dual II (Terminal Sea-Based Ballistic Defense)</option>
+          <option value="thaad">THAAD (Terminal High Altitude Area Defense exo/endo)</option>
+          <option value="s400">S-400 Triumf (48N6DM / 9M96E2 missile envelope)</option>
+          <option value="iron_dome">Iron Dome / Tamir (C-RAM / Subsonic rocket envelope)</option>
+        </select>
+      </div>
+
+      <!-- Live Calculated Output Cards -->
+      <div class="output-cards-grid font-mono">
+        <div class="out-box">
+          <span class="out-label">TIME OF FLIGHT TO TARGET</span>
+          <span class="out-val" id="timeOfFlightVal" style="color: #F5DF4D;">3 min 28 sec</span>
+        </div>
+        <div class="out-box">
+          <span class="out-label">TERMINAL VELOCITY</span>
+          <span class="out-val" id="terminalVelocityVal" style="color: #FFBE98;">2,020 m/s (Mach 5.9)</span>
+        </div>
+        <div class="out-box">
+          <span class="out-label">DEFENDER REACTION WINDOW</span>
+          <span class="out-val" id="reactionWindowVal" style="color: #BB2649;">~ 42 seconds</span>
+        </div>
+        <div class="out-box">
+          <span class="out-label">ESTIMATED Pk (KILL PROBABILITY)</span>
+          <span class="out-val" id="killProbVal" style="color: #6667AB;">28% Single-Shot Pk</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Visual Flight Profile & Dynamic Range Ring Radar -->
+    <div class="radar-visual-panel">
+      <div class="radar-hud-canvas">
+        <svg viewBox="0 0 400 300" class="trajectory-svg" id="trajectorySvg">
+          <!-- Background grids -->
+          <rect width="400" height="300" fill="#080B0F" />
+          <circle cx="200" cy="150" r="130" fill="none" stroke="rgba(147, 149, 151, 0.15)" stroke-dasharray="4 4" />
+          <circle cx="200" cy="150" r="90" fill="none" stroke="rgba(147, 149, 151, 0.15)" stroke-dasharray="4 4" />
+          <circle cx="200" cy="150" r="50" fill="none" stroke="rgba(147, 149, 151, 0.15)" stroke-dasharray="4 4" />
+          <line x1="200" y1="20" x2="200" y2="280" stroke="rgba(147, 149, 151, 0.12)" />
+          <line x1="70" y1="150" x2="330" y2="150" stroke="rgba(147, 149, 151, 0.12)" />
+
+          <!-- Dynamic Range Ring (Pantone 2023 Viva Magenta #BB2649) -->
+          <circle id="dynamicRangeRing" cx="200" cy="150" r="95" fill="rgba(187, 38, 73, 0.12)" stroke="#BB2649" stroke-width="2" />
+          
+          <!-- Launch Point (Center) -->
+          <circle cx="200" cy="150" r="5" fill="#F5DF4D" />
+          <text x="200" y="140" text-anchor="middle" fill="#F5DF4D" font-family="monospace" font-size="9" font-weight="bold">LAUNCH BATTERY (TEL)</text>
+
+          <!-- Target Point -->
+          <circle id="targetPoint" cx="295" cy="150" r="4" fill="#BB2649" />
+          <text id="targetLabel" x="295" y="168" text-anchor="middle" fill="#FF6685" font-family="monospace" font-size="8">TARGET IMPACT</text>
+
+          <!-- Trajectory Arc -->
+          <path id="trajectoryArc" d="M 200,150 Q 247,70 295,150" fill="none" stroke="#F5DF4D" stroke-width="2" stroke-dasharray="3 3" />
+        </svg>
+
+        <div class="radar-status-bar font-mono">
+          <span id="flightProfileLabel">PROFILE: QUASI-BALLISTIC AEROBALLISTIC (50km APOGEE)</span>
+          <span id="kineticEnergyLabel" style="color: #F5DF4D;">Ek: ~ 980 MJ IMPACT ENERGY</span>
+        </div>
+      </div>
+
+      <!-- Script Explainer Card -->
+      <div class="creator-explainer font-mono">
+        <span class="explainer-tag">YOUTUBE ESSAY HOOK / EXPLAINER:</span>
+        <p id="missileScriptHook" class="explainer-quote">
+          "At Mach 5.9, an Iskander-M missile fired from Kaliningrad covers the 350 km distance to Warsaw in just over 3 minutes. Because it stays inside the stratosphere at 50 kilometers and pulls 30G terminal evasive maneuvers, traditional ballistic missile early-warning radars have less than 45 seconds to cue a Patriot battery."
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script is:inline>
+  const missileData = {
+    iskander: {
+      name: "9M723 Iskander-M",
+      maxRange: 500,
+      mach: 5.9,
+      speedMs: 2020,
+      profile: "QUASI-BALLISTIC AEROBALLISTIC (50km APOGEE, 30G TERMINAL JINKING)",
+      massKg: 3800,
+      warheadKg: 480,
+      guidance: "GLONASS + Optical DSMAC correlation terminal seeker",
+      hook: "At Mach 5.9, an Iskander-M missile fired from Kaliningrad covers the distance to its target in just over 3 minutes. Because it stays inside the stratosphere at 50 kilometers and pulls 30G terminal evasive maneuvers, traditional early-warning radars have less than 45 seconds to cue an interceptor battery."
+    },
+    zircon: {
+      name: "3M22 Zircon",
+      maxRange: 1000,
+      mach: 9.0,
+      speedMs: 3080,
+      profile: "SCRAMJET HYPERSONIC CRUISE (30-40km ALTITUDE, PLASMA SHEATH)",
+      massKg: 3000,
+      warheadKg: 300,
+      guidance: "Active Radar + Hypersonic Data-link",
+      hook: "Travelling at Mach 9, the Zircon creates an ionized plasma envelope around its airframe that absorbs radio waves, rendering it practically invisible to conventional naval air defense until seconds before kinetic detonation."
+    },
+    kinzhal: {
+      name: "Kh-47M2 Kinzhal",
+      maxRange: 2000,
+      mach: 10.0,
+      speedMs: 3430,
+      profile: "AIR-LAUNCHED BALLISTIC (MIG-31K STANDOFF BOOST)",
+      massKg: 4300,
+      warheadKg: 500,
+      guidance: "Inertial + GLONASS + Active radar seeker",
+      hook: "Launched from a MiG-31K flying at Mach 2+ in the stratosphere, the Kinzhal inherits massive initial kinetic energy, allowing it to dive vertically onto high-value hardened command bunkers at Mach 10."
+    },
+    df21d: {
+      name: "DF-21D 'Carrier Killer'",
+      maxRange: 1500,
+      mach: 10.0,
+      speedMs: 3400,
+      profile: "MEDIUM-RANGE BALLISTIC WITH MANEUVERABLE RE-ENTRY VEHICLE (MaRV)",
+      massKg: 14700,
+      warheadKg: 600,
+      guidance: "Over-The-Horizon (OTH) Radar + Synthetic Aperture Radar (SAR) Satellite cueing",
+      hook: "The DF-21D fundamentally altered naval strategy in the Western Pacific: for the first time in history, an aircraft carrier operating 1,000 miles off the Chinese coast can be struck by a land-based ballistic missile guided by space-based radar constellations."
+    },
+    tomahawk: {
+      name: "BGM-109 Tomahawk Block V",
+      maxRange: 1600,
+      mach: 0.75,
+      speedMs: 255,
+      profile: "LOW-ALTITUDE TERRAIN-HUGGING SUBSONIC CRUISE (30-50m AGL)",
+      massKg: 1600,
+      warheadKg: 450,
+      guidance: "TERCOM + DSMAC + Anti-Jam GPS + Maritime Moving Target seeker",
+      hook: "Unlike ballistic missiles that announce themselves to early-warning radar arrays, the Tomahawk creeps below radar horizons by hugging mountain valleys and ocean waves, slipping into targets undetected."
+    },
+    kalibr: {
+      name: "3M14 Kalibr-NK",
+      maxRange: 2000,
+      mach: 0.8,
+      speedMs: 270,
+      profile: "LONG-RANGE LAND-ATTACK CRUISE WITH SUPERSONIC TERMINAL SPRINT",
+      massKg: 2300,
+      warheadKg: 450,
+      guidance: "GLONASS + Radar altimeter scene matching",
+      hook: "The Kalibr gave Russia the ability to strike targets across the Middle East and Eastern Europe from small corvettes in the Caspian Sea, proving you no longer need giant destroyers to project strategic standoff firepower."
+    },
+    prsm: {
+      name: "PrSM (Precision Strike Missile)",
+      maxRange: 500,
+      mach: 5.2,
+      speedMs: 1780,
+      profile: "HIMARS / MLRS BALLISTIC WITH MULTI-MODE SEEKER",
+      massKg: 1800,
+      warheadKg: 200,
+      guidance: "GPS + Multi-Domain Maritime Moving Target Seeker",
+      hook: "Fitted two-per-pod into the battle-tested HIMARS launcher, PrSM doubles the range of the older ATACMS and adds an autonomous seeker capable of hunting enemy warships in coastal archipelagos."
+    },
+    brahmos: {
+      name: "BrahMos Block III",
+      maxRange: 450,
+      mach: 3.0,
+      speedMs: 1020,
+      profile: "RAMJET SEA-SKIMMING SUPERSONIC CRUISE",
+      massKg: 2500,
+      warheadKg: 300,
+      guidance: "Active radar homing with terminal weave maneuver",
+      hook: "At Mach 3, the sheer kinetic energy of BrahMos tears through warship hulls before the warhead even detonates. At low sea-skimming altitude, a warship's CIWS has under 12 seconds between radar horizon break and impact."
+    }
+  };
+
+  function updateMissileCalculations() {
+    const sysKey = document.getElementById('missileSystemSelect').value;
+    const sys = missileData[sysKey] || missileData.iskander;
+    const distInput = document.getElementById('distanceRange');
+    
+    // Update max range slider limits
+    distInput.max = sys.maxRange;
+    if (parseFloat(distInput.value) > sys.maxRange) {
+      distInput.value = sys.maxRange;
+    }
+    const distKm = parseFloat(distInput.value);
+    document.getElementById('distanceVal').innerText = `${distKm} km`;
+    document.getElementById('maxRangeDisplay').innerText = `Max: ${sys.maxRange} km`;
+
+    // Calculate time of flight
+    const timeSec = Math.round((distKm * 1000) / sys.speedMs);
+    const mins = Math.floor(timeSec / 60);
+    const secs = timeSec % 60;
+    document.getElementById('timeOfFlightVal').innerText = `${mins} min ${secs} sec`;
+
+    // Terminal velocity
+    document.getElementById('terminalVelocityVal').innerText = `${sys.speedMs} m/s (Mach ${sys.mach})`;
+
+    // Reaction window (assuming radar horizon detection at approx 40-70km for low altitude or apogee horizon for ballistic)
+    let detectionRangeKm = sys.profile.includes('BALLISTIC') ? 120 : 38;
+    const reactionSec = Math.max(8, Math.round((detectionRangeKm * 1000) / sys.speedMs));
+    document.getElementById('reactionWindowVal').innerText = `~ ${reactionSec} seconds`;
+
+    // Interceptor Kill Probability heuristic
+    const adSys = document.getElementById('airDefenseSelect').value;
+    let pk = 35;
+    if (adSys === 'patriot_pac3') pk = sys.mach > 8 ? 22 : 68;
+    if (adSys === 'aegis_sm6') pk = sys.mach > 8 ? 40 : 75;
+    if (adSys === 'thaad') pk = sys.profile.includes('BALLISTIC') ? 80 : 15;
+    if (adSys === 'iron_dome') pk = sys.mach > 2 ? 8 : 85;
+    document.getElementById('killProbVal').innerText = `${pk}% Estimated Single-Shot Pk`;
+
+    // Update SVG visuals
+    const scale = (distKm / sys.maxRange) * 110;
+    const targetX = 200 + scale;
+    document.getElementById('dynamicRangeRing').setAttribute('r', scale);
+    document.getElementById('targetPoint').setAttribute('cx', targetX);
+    document.getElementById('targetLabel').setAttribute('x', targetX);
+
+    const midX = 200 + scale / 2;
+    const arcHeight = sys.profile.includes('BALLISTIC') ? 40 : 110;
+    document.getElementById('trajectoryArc').setAttribute('d', `M 200,150 Q ${midX},${arcHeight} ${targetX},150`);
+
+    // Kinetic Energy = 0.5 * m * v^2
+    const keJoules = 0.5 * sys.massKg * Math.pow(sys.speedMs, 2);
+    const keMegaJoules = Math.round(keJoules / 1000000);
+    document.getElementById('kineticEnergyLabel').innerText = `Ek: ~ ${keMegaJoules.toLocaleString()} MJ IMPACT ENERGY`;
+    document.getElementById('flightProfileLabel').innerText = `PROFILE: ${sys.profile}`;
+    document.getElementById('missileScriptHook').innerText = `"${sys.hook}"`;
+  }
+
+  document.getElementById('missileSystemSelect')?.addEventListener('change', updateMissileCalculations);
+  document.getElementById('distanceRange')?.addEventListener('input', updateMissileCalculations);
+  document.getElementById('airDefenseSelect')?.addEventListener('change', updateMissileCalculations);
+  document.getElementById('theaterSelect')?.addEventListener('change', (e) => {
+    const val = e.target.value;
+    if (val === 'kaliningrad') {
+      document.getElementById('missileSystemSelect').value = 'iskander';
+      document.getElementById('distanceRange').value = 350;
+    } else if (val === 'taiwan_strait') {
+      document.getElementById('missileSystemSelect').value = 'df21d';
+      document.getElementById('distanceRange').value = 950;
+    } else if (val === 'hormuz') {
+      document.getElementById('missileSystemSelect').value = 'brahmos';
+      document.getElementById('distanceRange').value = 180;
+    } else if (val === 'barents') {
+      document.getElementById('missileSystemSelect').value = 'zircon';
+      document.getElementById('distanceRange').value = 800;
+    }
+    updateMissileCalculations();
+  });
+
+  updateMissileCalculations();
+</script>
+
+<style>
+  .missile-card {
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .missile-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(147, 149, 151, 0.15);
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .missile-title-row {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .missile-heading {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--text-main);
+  }
+
+  .theater-select-group {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .tactical-select {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
+    padding: 0.45rem 0.75rem;
+    font-size: 0.78rem;
+    border-radius: 3px;
+    font-family: monospace;
+    cursor: pointer;
+  }
+  .tactical-select.full-w {
+    width: 100%;
+  }
+
+  .calculator-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 1.3fr;
+    gap: 1.5rem;
+  }
+
+  .controls-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 1.15rem;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .form-label {
+    font-size: 0.72rem;
+    color: var(--text-dim);
+    font-weight: 700;
+  }
+
+  .slider-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .slider-val {
+    font-size: 0.88rem;
+    font-weight: 800;
+  }
+
+  .tactical-slider {
+    width: 100%;
+    accent-color: var(--primary);
+    cursor: pointer;
+  }
+
+  .slider-limits {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.68rem;
+    color: var(--text-dim);
+  }
+
+  .output-cards-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+  }
+
+  .out-box {
+    background: var(--bg-card);
+    border: 1px solid rgba(147, 149, 151, 0.15);
+    padding: 0.75rem;
+    border-radius: 3px;
+  }
+
+  .out-label {
+    display: block;
+    font-size: 0.65rem;
+    color: var(--text-dim);
+    margin-bottom: 0.25rem;
+  }
+
+  .out-val {
+    font-size: 0.95rem;
+    font-weight: 800;
+  }
+
+  .radar-visual-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .radar-hud-canvas {
+    background: #080B0F;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .trajectory-svg {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .radar-status-bar {
+    padding: 0.6rem 0.85rem;
+    background: rgba(14, 19, 26, 0.95);
+    border-top: 1px solid rgba(147, 149, 151, 0.15);
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.72rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .creator-explainer {
+    background: rgba(187, 38, 73, 0.05);
+    border: 1px dashed rgba(187, 38, 73, 0.35);
+    padding: 0.85rem;
+    border-radius: 3px;
+  }
+
+  .explainer-tag {
+    font-size: 0.68rem;
+    font-weight: 800;
+    color: #FF6685;
+    display: block;
+    margin-bottom: 0.35rem;
+  }
+
+  .explainer-quote {
+    font-size: 0.8rem;
+    color: var(--text-main);
+    line-height: 1.45;
+    font-style: italic;
+  }
+
+  @media (max-width: 900px) {
+    .calculator-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

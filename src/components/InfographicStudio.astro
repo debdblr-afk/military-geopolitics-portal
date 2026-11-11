@@ -1,0 +1,422 @@
+---
+// InfographicStudio.astro - Feature 9: Infographic & Thumbnail Comparison Stat Card Studio
+---
+<div class="hud-panel hud-corner infographic-card">
+  <div class="info-header">
+    <div>
+      <div class="info-title-row">
+        <span class="badge badge-pantone-2023">VISUAL PRODUCTION ASSETS</span>
+        <h3 class="font-mono info-heading">THUMBNAIL & STAT COMPARISON CARD STUDIO</h3>
+      </div>
+      <p class="font-mono text-muted" style="font-size: 0.76rem;">Generate high-impact comparison cards with radar polygon graphs formatted for YouTube thumbnails & X posts.</p>
+    </div>
+
+    <!-- Matchup Preset Selector -->
+    <div class="preset-selector font-mono">
+      <span class="hud-label">SELECT MATCHUP:</span>
+      <select id="matchupSelect" class="tactical-select">
+        <option value="f35_j20">F-35A Lightning II vs Chengdu J-20A</option>
+        <option value="type055_burke">Type 055 Destroyer vs Arleigh Burke Flight III</option>
+        <option value="virginia_yasen">Virginia Block V SSN vs Yasen-M (Kazan)</option>
+        <option value="patriot_s400">Patriot PAC-3 MSE vs S-400 Triumf</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="card-canvas-box" id="exportableCard">
+    <div class="card-canvas-inner hud-panel">
+      <!-- Card Top Banner -->
+      <div class="canvas-banner font-mono">
+        <div class="banner-brand">
+          <span class="radar-pulse"></span>
+          <span>ISKANDER TACTICAL DOSSIER</span>
+        </div>
+        <div class="banner-theme-dots">
+          <span style="color: #F5DF4D;">●</span>
+          <span style="color: #6667AB;">●</span>
+          <span style="color: #BB2649;">●</span>
+          <span style="color: #FFBE98;">●</span>
+          <span style="color: #A47864;">●</span>
+        </div>
+      </div>
+
+      <!-- Main Visual Grid: Platform 1 vs Platform 2 -->
+      <div class="canvas-content-grid">
+        <!-- Platform A -->
+        <div class="platform-col platform-a">
+          <span class="platform-country font-mono" id="p1Country">UNITED STATES AIR FORCE</span>
+          <h2 class="platform-name font-mono" id="p1Name" style="color: #F5DF4D;">F-35A LIGHTNING II</h2>
+          
+          <div class="spec-stack font-mono">
+            <div class="spec-item">
+              <span class="k">RADAR CROSS SECTION:</span>
+              <span class="v" id="p1Rcs">0.001 m² (-30 dBsm)</span>
+            </div>
+            <div class="spec-item">
+              <span class="k">MAX SPEED:</span>
+              <span class="v" id="p1Speed">Mach 1.6 (Internal Weapons)</span>
+            </div>
+            <div class="spec-item">
+              <span class="k">RADAR SENSOR:</span>
+              <span class="v" id="p1Radar">AN/APG-81 Active AESA</span>
+            </div>
+            <div class="spec-item">
+              <span class="k">COMBAT RADIUS:</span>
+              <span class="v" id="p1Radius">1,240 km internal</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Center: Radar Capability Polygon -->
+        <div class="radar-polygon-box">
+          <svg viewBox="0 0 240 240" class="polygon-svg" id="polygonSvg">
+            <!-- Background Pentagon Rings -->
+            <polygon points="120,20 215,89 179,200 61,200 25,89" fill="none" stroke="rgba(147, 149, 151, 0.2)" stroke-width="1" />
+            <polygon points="120,50 186,98 161,176 79,176 54,98" fill="none" stroke="rgba(147, 149, 151, 0.2)" stroke-width="1" />
+            <polygon points="120,80 157,107 143,152 97,152 83,107" fill="none" stroke="rgba(147, 149, 151, 0.2)" stroke-width="1" />
+            
+            <!-- Axis lines -->
+            <line x1="120" y1="120" x2="120" y2="20" stroke="rgba(147, 149, 151, 0.2)" />
+            <line x1="120" y1="120" x2="215" y2="89" stroke="rgba(147, 149, 151, 0.2)" />
+            <line x1="120" y1="120" x2="179" y2="200" stroke="rgba(147, 149, 151, 0.2)" />
+            <line x1="120" y1="120" x2="61" y2="200" stroke="rgba(147, 149, 151, 0.2)" />
+            <line x1="120" y1="120" x2="25" y2="89" stroke="rgba(147, 149, 151, 0.2)" />
+
+            <!-- Labels -->
+            <text x="120" y="14" text-anchor="middle" fill="#8F9AA7" font-family="monospace" font-size="8">STEALTH</text>
+            <text x="222" y="93" text-anchor="start" fill="#8F9AA7" font-family="monospace" font-size="8">SENSOR</text>
+            <text x="185" y="215" text-anchor="middle" fill="#8F9AA7" font-family="monospace" font-size="8">PAYLOAD</text>
+            <text x="55" y="215" text-anchor="middle" fill="#8F9AA7" font-family="monospace" font-size="8">RANGE</text>
+            <text x="18" y="93" text-anchor="end" fill="#8F9AA7" font-family="monospace" font-size="8">SPEED</text>
+
+            <!-- Polygon P1 (Pantone 2021 Yellow #F5DF4D) -->
+            <polygon id="polyP1" points="120,25 205,92 145,160 85,165 45,95" fill="rgba(245, 223, 77, 0.3)" stroke="#F5DF4D" stroke-width="2" />
+
+            <!-- Polygon P2 (Pantone 2023 Magenta #BB2649) -->
+            <polygon id="polyP2" points="120,55 190,96 170,185 70,180 30,85" fill="rgba(187, 38, 73, 0.3)" stroke="#BB2649" stroke-width="2" />
+          </svg>
+          <div class="vs-badge font-mono">VS</div>
+        </div>
+
+        <!-- Platform B -->
+        <div class="platform-col platform-b">
+          <span class="platform-country font-mono" id="p2Country">CHINA PLAAF</span>
+          <h2 class="platform-name font-mono" id="p2Name" style="color: #BB2649;">CHENGDU J-20A MIGHTY DRAGON</h2>
+          
+          <div class="spec-stack font-mono">
+            <div class="spec-item">
+              <span class="k">RADAR CROSS SECTION:</span>
+              <span class="v" id="p2Rcs">0.02 m² (Frontal aspect)</span>
+            </div>
+            <div class="spec-item">
+              <span class="k">MAX SPEED:</span>
+              <span class="v" id="p2Speed">Mach 2.0+ (Supercruise)</span>
+            </div>
+            <div class="spec-item">
+              <span class="k">RADAR SENSOR:</span>
+              <span class="v" id="p2Radar">Type 1475 (KLJ-5) AESA</span>
+            </div>
+            <div class="spec-item">
+              <span class="k">COMBAT RADIUS:</span>
+              <span class="v" id="p2Radius">2,000 km internal</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card Bottom Footer -->
+      <div class="canvas-footer font-mono">
+        <span class="source-tag">SOURCE: IISS THE MILITARY BALANCE / DOD CHINA MILITARY POWER REPORT</span>
+        <span class="domain-watermark">iskander.dbdd.in</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-actions font-mono">
+    <button class="btn-tactical btn-primary" id="copyCardHtmlBtn">📋 Copy Embed Code</button>
+    <button class="btn-tactical btn-outline" id="printCardBtn">🖨 Print / Save As Image</button>
+  </div>
+</div>
+
+<script is:inline>
+  const matchups = {
+    f35_j20: {
+      p1Country: "UNITED STATES AIR FORCE",
+      p1Name: "F-35A LIGHTNING II",
+      p1Rcs: "0.001 m² (-30 dBsm)",
+      p1Speed: "Mach 1.6 (Internal)",
+      p1Radar: "AN/APG-81 Active AESA",
+      p1Radius: "1,240 km internal",
+      p1Poly: "120,25 205,92 145,160 85,165 45,95",
+      
+      p2Country: "CHINA PLAAF",
+      p2Name: "CHENGDU J-20A DRAGON",
+      p2Rcs: "0.02 m² (Frontal aspect)",
+      p2Speed: "Mach 2.0+ (Supercruise)",
+      p2Radar: "Type 1475 (KLJ-5) AESA",
+      p2Radius: "2,000 km internal",
+      p2Poly: "120,55 190,96 170,185 70,180 30,85"
+    },
+    type055_burke: {
+      p1Country: "UNITED STATES NAVY",
+      p1Name: "ARLEIGH BURKE FLIGHT III",
+      p1Rcs: "Reduced mast profile",
+      p1Speed: "31+ Knots (LM2500)",
+      p1Radar: "AN/SPY-6(V)1 AMDR AESA",
+      p1Radius: "96 Mk 41 VLS Cells",
+      p1Poly: "120,60 210,90 155,170 85,170 40,95",
+
+      p2Country: "CHINA PLAN",
+      p2Name: "TYPE 055 RENHAI-CLASS",
+      p2Rcs: "Integrated enclosed mast",
+      p2Speed: "30 Knots (QC-280)",
+      p2Radar: "Type 346B Dual-Band AESA",
+      p2Radius: "112 Universal VLS Cells",
+      p2Poly: "120,50 200,92 178,195 80,180 42,94"
+    },
+    virginia_yasen: {
+      p1Country: "UNITED STATES NAVY",
+      p1Name: "VIRGINIA BLOCK V (SSN)",
+      p1Rcs: "Acoustic: Anechoic tiles",
+      p1Speed: "25+ Knots submerged",
+      p1Radar: "AN/BQQ-10 Advanced Sonar",
+      p1Radius: "40 Strike VLS + 4 Torpedo tubes",
+      p1Poly: "120,22 200,95 160,180 90,185 45,95",
+
+      p2Country: "RUSSIAN NAVY (VMF)",
+      p2Name: "PROJECT 885M YASEN-M",
+      p2Rcs: "Acoustic: Isolated raft",
+      p2Speed: "31 Knots submerged",
+      p2Radar: "Irtysh-Amfora Spherical",
+      p2Radius: "32 VLS (Zircon/Kalibr) + 10 tubes",
+      p2Poly: "120,40 190,98 170,190 85,185 35,90"
+    },
+    patriot_s400: {
+      p1Country: "UNITED STATES ARMY",
+      p1Name: "PATRIOT PAC-3 MSE",
+      p1Rcs: "Hit-to-Kill Kinetic Rod",
+      p1Speed: "Mach 5.0+ Interceptor",
+      p1Radar: "AN/MPQ-65A Phased Array",
+      p1Radius: "60 km vs Ballistic / 100km Air",
+      p1Poly: "120,30 205,92 140,150 90,160 40,92",
+
+      p2Country: "RUSSIAN AIR DEFENSE",
+      p2Name: "S-400 TRIUMF (SA-21)",
+      p2Rcs: "Fragmentation blast",
+      p2Speed: "Mach 6.0+ (48N6DM)",
+      p2Radar: "91N6E Big Bird + 92N6E",
+      p2Radius: "250 - 400 km (Aerodynamic)",
+      p2Poly: "120,55 195,94 175,190 70,195 32,88"
+    }
+  };
+
+  document.getElementById('matchupSelect')?.addEventListener('change', (e) => {
+    const key = e.target.value;
+    const m = matchups[key];
+    if (!m) return;
+
+    document.getElementById('p1Country').innerText = m.p1Country;
+    document.getElementById('p1Name').innerText = m.p1Name;
+    document.getElementById('p1Rcs').innerText = m.p1Rcs;
+    document.getElementById('p1Speed').innerText = m.p1Speed;
+    document.getElementById('p1Radar').innerText = m.p1Radar;
+    document.getElementById('p1Radius').innerText = m.p1Radius;
+    document.getElementById('polyP1').setAttribute('points', m.p1Poly);
+
+    document.getElementById('p2Country').innerText = m.p2Country;
+    document.getElementById('p2Name').innerText = m.p2Name;
+    document.getElementById('p2Rcs').innerText = m.p2Rcs;
+    document.getElementById('p2Speed').innerText = m.p2Speed;
+    document.getElementById('p2Radar').innerText = m.p2Radar;
+    document.getElementById('p2Radius').innerText = m.p2Radius;
+    document.getElementById('polyP2').setAttribute('points', m.p2Poly);
+  });
+
+  document.getElementById('copyCardHtmlBtn')?.addEventListener('click', () => {
+    const cardHtml = document.getElementById('exportableCard').outerHTML;
+    navigator.clipboard.writeText(cardHtml);
+    const btn = document.getElementById('copyCardHtmlBtn');
+    btn.innerText = '✓ HTML Copied!';
+    setTimeout(() => btn.innerText = '📋 Copy Embed Code', 2000);
+  });
+
+  document.getElementById('printCardBtn')?.addEventListener('click', () => {
+    window.print();
+  });
+</script>
+
+<style>
+  .infographic-card {
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .info-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(147, 149, 151, 0.15);
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .info-title-row {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .info-heading {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--text-main);
+  }
+
+  .preset-selector {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .card-canvas-box {
+    margin-bottom: 1.25rem;
+  }
+
+  .card-canvas-inner {
+    background: #090C10;
+    border: 2px solid var(--border-color);
+    padding: 1.5rem;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  }
+
+  .canvas-banner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(147, 149, 151, 0.2);
+    margin-bottom: 1.5rem;
+    font-size: 0.78rem;
+    font-weight: 800;
+  }
+
+  .banner-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--primary);
+  }
+
+  .banner-theme-dots {
+    display: flex;
+    gap: 0.35rem;
+    font-size: 0.85rem;
+  }
+
+  .canvas-content-grid {
+    display: grid;
+    grid-template-columns: 1fr 180px 1fr;
+    gap: 1.5rem;
+    align-items: center;
+    margin-bottom: 1.5rem;
+  }
+
+  .platform-country {
+    font-size: 0.72rem;
+    color: var(--text-dim);
+    font-weight: 700;
+  }
+
+  .platform-name {
+    font-size: 1.35rem;
+    font-weight: 900;
+    margin: 0.25rem 0 1rem;
+  }
+
+  .platform-b {
+    text-align: right;
+  }
+  .platform-b .spec-item {
+    justify-content: flex-end;
+  }
+
+  .spec-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    font-size: 0.74rem;
+  }
+
+  .spec-item {
+    display: flex;
+    gap: 0.4rem;
+  }
+  .spec-item .k {
+    color: var(--text-dim);
+  }
+  .spec-item .v {
+    color: var(--text-main);
+    font-weight: 700;
+  }
+
+  .radar-polygon-box {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .polygon-svg {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .vs-badge {
+    position: absolute;
+    font-size: 0.95rem;
+    font-weight: 900;
+    color: #FFFFFF;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 0.2rem 0.5rem;
+    border-radius: 50%;
+    border: 1px solid var(--border-color);
+  }
+
+  .canvas-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(147, 149, 151, 0.15);
+    font-size: 0.68rem;
+    color: var(--text-dim);
+  }
+
+  .domain-watermark {
+    color: var(--c-pantone-2024-peach);
+    font-weight: 700;
+  }
+
+  .card-actions {
+    display: flex;
+    gap: 0.75rem;
+  }
+
+  @media (max-width: 900px) {
+    .canvas-content-grid {
+      grid-template-columns: 1fr;
+      text-align: left;
+    }
+    .platform-b {
+      text-align: left;
+    }
+    .platform-b .spec-item {
+      justify-content: flex-start;
+    }
+  }
+</style>

@@ -1,0 +1,19 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PrintableMemoComponent from '../components/PrintableMemo.astro';
+---
+
+<BaseLayout 
+  title="Classified Intelligence Memorandum Format // ISKANDER"
+  description="Printable classified military intelligence brief ready for PDF download or subscriber dispatch."
+>
+  <div class="container page-container">
+    <PrintableMemoComponent />
+  </div>
+</BaseLayout>
+
+<style>
+  .page-container {
+    padding: 2.5rem 1.25rem 4rem;
+  }
+</style>
