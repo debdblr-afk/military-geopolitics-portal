@@ -22,70 +22,13 @@
     <div class="spenders-column hud-panel font-mono">
       <div class="col-head">
         <span class="badge badge-pantone-2021">TOP DEFENSE BUDGETS</span>
-        <span style="font-size: 0.72rem; color: var(--text-dim);">ANNUAL SPEND (USD BILLIONS)</span>
-      </div>
-
-      <div class="spend-bars-list">
-        <div class="spend-row">
-          <div class="spend-meta">
-            <span class="country">United States</span>
-            <span class="val" style="color: #F5DF4D;">$916 Billion (3.4% GDP)</span>
-          </div>
-          <div class="bar-shell">
-            <div class="bar-fill" style="width: 100%; background: #F5DF4D;"></div>
-          </div>
-        </div>
-
-        <div class="spend-row">
-          <div class="spend-meta">
-            <span class="country">China (Estimated)</span>
-            <span class="val" style="color: #BB2649;">$296 Billion (1.7% GDP)</span>
-          </div>
-          <div class="bar-shell">
-            <div class="bar-fill" style="width: 32%; background: #BB2649;"></div>
-          </div>
-        </div>
-
-        <div class="spend-row">
-          <div class="spend-meta">
-            <span class="country">Russia</span>
-            <span class="val" style="color: #FFBE98;">$109 Billion (5.9% GDP)</span>
-          </div>
-          <div class="bar-shell">
-            <div class="bar-fill" style="width: 12%; background: #FFBE98;"></div>
-          </div>
-        </div>
-
-        <div class="spend-row">
-          <div class="spend-meta">
-            <span class="country">India</span>
-            <span class="val" style="color: #6667AB;">$83.6 Billion (2.4% GDP)</span>
-          </div>
-          <div class="bar-shell">
-            <div class="bar-fill" style="width: 9%; background: #6667AB;"></div>
-          </div>
-        </div>
-
-        <div class="spend-row">
-          <div class="spend-meta">
-            <span class="country">Saudi Arabia</span>
-            <span class="val" style="color: #A47864;">$75.8 Billion (7.1% GDP)</span>
-          </div>
-          <div class="bar-shell">
-            <div class="bar-fill" style="width: 8%; background: #A47864;"></div>
-          </div>
-        </div>
-
-        <div class="spend-row">
-          <div class="spend-meta">
-            <span class="country">United Kingdom</span>
-            <span class="val">$74.9 Billion (2.3% GDP)</span>
-          </div>
-          <div class="bar-shell">
-            <div class="bar-fill" style="width: 8%; background: #939597;"></div>
-          </div>
+        <div class="sort-controls">
+          <button class="sort-btn active" id="sortSpend" data-sort="spend">BY SPEND</button>
+          <button class="sort-btn" id="sortGdp" data-sort="gdp">BY % GDP</button>
         </div>
       </div>
+
+      <div class="spend-bars-list" id="spendBarsList"></div>
     </div>
 
     <!-- Top Arms Exporters vs Importers Corridors -->
@@ -130,6 +73,53 @@
     </div>
   </div>
 </div>
+
+<script is:inline>
+  const countries = [
+    { name: 'United States',    spend: 916, gdp: 3.4, color: '#F5DF4D' },
+    { name: 'China (Estimated)', spend: 296, gdp: 1.7, color: '#BB2649' },
+    { name: 'Russia',           spend: 109, gdp: 5.9, color: '#FFBE98' },
+    { name: 'India',            spend: 83.6, gdp: 2.4, color: '#6667AB' },
+    { name: 'Saudi Arabia',     spend: 75.8, gdp: 7.1, color: '#A47864' },
+    { name: 'United Kingdom',   spend: 74.9, gdp: 2.3, color: '#939597' }
+  ];
+
+  function renderBars(sortBy) {
+    const list = document.getElementById('spendBarsList');
+    if (!list) return;
+
+    const sorted = [...countries].sort((a, b) => sortBy === 'gdp' ? b.gdp - a.gdp : b.spend - a.spend);
+    const maxVal = sortBy === 'gdp' ? Math.max(...sorted.map(c => c.gdp)) : sorted[0].spend;
+
+    list.innerHTML = sorted.map(c => {
+      const pct = sortBy === 'gdp'
+        ? ((c.gdp / maxVal) * 100).toFixed(0)
+        : ((c.spend / maxVal) * 100).toFixed(0);
+      const label = sortBy === 'gdp'
+        ? `${c.gdp}% GDP ($${c.spend}B)`
+        : `$${c.spend} Billion (${c.gdp}% GDP)`;
+      return `<div class="spend-row">
+        <div class="spend-meta">
+          <span class="country">${c.name}</span>
+          <span class="val" style="color: ${c.color};">${label}</span>
+        </div>
+        <div class="bar-shell">
+          <div class="bar-fill" style="width: ${pct}%; background: ${c.color}; transition: width 0.5s ease;"></div>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  document.querySelectorAll('.sort-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderBars(btn.getAttribute('data-sort'));
+    });
+  });
+
+  renderBars('spend');
+</script>
 
 <style>
   .arms-trade-card {
@@ -283,5 +273,28 @@
     .at-grid {
       grid-template-columns: 1fr;
     }
+  }
+
+  .sort-controls {
+    display: flex;
+    gap: 0.35rem;
+  }
+  .sort-btn {
+    font-family: "SF Mono", Monaco, monospace;
+    font-size: 0.68rem;
+    font-weight: 700;
+    padding: 0.2rem 0.5rem;
+    border-radius: 2px;
+    border: 1px solid var(--border-color);
+    background: transparent;
+    color: var(--text-dim);
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .sort-btn:hover { color: var(--text-main); }
+  .sort-btn.active {
+    background: rgba(245, 223, 77, 0.15);
+    border-color: var(--primary);
+    color: var(--primary);
   }
 </style>

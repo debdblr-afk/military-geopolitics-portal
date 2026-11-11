@@ -71,7 +71,7 @@
         <!-- Undersea Fiber Cable Strategic Routes (Dotted Cyan/Peri line) -->
         <path d="M220,160 C 350,140 450,130 500,140" fill="none" stroke="rgba(102, 103, 171, 0.45)" stroke-width="1.2" stroke-dasharray="3 3" />
         <path d="M520,200 C 580,260 680,270 760,270" fill="none" stroke="rgba(102, 103, 171, 0.45)" stroke-width="1.2" stroke-dasharray="3 3" />
-        <path d="M780,240 C 850,210 900,180 200,160" fill="none" stroke="rgba(102, 103, 171, 0.3)" stroke-width="1" stroke-dasharray="2 4" />
+        <path d="M780,240 C 850,260 920,300 940,340" fill="none" stroke="rgba(102, 103, 171, 0.3)" stroke-width="1" stroke-dasharray="2 4" />
 
         <!-- CHOKEPOINTS LAYER (Peach Fuzz #FFBE98) -->
         <g id="layer-chokepoints">
@@ -349,6 +349,116 @@
       defcon: "HIGH READINESS (DEFCON 3)",
       bypass: "Hawaii / Darwin (Australia)",
       hook: "Why is the Pentagon spending $1.5 Billion installing a 360-degree Enhanced Integrated Air and Missile Defense (EIAMD) shield over a tiny island named Guam? Because whoever controls Guam controls the Second Island Chain."
+    },
+    bosphorus: {
+      title: "Bosphorus & Turkish Straits",
+      badge: "MARITIME CHOKEPOINT",
+      meta: "0.7 km wide at narrowest • Montreux Convention controls warship transit",
+      threat: "Treaty-limited warship access, mine warfare, closure under Article 21 wartime clause",
+      val: "3.0M bpd crude (CPC Pipeline, BTC) + grain corridor",
+      defcon: "ELEVATED (DEFCON 3)",
+      bypass: "Druzhba pipeline network only (no maritime alternative)",
+      hook: "Turkey holds the keys to Russia's only warm-water naval exit. Under the 1936 Montreux Convention, Ankara can slam the Bosphorus shut to all warships in wartime—and they did exactly that in February 2022, trapping the Black Sea Fleet inside."
+    },
+    suez: {
+      title: "Suez Canal",
+      badge: "MARITIME CHOKEPOINT",
+      meta: "193 km engineered waterway • 12% of global trade • ~1.0M bpd crude",
+      threat: "Physical blockage (Ever Given precedent), regional conflict spillover from Sinai",
+      val: "$9.4B annual canal revenue for Egypt",
+      defcon: "WATCH (DEFCON 4)",
+      bypass: "Cape of Good Hope (+10-14 days, +$800K fuel per voyage)",
+      hook: "When the Ever Given blocked the Suez Canal for 6 days in 2021, it held up $9.6 Billion of trade per day and proved that a single 400-meter container ship can paralyze 12% of global commerce. What happens if it's deliberate?"
+    },
+    panama: {
+      title: "Panama Canal",
+      badge: "MARITIME CHOKEPOINT",
+      meta: "82 km lock-based waterway • 6% of global maritime trade • 14,000 transits/year",
+      threat: "Drought-driven capacity restrictions, Chinese-operated port terminals at both ends",
+      val: "$270B+ annual cargo value",
+      defcon: "LOW (DEFCON 5)",
+      bypass: "Strait of Magellan / Cape Horn (+14 days) or US intermodal rail",
+      hook: "The Panama Canal is running out of water. Severe drought cut daily transits from 38 to 22, creating a maritime traffic jam that costs the global economy $500M per week. And China operates the ports on both sides."
+    },
+    redsea: {
+      title: "Red Sea / Gulf of Aden Theater",
+      badge: "KINETIC FLASHPOINT",
+      meta: "Active combat zone • Houthi ASBM & USV campaign since Nov 2023",
+      threat: "Anti-ship ballistic missiles (Khalij Fars), one-way attack UAVs, explosive USVs",
+      val: "$1.12B / Day diverted trade + war risk insurance surge",
+      defcon: "ACTIVE COMBAT (DEFCON 1)",
+      bypass: "Cape of Good Hope (+14 days transit, +$1.2M fuel per voyage)",
+      hook: "For the first time in history, a non-state actor is firing anti-ship ballistic missiles at commercial tankers. The Houthi campaign has diverted 90% of container traffic away from the Red Sea and rewritten the rules of maritime warfare."
+    },
+    arctic: {
+      title: "Arctic Bastion / Kola Peninsula",
+      badge: "KINETIC FLASHPOINT",
+      meta: "Russian Northern Fleet HQ • Murmansk • 2/3 of Russia's sea-based nuclear deterrent",
+      threat: "Borei-A SSBNs with Bulava SLBMs, Yasen-M SSGNs, Bastion-P coastal defense",
+      val: "Northern Sea Route: $0→$20B projected by 2030",
+      defcon: "STRATEGIC WATCH (DEFCON 3)",
+      bypass: "None — only viable Arctic submarine egress",
+      hook: "Russia's Kola Peninsula hosts two-thirds of its sea-based nuclear deterrent. The Borei-A submarines carrying 96 Bulava warheads patrol under Arctic ice where they are virtually undetectable—and NATO's only counter is the P-8 Poseidon."
+    },
+    persian_gulf: {
+      title: "Persian Gulf / Kharg Island",
+      badge: "KINETIC FLASHPOINT",
+      meta: "Iran's primary oil export terminal • 90% of Iranian crude exports",
+      threat: "IRGCN fast-attack swarms, Khalij Fars ASBMs, minelaying, Fateh-class submarines",
+      val: "Iranian crude: 1.5M bpd export, $130M/day revenue",
+      defcon: "HIGH (DEFCON 2)",
+      bypass: "Jask terminal (0.3M bpd, bypasses Hormuz)",
+      hook: "Kharg Island is Iran's economic jugular—90% of its crude oil exports load here. In the 1988 Tanker War, the US Navy's Operation Praying Mantis destroyed half the Iranian Navy in a single afternoon to keep this terminal operational."
+    },
+    diegogarcia: {
+      title: "Diego Garcia (BIOT)",
+      badge: "STRATEGIC HUB",
+      meta: "US/UK joint military base • Indian Ocean power projection hub",
+      threat: "DF-26 IRBMs from China (theoretical), logistic isolation",
+      val: "B-2/B-52 forward staging, submarine tender, SIGINT ground station",
+      defcon: "READY (DEFCON 4)",
+      bypass: "Al Udeid (Qatar) / Al Dhafra (UAE) for Middle East ops",
+      hook: "Diego Garcia is the most remote military base on Earth—and the most important. Every B-2 Spirit bombing mission over Afghanistan and Iraq launched from this tiny coral atoll in the middle of the Indian Ocean."
+    },
+    djibouti: {
+      title: "Djibouti Multi-National Base Complex",
+      badge: "STRATEGIC HUB",
+      meta: "Camp Lemonnier (US) + China's first overseas PLA Support Base • Horn of Africa",
+      threat: "Great power competition, Al-Shabaab spillover, Bab el-Mandeb proximity",
+      val: "US AFRICOM forward HQ + Chinese naval logistics + French, Japanese, Italian bases",
+      defcon: "WATCH (DEFCON 4)",
+      bypass: "Berbera (Somaliland) / Mombasa (Kenya)",
+      hook: "The US and China's only overseas military bases sit 6 miles apart in Djibouti. American F-15s and Chinese Z-20 helicopters share the same airspace over the world's most strategically contested 4 square kilometers."
+    },
+    okinawa: {
+      title: "Okinawa / Kadena Air Base",
+      badge: "STRATEGIC HUB",
+      meta: "Largest US air base in the Pacific • 18th Wing • F-22 / F-35 forward deployment",
+      threat: "DF-21D/DF-26 strike range, runway denial via ballistic missiles",
+      val: "First Island Chain air superiority anchor + ISR hub",
+      defcon: "HIGH READINESS (DEFCON 3)",
+      bypass: "Andersen (Guam) / Misawa (Japan) / Eielson (Alaska)",
+      hook: "Kadena Air Base on Okinawa is the most important piece of real estate in the Pacific—and China has 1,300 ballistic missiles aimed at it. The Pentagon's Agile Combat Employment doctrine is a desperate scramble to not lose 200 jets on Day 1."
+    },
+    tartus: {
+      title: "Tartus Naval Facility (Syria)",
+      badge: "STRATEGIC HUB",
+      meta: "Russia's only Mediterranean naval base • PMTO logistics point",
+      threat: "Regional instability, Turkish/NATO containment, Syrian civil war",
+      val: "Mediterranean power projection for Russian Navy surface combatants",
+      defcon: "WATCH (DEFCON 4)",
+      bypass: "No alternative Russian Mediterranean anchorage",
+      hook: "Russia's entire Mediterranean naval strategy depends on a single pier in the Syrian port of Tartus. Without it, the Russian Navy loses its ability to sustain deployments west of the Bosphorus—which is exactly why Moscow fights to keep Assad in power."
+    },
+    sevastopol: {
+      title: "Sevastopol Naval Base (Crimea)",
+      badge: "STRATEGIC HUB",
+      meta: "Historic Black Sea Fleet headquarters • Annexed 2014 • Under constant drone attack",
+      threat: "Ukrainian USV drone swarms, Storm Shadow/SCALP cruise missiles, Neptune ASCMs",
+      val: "Black Sea Fleet command + S-400 air defense umbrella",
+      defcon: "ACTIVE CONFLICT (DEFCON 1)",
+      bypass: "Novorossiysk (reduced capacity, no dry dock)",
+      hook: "Sevastopol was supposed to be Russia's unsinkable fortress in Crimea. Instead, Ukrainian maritime drones and British Storm Shadow missiles have sunk or damaged a third of the Black Sea Fleet without Ukraine possessing a single warship."
     }
   };
 
@@ -380,7 +490,7 @@
       const layerId = 'layer-' + btn.getAttribute('data-layer');
       const group = document.getElementById(layerId);
       if (group) {
-        group.style.display = btn.classList.contains('active') ? 'block' : 'none';
+        group.style.display = btn.classList.contains('active') ? '' : 'none';
       }
     });
   });

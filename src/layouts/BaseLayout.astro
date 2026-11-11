@@ -13,7 +13,7 @@ interface Props {
 const {
   title = "ISKANDER // Strategic Geopolitics & Military Creator Command Portal",
   description = "The all-in-one tactical dashboard for geopolitics, naval warfare, advanced weapons and space technology content creators. Deployed on Cloudflare Pages.",
-  image = "/og-image.png"
+  image = "/og-image.svg"
 } = Astro.props;
 ---
 
@@ -45,9 +45,6 @@ const {
     <meta property="twitter:description" content={description} />
     <meta property="twitter:image" content={image} />
 
-    <!-- Netlify Identity Widget for CMS -->
-    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-
     <!-- Pre-render theme check to prevent flash -->
     <script is:inline>
       try {
@@ -66,17 +63,6 @@ const {
     <Footer />
     <PantoneThemeScript />
 
-    <!-- Netlify Identity redirect script for CMS logins -->
-    <script is:inline>
-      if (window.netlifyIdentity) {
-        window.netlifyIdentity.on("init", user => {
-          if (!user) {
-            window.netlifyIdentity.on("login", () => {
-              document.location.href = "/admin/";
-            });
-          }
-        });
-      }
-    </script>
+
   </body>
 </html>

@@ -143,9 +143,100 @@
           "Stealth does NOT mean invisible to radar—it means delaying detection until the fighter is already within missile launch range. An S-400 radar that detects an F-15 at 350 km won't see an F-35 until 35 km, by which point an AMRAAM or JSM has already been fired."
         </p>
       </div>
+
+      <!-- Burn-through Range Calculator -->
+      <div class="burnthrough-calc hud-panel font-mono">
+        <div class="calc-head">
+          <span class="badge badge-pantone-2021">BURN-THROUGH CALCULATOR</span>
+          <span style="font-size: 0.72rem; color: var(--text-dim);">R = ⁴√(Pt·G²·λ²·σ / (4π)³·Smin)</span>
+        </div>
+        <div class="calc-controls">
+          <div class="calc-row">
+            <label for="ewRadar">RADAR SYSTEM:</label>
+            <select id="ewRadar" class="ew-select">
+              <option value="spy6" selected>AN/SPY-6(V)1 (S-Band, 30 MW)</option>
+              <option value="nebo">Nebo-M (VHF, 1.2 MW)</option>
+              <option value="aesa">APG-81 AESA (X-Band, 24 kW)</option>
+              <option value="patriot">MPQ-65 Patriot (C-Band, 5.2 MW)</option>
+              <option value="s400">91N6E S-400 (S-Band, 10 MW)</option>
+            </select>
+          </div>
+          <div class="calc-row">
+            <label for="ewTarget">TARGET AIRCRAFT:</label>
+            <select id="ewTarget" class="ew-select">
+              <option value="0.0001">B-21 / F-22 (0.0001 m²)</option>
+              <option value="0.001">F-35A (0.001 m²)</option>
+              <option value="0.02">J-20A (0.02 m²)</option>
+              <option value="0.25" selected>Su-57 (0.25 m²)</option>
+              <option value="10">F-15C / Su-30 (10 m²)</option>
+              <option value="100">B-52H (100 m²)</option>
+            </select>
+          </div>
+        </div>
+        <div class="calc-results">
+          <div class="result-item">
+            <span class="result-k">DETECTION RANGE:</span>
+            <span class="result-v" id="ewDetectRange" style="color: #F5DF4D;">—</span>
+          </div>
+          <div class="result-item">
+            <span class="result-k">WEAPONS-QUALITY TRACK:</span>
+            <span class="result-v" id="ewTrackRange" style="color: #BB2649;">—</span>
+          </div>
+          <div class="result-item">
+            <span class="result-k">MISSILE ENGAGEMENT ZONE:</span>
+            <span class="result-v" id="ewMez" style="color: #FFBE98;">—</span>
+          </div>
+          <div class="result-item">
+            <span class="result-k">STEALTH ADVANTAGE:</span>
+            <span class="result-v" id="ewAdvantage" style="color: #6667AB;">—</span>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
+
+<script is:inline>
+  // Radar system base detection ranges (km) against a 1 m² RCS target
+  const radarData = {
+    spy6:    { name: 'AN/SPY-6', baseRange: 480, trackFactor: 0.55, mezFactor: 0.45 },
+    nebo:    { name: 'Nebo-M',   baseRange: 600, trackFactor: 0.3,  mezFactor: 0.0  },
+    aesa:    { name: 'APG-81',   baseRange: 180, trackFactor: 0.8,  mezFactor: 0.7  },
+    patriot: { name: 'MPQ-65',   baseRange: 300, trackFactor: 0.65, mezFactor: 0.55 },
+    s400:    { name: '91N6E',    baseRange: 400, trackFactor: 0.6,  mezFactor: 0.5  }
+  };
+
+  function computeEW() {
+    const radarSel = document.getElementById('ewRadar');
+    const targetSel = document.getElementById('ewTarget');
+    if (!radarSel || !targetSel) return;
+
+    const radar = radarData[radarSel.value];
+    const rcs = parseFloat(targetSel.value);
+
+    // Detection range: R_det = baseRange × (RCS)^(1/4)
+    const detect = radar.baseRange * Math.pow(rcs, 0.25);
+    const track = detect * radar.trackFactor;
+    const mez = detect * radar.mezFactor;
+    // Compare stealth vs non-stealth (10 m² reference)
+    const refDetect = radar.baseRange * Math.pow(10, 0.25);
+    const reductionPct = ((1 - detect / refDetect) * 100).toFixed(0);
+
+    document.getElementById('ewDetectRange').innerText = detect.toFixed(0) + ' km';
+    document.getElementById('ewTrackRange').innerText = track > 0 ? track.toFixed(0) + ' km' : 'N/A (VHF — no precision track)';
+    document.getElementById('ewMez').innerText = mez > 0 ? mez.toFixed(0) + ' km' : 'N/A (search radar only)';
+
+    if (rcs < 10) {
+      document.getElementById('ewAdvantage').innerText = reductionPct + '% range reduction vs 4th-gen fighter';
+    } else {
+      document.getElementById('ewAdvantage').innerText = 'Baseline (non-stealth reference)';
+    }
+  }
+
+  document.getElementById('ewRadar')?.addEventListener('change', computeEW);
+  document.getElementById('ewTarget')?.addEventListener('change', computeEW);
+  computeEW();
+</script>
 
 <style>
   .ew-card {
@@ -321,5 +412,82 @@
     .ew-grid {
       grid-template-columns: 1fr;
     }
+  }
+
+  .burnthrough-calc {
+    background: rgba(14, 19, 26, 0.9);
+    padding: 1.25rem;
+    margin-top: 1rem;
+  }
+
+  .calc-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid rgba(147, 149, 151, 0.15);
+    margin-bottom: 0.75rem;
+  }
+
+  .calc-controls {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+  }
+
+  .calc-row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    flex: 1;
+    min-width: 200px;
+  }
+
+  .calc-row label {
+    font-size: 0.68rem;
+    color: var(--text-dim);
+    font-weight: 700;
+  }
+
+  .ew-select {
+    background: var(--bg-card);
+    color: var(--text-main);
+    border: 1px solid var(--border-color);
+    padding: 0.45rem 0.6rem;
+    border-radius: 3px;
+    font-family: "SF Mono", Monaco, monospace;
+    font-size: 0.76rem;
+    cursor: pointer;
+  }
+  .ew-select:focus {
+    outline: none;
+    border-color: var(--primary);
+  }
+
+  .calc-results {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 0.65rem;
+  }
+
+  .result-item {
+    background: var(--bg-card);
+    border: 1px solid rgba(147, 149, 151, 0.15);
+    padding: 0.6rem;
+    border-radius: 2px;
+  }
+
+  .result-k {
+    display: block;
+    font-size: 0.65rem;
+    color: var(--text-dim);
+    margin-bottom: 0.15rem;
+    font-weight: 700;
+  }
+
+  .result-v {
+    font-size: 0.9rem;
+    font-weight: 800;
   }
 </style>

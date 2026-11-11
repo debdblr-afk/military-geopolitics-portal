@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#080B0F"/>
+  <!-- Grid pattern -->
+  <defs>
+    <pattern id="g" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0L0 0 0 40" fill="none" stroke="rgba(147,149,151,0.08)" stroke-width="0.8"/>
+    </pattern>
+  </defs>
+  <rect width="1200" height="630" fill="url(#g)"/>
+  <!-- Glow -->
+  <circle cx="600" cy="200" r="300" fill="none" stroke="#F5DF4D" stroke-width="0.5" opacity="0.15"/>
+  <circle cx="600" cy="200" r="200" fill="none" stroke="#F5DF4D" stroke-width="0.5" opacity="0.1"/>
+  <!-- Brand -->
+  <text x="600" y="220" text-anchor="middle" font-family="monospace" font-size="72" font-weight="900" fill="#F5DF4D" letter-spacing="12">ISKANDER</text>
+  <text x="600" y="280" text-anchor="middle" font-family="monospace" font-size="20" fill="#939597" letter-spacing="6">STRATEGIC GEOPOLITICS &amp; MILITARY CREATOR PORTAL</text>
+  <!-- Pantone color bar -->
+  <rect x="340" y="340" width="80" height="8" rx="2" fill="#F5DF4D"/>
+  <rect x="430" y="340" width="80" height="8" rx="2" fill="#6667AB"/>
+  <rect x="520" y="340" width="80" height="8" rx="2" fill="#BB2649"/>
+  <rect x="610" y="340" width="80" height="8" rx="2" fill="#FFBE98"/>
+  <rect x="700" y="340" width="80" height="8" rx="2" fill="#A47864"/>
+  <!-- Tagline -->
+  <text x="600" y="420" text-anchor="middle" font-family="sans-serif" font-size="18" fill="#C8CAD0">20+ Interactive Tools for Defense &amp; Geopolitics Creators</text>
+  <!-- Domain -->
+  <rect x="460" y="460" width="280" height="36" rx="4" fill="none" stroke="rgba(255,190,152,0.4)" stroke-width="1"/>
+  <circle cx="480" cy="478" r="4" fill="#00FF88"/>
+  <text x="600" y="484" text-anchor="middle" font-family="monospace" font-size="16" fill="#FFBE98">iskander.dbdd.in</text>
+  <!-- Bottom: Pantone label -->
+  <text x="600" y="580" text-anchor="middle" font-family="monospace" font-size="12" fill="#939597" letter-spacing="3">PANTONE COLORS OF THE YEAR 2021–2025 • CLOUDFLARE PAGES</text>
+</svg>

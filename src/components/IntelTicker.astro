@@ -16,6 +16,12 @@
           <span class="ticker-item"><strong style="color: #6667AB;">[SPACE TRACK]</strong> NRO reconnaissance satellite USA-314 completes high-inclination orbital pass over Barents Sea submarine bastions.</span>
           <span class="ticker-item"><strong style="color: #FFBE98;">[STRAIT OF HORMUZ]</strong> IRGCN fast-attack craft conduct swarm drills adjacent to Tunb Islands transit lanes; crude freight risk premium +18bps.</span>
           <span class="ticker-item"><strong style="color: #A47864;">[SUWALKI GAP]</strong> NATO Enhanced Forward Presence battlegroups conclude Iron Spear heavy armor interoperability exercise.</span>
+          <!-- Duplicate for seamless loop -->
+          <span class="ticker-item"><strong style="color: #BB2649;">[FLASH RED SEA]</strong> CSG-2 intercepts 3 anti-ship ballistic missiles in southern Bab el-Mandeb; commercial tanker traffic diversion rate reaches 71.4%.</span>
+          <span class="ticker-item"><strong style="color: #F5DF4D;">[TAIWAN STRAIT]</strong> PLAN Carrier Shandong initiates combat air patrol 180nm east of Hualien; 28 sorties tracked by ROCAF CAP.</span>
+          <span class="ticker-item"><strong style="color: #6667AB;">[SPACE TRACK]</strong> NRO reconnaissance satellite USA-314 completes high-inclination orbital pass over Barents Sea submarine bastions.</span>
+          <span class="ticker-item"><strong style="color: #FFBE98;">[STRAIT OF HORMUZ]</strong> IRGCN fast-attack craft conduct swarm drills adjacent to Tunb Islands transit lanes; crude freight risk premium +18bps.</span>
+          <span class="ticker-item"><strong style="color: #A47864;">[SUWALKI GAP]</strong> NATO Enhanced Forward Presence battlegroups conclude Iron Spear heavy armor interoperability exercise.</span>
         </div>
       </div>
 
@@ -102,8 +108,7 @@
 
   .ticker-marquee-content {
     display: inline-block;
-    padding-left: 100%;
-    animation: marquee-roll 45s linear infinite;
+    animation: marquee-roll 60s linear infinite;
     font-size: 0.78rem;
     color: var(--text-main);
   }
@@ -114,7 +119,7 @@
 
   @keyframes marquee-roll {
     0% { transform: translateX(0); }
-    100% { transform: translateX(-100%); }
+    100% { transform: translateX(-50%); }
   }
 
   .ticker-controls {

@@ -291,3 +291,7 @@ section.feature-section {
     align-items: flex-start;
   }
 }
+
+/* Utility Text Classes */
+.text-muted { color: var(--text-muted); }
+.text-dim { color: var(--text-dim); }
