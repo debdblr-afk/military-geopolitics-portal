@@ -3,6 +3,15 @@
 > The all-in-one tactical dashboard and content studio designed specifically for **military, naval warfare, precision weapons, and geopolitics content creators**. 
 > Fully optimized for 100% free hosting on **Cloudflare Pages** with sub-100ms global edge latency and custom domain **`iskander.dbdd.in`**.
 
+[![Production Status](https://img.shields.io/badge/LIVE_STATUS-ACTIVE_HTTP_200-00FF88?style=for-the-badge&logo=cloudflare)](https://iskander.dbdd.in)
+[![Domain](https://img.shields.io/badge/DOMAIN-iskander.dbdd.in-FFBE98?style=for-the-badge)](https://iskander.dbdd.in)
+[![Cloudflare Pages](https://img.shields.io/badge/HOST-CLOUDFLARE_PAGES-F38020?style=for-the-badge&logo=cloudflarepages)](https://military-geopolitics-portal.pages.dev)
+[![Pantone COTY](https://img.shields.io/badge/THEME-PANTONE_2021--2025-F5DF4D?style=for-the-badge)](https://iskander.dbdd.in)
+
+🌐 **Official Live URL:** [https://iskander.dbdd.in](https://iskander.dbdd.in)  
+⚡ **Edge Mirror:** [https://military-geopolitics-portal.pages.dev](https://military-geopolitics-portal.pages.dev)  
+📝 **Decap CMS Admin:** [https://iskander.dbdd.in/admin/](https://iskander.dbdd.in/admin/)
+
 ---
 
 ## 🎨 The Pantone Color of the Year Theme System (2021–2025)
